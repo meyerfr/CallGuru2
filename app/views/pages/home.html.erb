@@ -1,0 +1,14 @@
+<h1>Pages#home</h1>
+<p>Find me in app/views/pages/home.html.erb</p>
+
+
+<div id="react_redux_app"></div>
+
+<!-- Exaample for passing dataAttributes -->
+<!-- <div id="react_redux_app"
+  data-someAttribute=<%#= SomeAttribute.all.to_json %>
+></div> -->
+
+<% content_for :after_js do %>
+  <%= javascript_pack_tag "react_redux_app" %>
+<% end %>
