@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#home'
 
+  get '/playbooks', to: 'pages#home'
+  get '/knowledge', to: 'pages#home'
+  get '/insights', to: 'pages#home'
+  get '/teams', to: 'pages#home'
+  get '/settings', to: 'pages#home'
+  get '/profile', to: 'pages#home'
 
 
   # This is an example for building the api routes for a chat.

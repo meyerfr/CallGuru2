@@ -1,0 +1,18 @@
+.card{
+  box-shadow: $shadow-soft-primary;
+  &.bg-secondary{
+    box-shadow: $shadow-soft-secondary;
+  }
+  transition: box-shadow .5s;
+  border-radius: $border-radius-xl;
+  &.bg-secondary:hover{
+    box-shadow: $shadow-hard-secondary;
+  }
+  &:hover{
+    box-shadow: $shadow-hard-primary;
+  }
+  .title.stretch{
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,36 @@
+button{
+  border: none;
+  padding: ($space * 1.5px) ($space * 3px);
+  border-radius: $space + px;
+  width: fit-content;
+  &.stretch{
+    width: 100%;
+  }
+  &.small-btn{
+    padding: ($space + px) ($space * 2px)
+  }
+}
+
+button.primary{
+  &:not(.outline){
+    background: $primary;
+    color: white;
+  }
+  &.outline{
+    background: transparent;
+    border: 2px solid $primary;
+    color: $primary;
+  }
+}
+
+button.secondary{
+  &:not(.outline){
+    background: $secondary;
+    color: white;
+  }
+  &.outline{
+    background: transparent;
+    border: 2px solid $secondary;
+    color: $secondary;
+  }
+}

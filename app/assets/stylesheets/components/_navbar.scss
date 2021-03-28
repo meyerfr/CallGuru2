@@ -1,12 +1,82 @@
-.navbar-lewagon {
-  justify-content: space-between;
-  background: white;
-}
+.callguru-app-navigation{
+  display: grid;
+  grid-template-rows: 80px auto;
+  height: 100vh;
+  width: 80px;
 
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
-}
+  position: fixed;
+  left: 0; top: 0;
+  .logo{
+    box-shadow: inset 0px -1px 2px rgba(9, 44, 76, 0.1);
+    img{
+      width: 45px;
+    }
+  }
+  .navbar-actions{
+    background: $primary;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: $space * 4px 0;
+    .list{
+      display: grid;
+      grid-gap: $space * 4px;
+      justify-content: center;
+      a{
+        position: relative;
+        span{
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translate(calc(100% + 35px), -50%);
+          background: $primary;
+          padding: ($space * 0.5px) ($space + px);
+          color: white;
+          opacity: 0;
+          transition: opacity .5s;
+          &:before{
+            width: 0;
+            height: 0;
+            content: '';
 
-.navbar-lewagon .navbar-brand img {
-  width: 40px;
+            position: absolute;
+            top: 50%; right: 100%;
+            z-index: 100;
+            transform: translateY(-50%);
+
+            border-top: ($space + px) solid transparent;
+            border-bottom: ($space + px) solid transparent;
+            border-right: 10px solid $primary;
+          }
+        }
+        svg{
+          transition: color .5s;
+        }
+        &.active svg{
+          color: $secondary;
+        }
+        img{
+          width: 35px;
+          height: 35px;
+          object-fit: contain;
+        }
+        svg{
+          font-size: 25px;
+          color: white;
+        }
+        a.warning svg{
+          color: $warning;
+        }
+        &:hover{
+          span{
+            opacity: 100;
+          }
+          svg{
+            color: $secondary;
+          }
+        }
+      }
+    }
+  }
 }

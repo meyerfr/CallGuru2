@@ -1,0 +1,40 @@
+.card.battle{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-gap: $space + px;
+  height: fit-content;
+  padding: ($space * 2px) ($space * 3px);
+
+  .head{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: $space + px;
+    align-items: center;
+  }
+  .keyword-list{
+    display: flex;
+    overflow-x: scroll;
+    .item{
+      margin-right: $space * 0.5px;
+      background: $gray5;
+      height: fit-content;
+      padding: ($space * 0.25px) ($space * 0.5px);
+      border-radius: $space + px;
+    }
+  }
+  .edit-actions{
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: $space + px;
+    justify-self: end;
+    overflow: hidden;
+    width: 0;
+    &.fixed{
+      width: 100%;
+    }
+    transition: width .5s;
+  }
+  &:hover .edit-actions:not(.fixed){
+    width: 100%;
+  }
+}

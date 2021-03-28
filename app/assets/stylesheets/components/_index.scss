@@ -1,4 +1,112 @@
 // Import your components CSS files here.
 @import "alert";
 @import "avatar";
+@import "button";
 @import "navbar";
+@import "card";
+@import "app_page_setup";
+@import "playbook_card";
+@import "battle_card";
+@import "filter_search";
+
+
+body{
+  h1, h2, h3, h4, h5, h6, p, span, button{
+    font-family: $my-font;
+    margin: 0;
+    color: $primary;
+    &.bold {
+      font-weight: bold;
+    }
+  }
+  h1{
+    font-size: 56px;
+    line-height: 56px;
+  }
+
+  h2{
+    font-size: 48px;
+    line-height: 48px;
+  }
+
+  h3{
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  h4{
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  h5{
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  h6{
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  p.extra-small, span.extra-small, button.extra-small {
+    font-size: 8px;
+    line-height: 8px;
+  }
+
+  p.small, span.small, button.small {
+    font-size: 10px;
+    line-height: 10px;
+  }
+
+  p.medium, span.medium, button.medium {
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  p, p.normal, span.normal, button.normal {
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  p.large, span.large, button.large {
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  p.extra-large, span.extra-large, button.extra-large {
+    font-size: 20px;
+    line-height: 20px;
+  }
+}
+
+.action{
+  cursor: pointer;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stretch{
+  display: flex;
+  justify-content: space-between;
+}
+
+.bg-secondary{
+  h1, h2, h3, h4, h5, h6, p, span{
+    color: white;
+  }
+}
+
+.seperater{
+  height: 1px;
+  background: $gray4;
+}
+
+.seperater-horizontal{
+  width: 1px;
+  background: $gray4;
+}
