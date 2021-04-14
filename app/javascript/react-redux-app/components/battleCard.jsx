@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencilAlt, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faToggleOn } from '@fortawesome/free-solid-svg-icons'
 
 const BattleCard = (props) => {
   console.log('battle_card', props)
@@ -19,7 +19,7 @@ const BattleCard = (props) => {
         </div>
         <div className="edit-actions fixed">
           <FontAwesomeIcon icon={faPencilAlt} />
-          <FontAwesomeIcon icon={faCog} />
+          <FontAwesomeIcon icon={faToggleOn} />
         </div>
       </div>
       <span className="extra-large bold title">{props.battle_card.title}</span>

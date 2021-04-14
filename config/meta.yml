@@ -1,0 +1,5 @@
+meta_product_name: "CallGuru"
+meta_title: "CallGuru - Your Telesales Assistant"
+meta_description: "Relevant description"
+meta_image: "callguru_logo.svg" # should exist in `app/assets/images/`
+# twitter_account: "@product_twitter_account"   # required for Twitter

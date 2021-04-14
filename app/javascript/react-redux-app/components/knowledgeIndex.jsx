@@ -41,8 +41,8 @@ const KnowledgeIndex = (props) => {
           <div className="page-content-container">
             <div className="wrapped-list">
               <div className="card center bg-secondary action">
-                <h5 className="bold">Create</h5>
-                <h5 className="bold">Playbook</h5>
+                <h6 className="bold">Create</h6>
+                <h6 className="bold">BattleCard</h6>
               </div>
               {
                 battle_cards &&

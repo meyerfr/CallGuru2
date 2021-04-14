@@ -7,7 +7,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Profile = (props) => {
   return (
-    <div className="app-wrapper">
+    <div className="app-wrapper profile">
       <PageHeader key="PageHeader" page="Profile">
         {
           // <div className="tabs">
