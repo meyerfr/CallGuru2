@@ -2,9 +2,11 @@
 //   max-height: 240px;
 //   min-height: 200px;
 // }
-.card.playbook{
+.card.company{
   display: grid;
+  grid-gap: $space * 2px;
   grid-template-rows: min-content 1fr min-content;
+  cursor: pointer;
   .title .edit-actions{
     display: grid;
     grid-auto-flow: column;

@@ -20,12 +20,13 @@ companies = Company.create([
   }
 ])
 
-users = User.create([
+users = User.create!([
   {
     first_name: 'Fritz',
     last_name: 'Meyer',
     email: 'fritz.meyer@callguru.de',
     password: 'FritzMeyer',
+    role: "CallGuru Admin",
     company_id: companies.first.id
   },
   {
@@ -47,6 +48,7 @@ users = User.create([
     last_name: 'Michi',
     email: 'nick.michi@callguru.de',
     password: 'NickMichi',
+    role: "Account Manager",
     company_id: companies.first.id
   }
 ])

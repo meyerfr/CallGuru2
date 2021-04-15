@@ -1,5 +1,6 @@
 .card{
   box-shadow: $shadow-soft-primary;
+  padding: $space * 3px;
   &.bg-secondary{
     box-shadow: $shadow-soft-secondary;
   }

@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2021_04_14_151424) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
-    t.string "role"
+    t.string "role", default: "Agent"
     t.string "job_title"
     t.uuid "company_id", null: false
     t.index ["company_id"], name: "index_users_on_company_id"

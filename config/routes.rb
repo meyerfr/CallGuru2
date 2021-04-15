@@ -8,16 +8,16 @@ Rails.application.routes.draw do
   get '/teams', to: 'pages#home'
   get '/settings', to: 'pages#home'
   get '/profile', to: 'pages#home'
+  get '/backlog', to: 'pages#home'
+  get '/companies/:id', to: 'pages#home'
 
-
-  # This is an example for building the api routes for a chat.
-  # namespace :api, defaults: { format: :json } do
-  #   namespace :v1 do
-  #     resources :channels, only: [] do
-  #       resources :messages, only: [ :index, :create ]
-  #     end
-  #   end
-  # end
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :companies, except: [ :new, :edit, :destroy ] do
+        resources :users, only: [ :index ]
+      end
+    end
+  end
 
   # resources :channels, only: [ :show ]
   # root to: 'channels#show'
