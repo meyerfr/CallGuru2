@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_15_163142) do
+ActiveRecord::Schema.define(version: 2021_04_20_091042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "block_options_joins", id: false, force: :cascade do |t|
+    t.uuid "content_block_id", null: false
+    t.uuid "content_option_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_block_id"], name: "index_block_options_joins_on_content_block_id"
+    t.index ["content_option_id"], name: "index_block_options_joins_on_content_option_id"
+  end
 
   create_table "companies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -22,6 +31,59 @@ ActiveRecord::Schema.define(version: 2021_04_15_163142) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "content_blocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "contentable_type", null: false
+    t.uuid "contentable_id", null: false
+    t.uuid "content_type_id", null: false
+    t.string "text"
+    t.integer "order_no"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_type_id"], name: "index_content_blocks_on_content_type_id"
+    t.index ["contentable_type", "contentable_id"], name: "index_content_blocks_on_contentable"
+  end
+
+  create_table "content_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "content_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "outlines", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.uuid "section_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["section_id"], name: "index_outlines_on_section_id"
+  end
+
+  create_table "playbooks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "status", default: "draft"
+    t.uuid "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_playbooks_on_company_id"
+  end
+
+  create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "status", default: "draft"
+    t.integer "order_no"
+    t.uuid "playbook_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["playbook_id"], name: "index_sections_on_playbook_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -63,5 +125,11 @@ ActiveRecord::Schema.define(version: 2021_04_15_163142) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "block_options_joins", "content_blocks"
+  add_foreign_key "block_options_joins", "content_options"
+  add_foreign_key "content_blocks", "content_types"
+  add_foreign_key "outlines", "sections"
+  add_foreign_key "playbooks", "companies"
+  add_foreign_key "sections", "playbooks"
   add_foreign_key "users", "companies"
 end

@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+puts('create Companies')
 companies = Company.create([
   {
     name: 'CallGuru',
@@ -20,6 +21,7 @@ companies = Company.create([
   }
 ])
 
+puts('create Users for CallGuru Company')
 users = User.create!([
   {
     first_name: 'Fritz',
@@ -71,6 +73,7 @@ users = User.create!([
 
 # ])
 
+puts('create various ContentTypes')
 default = ContentType.create(name: 'default')
 text = ContentType.create(name: 'text')
 number = ContentType.create(name: 'number')
@@ -84,20 +87,22 @@ header = ContentType.create(name: 'header')
 subheader = ContentType.create(name: 'subheader')
 check = ContentType.create(name: 'check')
 
-demo_playbook = Playbook.create(
+puts('create demo Playbook for CallGuru')
+demo_playbook = Playbook.create!(
   name: 'Demo',
   description: 'Dieses Playbook zeigt dir die Möglichkeiten die CallGuru bietet.',
-  status: 'public',
-  section_attributes: [
+  status: 'live',
+  company_id: companies.first.id,
+  sections_attributes: [
     {
       title: 'Welcome',
       description: "Am 'Gatekeeper' vorbei kommen",
-      status: 'public',
+      status: 'live',
       order_no: 1,
-      outline_attributes: [
+      outlines_attributes: [
         {
-          title: 'Greet the Customer'
-          content_block_attributes: [
+          title: 'Greet the Customer',
+          content_blocks_attributes: [
             {
               text: 'Willkomen im Call, in diesem Playbook werden wir dir dich durch die Funktionen von CallGuru führen.',
               content_type_id: default.id
@@ -113,14 +118,14 @@ demo_playbook = Playbook.create(
     {
       title: 'Der Aufbau',
       description: 'Erklärt den Aufbau von CallGuru',
-      status: 'public',
+      status: 'live',
       order_no: 2,
-      outline_attributes: [
+      outlines_attributes: [
         {
-          title: 'Greet the Customer'
-          content_block_attributes: [
+          title: 'Greet the Customer',
+          content_blocks_attributes: [
             {
-              text: 'Super also lass uns starten - hier kurz der generelle Aufbau:'
+              text: 'Super also lass uns starten - hier kurz der generelle Aufbau:',
               content_type_id: default.id
             },
             {
@@ -142,14 +147,14 @@ demo_playbook = Playbook.create(
     {
       title: 'Die Navigation',
       description: 'Erklärt die Navigation in der CallGuru App',
-      status: 'public',
+      status: 'live',
       order_no: 3,
-      outline_attributes: [
+      outlines_attributes: [
         {
-          title: 'Greet the Customer'
-          content_block_attributes: [
+          title: 'Greet the Customer',
+          content_blocks_attributes: [
             {
-              text: 'Es gibt drei Wege durch die Sektionen zu navigieren.'
+              text: 'Es gibt drei Wege durch die Sektionen zu navigieren.',
               content_type_id: default.id
             },
             {
@@ -175,14 +180,14 @@ demo_playbook = Playbook.create(
     {
       title: 'Knowledge Hub',
       description: 'Erklärt die Knowledge Hub der CallGuru App',
-      status: 'public',
+      status: 'live',
       order_no: 4,
-      outline_attributes: [
+      outlines_attributes: [
         {
-          title: 'Greet the Customer'
-          content_block_attributes: [
+          title: 'Greet the Customer',
+          content_blocks_attributes: [
             {
-              text: 'Hinter dem Logo unten zwischen den Pfeilen findest Du den Guru. Er ist eine Sammlung Fragen und Einwänden - wenn du auf sie klickst erscheint die Antwort.'
+              text: 'Hinter dem Logo unten zwischen den Pfeilen findest Du den Guru. Er ist eine Sammlung Fragen und Einwänden - wenn du auf sie klickst erscheint die Antwort.',
               content_type_id: default.id
             },
             {
@@ -196,7 +201,7 @@ demo_playbook = Playbook.create(
           ]
         }
       ]
-    },
+    }
   ]
 )
 
