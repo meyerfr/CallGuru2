@@ -7,6 +7,8 @@ export const CREATE_COMPANY = 'CREATE_COMPANY'
 export const FETCH_USERS = 'FETCH_USERS'
 export const ADD_EMPLOYEE = 'ADD_EMPLOYEE'
 
+export const FETCH_PLAYBOOKS = 'FETCH_PLAYBOOKS'
+
 export function logoutUser(callback) {
   const url = `users/sign_out`;
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -105,6 +107,18 @@ export function fetchUsers(company_id) {
 
   return {
     type: FETCH_USERS,
+    payload: promise
+  }
+}
+
+export function fetchPlaybooks(company_id) {
+  console.log(company_id)
+  const url = `${BASE_URL}/companies/${company_id}/playbooks`;
+  // console.log("fetchUsers")
+  const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
+
+  return {
+    type: FETCH_PLAYBOOKS,
     payload: promise
   }
 }

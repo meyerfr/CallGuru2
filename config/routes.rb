@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :companies, except: [ :new, :edit, :destroy ] do
         resources :users, only: [ :index, :create ]
+        resources :playbooks, only: [ :index, :create ]
       end
     end
   end

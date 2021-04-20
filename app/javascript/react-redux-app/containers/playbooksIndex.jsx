@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 
-import PageHeader from './pageHeader'
-import PlaybookCard from './playbookCard'
+import { fetchPlaybooks } from '../actions'
 
-import playbooks from '../db/playbooks'
+import PageHeader from '../components/pageHeader'
+import PlaybookCard from '../components/playbookCard'
+
+// import playbooks from '../db/playbooks'
 
 class PlaybooksIndex extends Component {
+  componentDidMount() {
+    if (this.props.playbooks.length === 0) {
+      console.log(this.props.currentUser)
+      this.props.fetchPlaybooks(this.props.currentUser.company_id)
+    }
+  }
+
   render() {
+    const playbooks = this.props.playbooks
     return (
       <div className="app-wrapper">
         <PageHeader key="PageHeader" page="Playbooks">
@@ -56,4 +68,16 @@ class PlaybooksIndex extends Component {
   }
 };
 
-export default PlaybooksIndex;
+function mapStateToProps(state) {
+  return {
+    playbooks: state.playbooks,
+    currentUser: state.currentUser
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchPlaybooks }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaybooksIndex);
+

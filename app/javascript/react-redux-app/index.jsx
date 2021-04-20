@@ -24,7 +24,8 @@ const reactReduxApp = document.getElementById('react_redux_app');
 const initialState = {
   // someAttribute: JSON.parse(reactReduxApp.dataset.someAttribute).map(c => c.name)
   currentUser: JSON.parse(reactReduxApp.dataset.current_user),
-  companies: []
+  companies: [],
+  playbooks: []
 };
 
 const middlewares = applyMiddleware(logger, ReduxPromise);

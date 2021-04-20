@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import CallGuruApp from '../components/callGuruApp';
-import PlaybooksIndex from '../components/playbooksIndex';
+import PlaybooksIndex from './playbooksIndex';
 import Settings from '../components/settings';
 import TeamsIndex from '../components/teamsIndex';
 import KnowledgeIndex from '../components/knowledgeIndex';

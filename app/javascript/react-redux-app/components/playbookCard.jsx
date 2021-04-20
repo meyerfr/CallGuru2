@@ -9,7 +9,7 @@ const PlaybookCard = (props) => {
   return (
     <div className="card playbook">
       <div className="title stretch">
-        <p className="large bold">{props.playbook.title}</p>
+        <p className="large bold">{props.playbook.name}</p>
         <div className="edit-actions">
           <FontAwesomeIcon icon={faPencilAlt} />
           <FontAwesomeIcon icon={faCog} />
