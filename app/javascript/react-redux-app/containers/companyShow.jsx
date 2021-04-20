@@ -9,20 +9,35 @@ import { fetchCompanies } from '../actions'
 
 import PageHeader from '../components/pageHeader'
 import UserCard from '../components/userCard'
+import AddEmployeeModal from './addEmployeeModal'
 
 class CompanyShow extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showAddEmployeeModal: false
+    }
+  }
+
   componentDidMount() {
     if (this.props.company == undefined) {
       this.props.fetchCompanies()
     }
   }
 
+  toggleAddEmployeeModal = () => {
+    this.setState({
+      showAddEmployeeModal: !this.state.showAddEmployeeModal
+    })
+  }
+
+
   render() {
     const company = this.props.company
     const users = company?.users
     const website_url = company?.website.includes('http') ? company?.website : `//${company?.website}`
-    return (
-      <div className="app-wrapper">
+    return [
+      <div className="app-wrapper" key="AppWrapper">
         <PageHeader key="PageHeader" page={company?.name}>
           {
             // <div className="tabs">
@@ -55,7 +70,7 @@ class CompanyShow extends Component {
               </div>
               <div className="seperater"></div>
               <div className="wrapped-list">
-                <div className="card center bg-secondary action" onClick={this.toggleCreateCompanyModal}>
+                <div className="card center bg-secondary action" onClick={this.toggleAddEmployeeModal}>
                   <h5 className="bold">Add</h5>
                   <h5 className="bold">Employee</h5>
                 </div>
@@ -74,8 +89,9 @@ class CompanyShow extends Component {
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>,
+      <AddEmployeeModal key='Modal' show={this.state.showAddEmployeeModal} onHide={this.toggleAddEmployeeModal} company_id={this.props.match.params.id} />
+    ];
   }
 };
 

@@ -33,6 +33,14 @@ class App extends Component {
     })
   }
 
+  acceptInvite = (callback) => {
+    this.props.acceptInvite((r) => {
+      this.setState = {
+        isLoggedIn: true
+      }
+    })
+  }
+
   render() {
     return(
       <BrowserRouter>
@@ -90,6 +98,12 @@ class App extends Component {
             path="/companies/:id"
             render={props => (
               <CompanyShow {...props} loggedInStatus={this.state.isLoggedIn} />
+            )}
+          />
+          <Route
+            path="/users/invitation/accept"
+            render={props => (
+              <LogIn {...props} loggedInStatus={this.state.isLoggedIn} acceptInvite={this.acceptInvite} />
             )}
           />
         </Switch>

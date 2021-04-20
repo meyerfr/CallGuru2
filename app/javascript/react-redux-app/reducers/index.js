@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
-import { CREATE_COMPANY } from '../actions'
+import { CREATE_COMPANY, ADD_EMPLOYEE } from '../actions'
 
 import companiesReducer from './companies_reducer'
 
@@ -14,6 +14,14 @@ const rootReducer = combineReducers({
     newCompanyForm: (state, action) => { // <------ 'account' is name of form given to reduxForm()
       switch(action.type) {
         case CREATE_COMPANY:
+          return undefined;       // <--- blow away form data
+        default:
+          return state;
+      }
+    },
+    addEmployeeForm: (state, action) => { // <------ 'account' is name of form given to reduxForm()
+      switch(action.type) {
+        case ADD_EMPLOYEE:
           return undefined;       // <--- blow away form data
         default:
           return state;

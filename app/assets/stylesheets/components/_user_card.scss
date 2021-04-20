@@ -1,0 +1,21 @@
+.card.user{
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  .title .edit-actions{
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: $space + px;
+    opacity: 0;
+    transition: opacity .5s;
+    svg{
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+  .content{
+    overflow-x: scroll;
+  }
+  &:hover .edit-actions{
+    opacity: 100%;
+  }
+}

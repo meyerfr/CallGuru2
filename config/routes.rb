@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { invitations: 'users_invitations' }
   root to: 'pages#home'
 
   get '/playbooks', to: 'pages#home'
@@ -11,10 +11,13 @@ Rails.application.routes.draw do
   get '/backlog', to: 'pages#home'
   get '/companies/:id', to: 'pages#home'
 
+  # get '/accept_invite', to: 'pages#home'
+
+
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :companies, except: [ :new, :edit, :destroy ] do
-        resources :users, only: [ :index ]
+        resources :users, only: [ :index, :create ]
       end
     end
   end

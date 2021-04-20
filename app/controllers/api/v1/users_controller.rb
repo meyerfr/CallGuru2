@@ -9,10 +9,16 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    user = @company.users.new(users_params)
-    if user.save
-      render json: user
+    user = User.invite!(users_params.as_json.merge({ company_id: @company.id }), current_user) do |user|
+      # only send invite when user is not Agent
+      user.skip_invitation = user.role === 'Agent' ? false : true
     end
+
+    user = user.as_json.merge({
+      accept_user_invitation_url: accept_user_invitation_url(invitation_token: user.raw_invitation_token),
+      current_user: current_user
+    })
+    render json: user
   end
 
   def show
@@ -39,7 +45,8 @@ class Api::V1::UsersController < ApplicationController
     params.require(:user).permit(
       :first_name,
       :last_name,
-      :email
+      :email,
+      :role
     )
   end
 end
