@@ -8,6 +8,8 @@ export const FETCH_USERS = 'FETCH_USERS'
 export const ADD_EMPLOYEE = 'ADD_EMPLOYEE'
 
 export const FETCH_PLAYBOOKS = 'FETCH_PLAYBOOKS'
+export const FETCH_PLAYBOOK = 'FETCH_PLAYBOOK'
+export const FETCH_PLAYBOOK_SECTIONS = 'FETCH_PLAYBOOK_SECTIONS'
 
 export function logoutUser(callback) {
   const url = `users/sign_out`;
@@ -112,13 +114,34 @@ export function fetchUsers(company_id) {
 }
 
 export function fetchPlaybooks(company_id) {
-  console.log(company_id)
   const url = `${BASE_URL}/companies/${company_id}/playbooks`;
   // console.log("fetchUsers")
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
 
   return {
     type: FETCH_PLAYBOOKS,
+    payload: promise
+  }
+}
+
+export function fetchPlaybook(playbook_id) {
+  const url = `${BASE_URL}/playbooks/${playbook_id}`;
+  // console.log("fetchUsers")
+  const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
+
+  return {
+    type: FETCH_PLAYBOOK,
+    payload: promise
+  }
+}
+
+export function fetchSections(playbook_id) {
+  const url = `${BASE_URL}/playbooks/${playbook_id}/sections`;
+  // console.log("fetchUsers")
+  const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
+
+  return {
+    type: FETCH_PLAYBOOK_SECTIONS,
     payload: promise
   }
 }

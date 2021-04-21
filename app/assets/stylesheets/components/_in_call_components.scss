@@ -1,0 +1,56 @@
+$outline-width: 33%;
+$outline-distance: $space * 10px;
+
+.outline-background{
+  background: $gray5;
+  position: fixed;
+  width: 33%;
+  height: 100vh;
+  z-index: -10;
+  .logo.center{
+    width: 80px;
+    height: 80px;
+    background: white;
+    img, svg{
+      width: 45px;
+    }
+  }
+}
+
+
+
+.outline-item{
+  display: grid;
+  grid-template-columns: calc(33% - 8px - (#{$outline-distance} / 2)) 1fr;
+  grid-gap: ($space * 0.5px) $outline-distance;
+  &.section-wrapper{
+    align-items: center;
+  }
+  .outline-title{
+    grid-column: 1;
+  }
+  .outline-script{
+    grid-column: 2;
+  }
+}
+
+.section-nav{
+  display: flex;
+  justify-content: space-between;
+  a{
+    height: 45px; width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img, svg{
+      width: 30px;
+      transition: width .3s;
+      &:hover{
+        width: 36px;
+      }
+    }
+    &.active img{
+      width: 45px;
+    }
+  }
+}

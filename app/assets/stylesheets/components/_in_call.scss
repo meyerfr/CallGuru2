@@ -1,0 +1,11 @@
+.app-wrapper.in-call{
+  .page-header{
+    background: white;
+  }
+  .page-content-container{
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-gap: $space * 3px;
+    padding: 0 ($space * 3px);
+  }
+}

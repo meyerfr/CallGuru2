@@ -20,6 +20,12 @@ class PlaybooksIndex extends Component {
     }
   }
 
+  startCall = (playbook) => {
+    // this is where the Action has to be called and the API has to create a call
+    // then do the following
+    this.props.history.push(`/playbooks/${playbook.id}/sections/${playbook.first_section_id}`);
+  }
+
   render() {
     const playbooks = this.props.playbooks
     return (
@@ -58,7 +64,7 @@ class PlaybooksIndex extends Component {
               </div>
               {
                 playbooks &&
-                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} />)
+                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => this.startCall(playbook)} />)
               }
             </div>
           </div>

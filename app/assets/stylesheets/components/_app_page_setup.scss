@@ -4,7 +4,7 @@
   grid-gap: $space * 4px;
   height: 100vh;
   padding-bottom: $space * 4px;
-  margin-left: 80px;
+  position: relative;
   .app-container{
     display: grid;
     grid-template-columns: auto 1px 30%;
@@ -14,6 +14,12 @@
         padding: 0 0 0 ($space * 8px);
       }
     }
+  }
+  &:not(.no-margin) {
+    margin-left: 80px;
+  }
+  &.no-margin .page-header{
+    margin-left: 80px
   }
   .page-header{
     display: flex;

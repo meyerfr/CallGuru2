@@ -20,7 +20,7 @@ const PlaybookCard = (props) => {
       </div>
       <div className="card-actions stretch">
         <br/>
-        <button className="secondary medium">Start Call</button>
+        <button className="secondary medium" onClick={props.onClick}>Start Call</button>
       </div>
     </div>
   );

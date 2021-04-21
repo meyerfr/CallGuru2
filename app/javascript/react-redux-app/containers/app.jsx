@@ -14,6 +14,7 @@ import AppNavigation from './appNavigation';
 import PageHeader from '../components/pageHeader';
 import Backlog from './backlog';
 import CompanyShow from './companyShow';
+import InCallPage from './inCallPage';
 
 import { logoutUser } from '../actions'
 
@@ -44,67 +45,82 @@ class App extends Component {
   render() {
     return(
       <BrowserRouter>
-        <AppNavigation />
         <Switch>
           <Route
             exact path='/'
-            render={props => (
-              <PlaybooksIndex {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <PlaybooksIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
-            path="/playbooks"
+            exact path="/playbooks"
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <PlaybooksIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
+          />
+          <Route
+            path="/playbooks/:playbook_id/sections/:id"
             render={props => (
-              <PlaybooksIndex {...props} loggedInStatus={this.state.isLoggedIn} />
+              <InCallPage {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             )}
           />
           <Route
             path="/knowledge"
-            render={props => (
-              <KnowledgeIndex {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <KnowledgeIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/teams"
-            render={props => (
-              <TeamsIndex {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <TeamsIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/insights"
-            render={props => (
-              <Insights {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <Insights {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/settings"
-            render={props => (
-              <Settings {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <Settings {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/profile"
-            render={props => (
-              <Profile {...props} loggedInStatus={this.state.isLoggedIn} logout={this.logout} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <Profile {...props} key="component" loggedInStatus={this.state.isLoggedIn} logout={this.logout} />
+            ]}
           />
           <Route
             path="/backlog"
-            render={props => (
-              <Backlog {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <Backlog {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/companies/:id"
-            render={props => (
-              <CompanyShow {...props} loggedInStatus={this.state.isLoggedIn} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <CompanyShow {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
           />
           <Route
             path="/users/invitation/accept"
-            render={props => (
-              <LogIn {...props} loggedInStatus={this.state.isLoggedIn} acceptInvite={this.acceptInvite} />
-            )}
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <LogIn {...props} key="component" loggedInStatus={this.state.isLoggedIn} acceptInvite={this.acceptInvite} />
+            ]}
           />
         </Switch>
       </BrowserRouter>

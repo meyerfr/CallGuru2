@@ -23,7 +23,7 @@ const Settings = (props) => {
           // </div>
         }
       </PageHeader>
-      <div className="page-content-wrapper rows-2 medium">
+      <div className="page-content-wrapper row-2 fr-a medium">
         <div className="page-content-container">
           <div className="list">
             <span className="extra-large bold">Company Name</span>

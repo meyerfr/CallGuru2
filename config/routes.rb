@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get '/profile', to: 'pages#home'
   get '/backlog', to: 'pages#home'
   get '/companies/:id', to: 'pages#home'
+  get '/playbooks/:id', to: 'pages#home'
+  get '/playbooks/:playbook_id/sections/:id', to: 'pages#home'
 
   # get '/accept_invite', to: 'pages#home'
 
@@ -19,6 +21,9 @@ Rails.application.routes.draw do
       resources :companies, except: [ :new, :edit, :destroy ] do
         resources :users, only: [ :index, :create ]
         resources :playbooks, only: [ :index, :create ]
+      end
+      resources :playbooks, only: [ :show ] do
+        resources :sections, only: [ :index ]
       end
     end
   end

@@ -4,7 +4,11 @@ class Api::V1::PlaybooksController < ApplicationController
   before_action :set_playbook, only: [ :show, :update ]
 
   def index
-    playbooks = @company.playbooks
+    playbooks = @company.playbooks.map{|playbook|
+      playbook.as_json.merge({
+        first_section_id: playbook.sections.order(:order_no).first.id
+      })
+    }
     render json: playbooks
   end
 
