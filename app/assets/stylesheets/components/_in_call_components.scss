@@ -34,6 +34,30 @@ $outline-distance: $space * 10px;
   }
 }
 
+.in-call-actions{
+  position: fixed;
+  bottom: 32px;
+  width: 100%;
+  padding: 0 24px;
+  .left-actions{
+    grid-column: 1;
+    background: rgba(224, 224, 224, 0.7);
+    backdrop-filter: blur(4px);
+  }
+  .right-actions{
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    padding: ($space * 2px) 0;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    img, svg{
+      width: 50px;
+      cursor: pointer;
+    }
+  }
+}
+
 .section-nav{
   display: flex;
   justify-content: space-between;

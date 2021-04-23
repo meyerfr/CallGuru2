@@ -75,17 +75,20 @@ users = User.create!([
 
 puts('create various ContentTypes')
 default = ContentType.create(name: 'default')
-text = ContentType.create(name: 'text')
-number = ContentType.create(name: 'number')
-bullet_list = ContentType.create(name: 'bullet list')
-numbered_list = ContentType.create(name: 'numbered list')
+text = ContentType.create(name: 'text input')
+number = ContentType.create(name: 'number input')
+date = ContentType.create(name: 'date input')
+percent = ContentType.create(name: 'percent input')
+simple_select = ContentType.create(name: 'simple select')
 multiple_select = ContentType.create(name: 'multiple select')
 dropdown = ContentType.create(name: 'dropdown')
-simple_select = ContentType.create(name: 'simple select')
+check = ContentType.create(name: 'check')
+
+bullet_list = ContentType.create(name: 'bullet list')
+numbered_list = ContentType.create(name: 'numbered list')
 photo = ContentType.create(name: 'photo')
 header = ContentType.create(name: 'header')
 subheader = ContentType.create(name: 'subheader')
-check = ContentType.create(name: 'check')
 
 puts('create demo Playbook for CallGuru')
 demo_playbook = Playbook.create!(
@@ -101,18 +104,76 @@ demo_playbook = Playbook.create!(
       order_no: 1,
       outlines_attributes: [
         {
-          title: 'Greet the Customer',
+          title: 'Welcome',
           content_blocks_attributes: [
             {
-              text: 'Willkomen im Call, in diesem Playbook werden wir dir dich durch die Funktionen von CallGuru führen.',
+              text: 'Hello my name is XY',
+              content_type_id: default.id
+            }
+          ]
+        },
+        {
+          title: 'Assistance relationship',
+          content_blocks_attributes: [
+            {
+              text: 'If you connect me to ABC, tell him that XY is waiting for him on the telephone line.',
               content_type_id: default.id
             },
             {
-              text: 'Klicke auf den Pfeil rechts unten, um in die nächste Sektion zu kommen.',
+              text: "I'll give you a quick cue: it's about the handwritten letter.",
+              content_type_id: default.id
+            },
+            {
+              text: "I'll stay on the line then!",
+              content_type_id: default.id
+            },
+            {
+              text: "Thank you very much for putting me through. Thank you.",
+              content_type_id: default.id
+            }
+          ]
+        },
+        {
+          title: 'What is it about?',
+          content_blocks_attributes: [
+            {
+              text: "It's about the handwritten letter from XY, then he already knows!",
+              content_type_id: default.id
+            }
+          ]
+        },
+        {
+          title: 'If not in office',
+          content_blocks_attributes: [
+            {
+              content_type_id: bullet_list.id,
+              content_options_attributes: [
+                {
+                  name: 'When would you call again if you were me?'
+                },
+                {
+                  name: 'What extension would you use to reach him? '
+                },
+                {
+                  name: "I would send him another email in advance, the email hasn't changed yet - is it still firstname.lastname@?"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'Goodbye',
+          content_blocks_attributes: [
+            {
+              text: "What was your name again? And your first name?",
+              content_type_id: default.id
+            },
+            {
+              text: "Thank you a lot!",
               content_type_id: default.id
             },
           ]
-        }
+        },
       ]
     },
     {
@@ -122,24 +183,28 @@ demo_playbook = Playbook.create!(
       order_no: 2,
       outlines_attributes: [
         {
-          title: 'Greet the Customer',
+          title: 'Team',
           content_blocks_attributes: [
             {
-              text: 'Super also lass uns starten - hier kurz der generelle Aufbau:',
+              text: "I would be interested to know if you know how you could improve the performance of your sales team.",
               content_type_id: default.id
             },
             {
-              text: 'Auf der Playbook Übersicht, über die Du gerade auch diesen Call gestartet hast, siehst du alle deine Playbooks und kannst über das Plus Symbol auch neue Playbooks hinzufügen.',
-              content_type_id: numbered_list.id
+              text: "Would it be intersting for you to find out new ways of improving?",
+              content_type_id: default.id
             },
             {
-              text: 'Ein CallGuru Playbook besteht aus einzelnen Sektionen die nacheinander wärend dem Call durchlaufen werden.',
-              content_type_id: numbered_list.id
+              text: "what was the last thing you did to support your team?",
+              content_type_id: default.id
             },
             {
-              text: 'Eine Sektion besteht aus einer Überschrift und einem Skript darunter, nur der Skripttext soll während dem Gespräch genutzt werden.',
-              content_type_id: numbered_list.id
+              text: "How did they like it?",
+              content_type_id: default.id
             },
+            {
+              text: "Just think about a solution which they appriciate to use and leads to a measurable performance boost es Sales team?",
+              content_type_id: default.id
+            }
           ]
         }
       ]
@@ -151,27 +216,31 @@ demo_playbook = Playbook.create!(
       order_no: 3,
       outlines_attributes: [
         {
-          title: 'Greet the Customer',
+          title: 'Team',
           content_blocks_attributes: [
             {
-              text: 'Es gibt drei Wege durch die Sektionen zu navigieren.',
-              content_type_id: default.id
+              text: 'How big is your current sales team?',
+              content_type_id: number.id
             },
             {
-              text: 'Die Pfeil buttons von gerade eben',
-              content_type_id: bullet_list.id
+              text: 'Do you provide conversation scripts or guides for your agents?',
+              content_type_id: simple_select.id,
+              content_options_attributes: [
+                {
+                  name: 'Yes'
+                },
+                {
+                  name: 'No'
+                }
+              ]
             },
             {
-              text: 'Eine Übersicht was sich hinter dem Button am linken Rand verbirgt',
-              content_type_id: bullet_list.id
+              text: 'How do you provide the knowledge materials to your agents?',
+              content_type_id: text.id
             },
             {
-              text: "Die Pfeiltasten auf deiner Tastatur. Wähle jetzt in der Übersicht links den Punkt 'Der Guru' aus.",
-              content_type_id: bullet_list.id
-            },
-            {
-              text: "Tipp: Mit dem oben in der Mitte siehst du immer wo du dich gerade befindest",
-              content_type_id: default.id
+              text: "What's the share of unexperienced agents in you team?",
+              content_type_id: percent.id
             }
           ]
         }
@@ -184,19 +253,69 @@ demo_playbook = Playbook.create!(
       order_no: 4,
       outlines_attributes: [
         {
-          title: 'Greet the Customer',
+          title: 'Find an appointment',
           content_blocks_attributes: [
             {
-              text: 'Hinter dem Logo unten zwischen den Pfeilen findest Du den Guru. Er ist eine Sammlung Fragen und Einwänden - wenn du auf sie klickst erscheint die Antwort.',
+              text: 'From your point of view, when would you prefer us to talk again?',
               content_type_id: default.id
             },
             {
-              text: 'Eventuell kann Dir der Guru ja jetzt schon eine Frage beantworten. In der nächsten Sektion geht es dann um das beeneden eines Calls.',
-              content_type_id: bullet_list.id
+              text: 'Is it better at the beginning or at the end of the week?',
+              content_type_id: default.id
             },
             {
-              text: 'Tipp: Um im Gespräch schnell den richtigen Punkt zu finden, fang einfach an einen Begriff auf der Tastatur zu tippen und der Guru öffnet sich von selbst.',
-              content_type_id: bullet_list.id
+              text: ' Would you prefer Wednesday or Friday?',
+              content_type_id: default.id
+            },
+            {
+              text: ' In the morning or in the afternoon?',
+              content_type_id: default.id
+            }
+          ]
+        },
+        {
+          title: 'Schedule appointment',
+          content_blocks_attributes: [
+            {
+              text: 'I would still have time at, say, 1pm, 2.30pm, 3.30pm or 5pm.',
+              content_type_id: default.id
+            },
+            {
+              text: "If one of the dates fits, I'll post a date right away.",
+              content_type_id: date.id
+            }
+          ]
+        },
+        {
+          title: 'Video Call',
+          content_blocks_attributes: [
+            {
+              text: 'I would suggest a video call, do you use Google Meet? Alternatively Zoom, Teams etc.',
+              content_type_id: simple_select.id,
+              content_options_attributes: [
+                {
+                  name: 'Zoom'
+                },
+                {
+                  name: 'Google Meet'
+                },
+                {
+                  name: 'Teams'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'Appointment perparation',
+          content_blocks_attributes: [
+            {
+              text: 'What can I possibly prepare before the next meeting?',
+              content_type_id: default.id
+            },
+            {
+              text: "What needs to happen for our next appointment to be a success from your point of view?",
+              content_type_id: default.id
             }
           ]
         }
@@ -204,4 +323,20 @@ demo_playbook = Playbook.create!(
     }
   ]
 )
+
+Outline.first.content_blocks.create({
+  text: 'Test Content Options',
+  content_type_id: default.id,
+  content_options_attributes: [
+    {
+      name: 'Option 1'
+    },
+    {
+      name: 'Option 2'
+    },
+    {
+      name: 'Option 3'
+    },
+  ]
+})
 

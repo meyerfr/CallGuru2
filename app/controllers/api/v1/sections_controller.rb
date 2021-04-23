@@ -4,10 +4,17 @@ class Api::V1::SectionsController < ApplicationController
   before_action :set_section, only: [ :show, :update ]
 
   def index
-    sections = @playbook.sections.map{ |section|
+    sections = @playbook.sections.order(:order_no).map{ |section|
       outlines = section.outlines.map{ |outline|
+        content_blocks = outline.content_blocks.map{|content_block|
+          content_block.as_json.merge({
+            content_options: content_block.content_options,
+            content_type: content_block.content_type
+          })
+        }
+
         outline.as_json.merge({
-          content_blocks: outline.content_blocks
+          content_blocks: content_blocks
         })
       }
 

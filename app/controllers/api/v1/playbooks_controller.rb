@@ -17,7 +17,10 @@ class Api::V1::PlaybooksController < ApplicationController
   end
 
   def show
-    render json: @playbook
+    playbook = @playbook.as_json.merge({
+      first_section_id: @playbook.sections.order(:order_no).first.id
+    })
+    render json: playbook
   end
 
   def update

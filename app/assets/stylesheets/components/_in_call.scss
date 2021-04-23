@@ -1,4 +1,7 @@
 .app-wrapper.in-call{
+  .page-content-wrapper > *{
+    padding: 0 ($space * 3px);
+  }
   .page-header{
     background: white;
   }
@@ -6,6 +9,21 @@
     display: grid;
     grid-template-rows: auto 1fr;
     grid-gap: $space * 3px;
-    padding: 0 ($space * 3px);
+    &:after{
+      display: none;
+    }
+    &:after{
+      height: 80px;
+    }
+    .script-wrapper{
+      display: grid;
+      grid-auto-rows: max-content;
+      grid-gap: $space * 1.5px;
+      overflow: scroll;
+      &:after{
+        content: '';
+        height: 80px;
+      }
+    }
   }
 }

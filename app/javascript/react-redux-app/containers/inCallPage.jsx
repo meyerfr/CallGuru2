@@ -9,6 +9,7 @@ import { fetchPlaybook, fetchSections } from '../actions'
 
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
+import OutlineItem from '../components/in-call/outlineItem'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
@@ -20,12 +21,56 @@ class InCallPage extends Component {
       this.props.fetchPlaybook(this.props.match.params.playbook_id)
     }
     this.props.fetchSections(this.props.match.params.playbook_id)
-
+    window.addEventListener("keydown", this.handleKeyDown)
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  getPrevSectionId = () => {
+    const currentSectionId = this.props.match.params.id
+    const allSectionIds = this.props.sections.map(s => s.id);
+    const currentSectionIdIdx = allSectionIds.indexOf(currentSectionId);
+    const prevSectionIdIdx = currentSectionIdIdx - 1 < 0 ? 0 : currentSectionIdIdx - 1;
+    const prevSectionId = this.props.sections[prevSectionIdIdx].id;
+    return prevSectionId;
+  }
+
+  getNextSectionId = () => {
+    const sections = this.props.sections
+
+    const currentSectionId = this.props.match.params.id
+    const allSectionIds = sections.map(s => s.id);
+    const currentSectionIdIdx = allSectionIds.indexOf(currentSectionId);
+    const nextSectionIdIdx = Math.min(allSectionIds.length - 1, currentSectionIdIdx + 1);
+    const nextSectionId = sections[nextSectionIdIdx].id;
+    return nextSectionId;
+  }
+
+  handleKeyDown = (event) => {
+    let key = event.keyCode
+    const playbook_id = this.props.match.params.playbook_id
+    switch (true) {
+      case (key == 37):
+        const prevSectionId = this.getPrevSectionId()
+        prevSectionId != this.props.selectedSection.id && this.props.history.push(`/playbooks/${playbook_id}/sections/${prevSectionId}`)
+        // document.querySelector('a.arrow.prev').click()
+        break;
+      case (key == 39):
+        const nextSectionId = this.getNextSectionId()
+        nextSectionId != this.props.selectedSection.id && this.props.history.push(`/playbooks/${playbook_id}/sections/${nextSectionId}`)
+        // document.querySelector('a.arrow.next').click()
+        break;
+    }
+  }
 
   url = section_id => {
     return `/playbooks/${this.props.match.params.playbook_id}/sections/${section_id}`
+  }
+
+  endCall = () => {
+    this.props.history.push(`/playbooks`)
   }
 
   render() {
@@ -55,10 +100,11 @@ class InCallPage extends Component {
             //     <span className="normal bold">Tab 3</span>
             //   </NavLink>
             // </div>
-            <div className="actions">
-              <button className="secondary" onClick={() => this.props.history.push(`/playbooks`)}>End Call</button>
-            </div>
           }
+            <h6 className="medium">Call Name</h6>
+            <div className="actions">
+              <button className="secondary" onClick={this.endCall}>End Call</button>
+            </div>
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
@@ -82,12 +128,18 @@ class InCallPage extends Component {
                     <span className="outline-title">{outline.title}</span>
                     {
                       outline.content_blocks.map((content_block, index) =>
-                        <div key={content_block.id} className="outline-script">{content_block.text}</div>
+                        <OutlineItem content_block={content_block} key={content_block.id} />
                       )
                     }
                   </div>
                 )
               }
+            </div>
+          </div>
+          <div className="in-call-actions outline-item">
+            <div className="left-actions"></div>
+            <div className="right-actions">
+              <img src={CallGuruLogo} alt="CallGuru Logo" onClick={this.endCall}/>
             </div>
           </div>
         </div>
