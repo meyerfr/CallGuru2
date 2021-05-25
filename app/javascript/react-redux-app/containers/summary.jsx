@@ -131,27 +131,29 @@ class Summary extends Component {
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
-            {
-              content_blocks &&
-                content_blocks.map((content_block) => {
-                  switch (content_block.content_type.group) {
-                    case 'multiselect':
-                      return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_items_attributes} key={content_block.id} onMultiSelectChange={this.onMultiSelectChange} />
-                      break;
-                    case 'select':
-                      return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_attributes.content_option_id} key={content_block.id} onSelectChange={this.onSelectChange} />
-                      break;
-                    case 'list':
-                      return <OutlineItem content_block={content_block} key={content_block.id} />
-                      break;
-                    case 'input':
-                      return <OutlineItem content_block={content_block} form_value={content_block.summary_item.simple_answer_attributes.content} key={content_block.id} onInputChange={this.onInputChange} />
-                      break;
-                    default:
-                      return <OutlineItem content_block={content_block} key={content_block.id} />
-                  }
-                })
-            }
+            <div className="script-wrapper">
+              {
+                content_blocks &&
+                  content_blocks.map((content_block) => {
+                    switch (content_block.content_type.group) {
+                      case 'multiselect':
+                        return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_items_attributes} key={content_block.id} onMultiSelectChange={this.onMultiSelectChange} />
+                        break;
+                      case 'select':
+                        return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_attributes.content_option_id} key={content_block.id} onSelectChange={this.onSelectChange} />
+                        break;
+                      case 'list':
+                        return <OutlineItem content_block={content_block} key={content_block.id} />
+                        break;
+                      case 'input':
+                        return <OutlineItem content_block={content_block} form_value={content_block.summary_item.simple_answer_attributes.content} key={content_block.id} onInputChange={this.onInputChange} />
+                        break;
+                      default:
+                        return <OutlineItem content_block={content_block} key={content_block.id} />
+                    }
+                  })
+              }
+            </div>
           </div>
         </div>
       </div>

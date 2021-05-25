@@ -50,7 +50,7 @@ users = User.create!([
     last_name: 'Michi',
     email: 'nick.michi@callguru.de',
     password: 'NickMichi',
-    role: "Account Manager",
+    role: "CallGuru Admin",
     company_id: companies.first.id
   }
 ])
