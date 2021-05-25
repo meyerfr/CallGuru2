@@ -10,6 +10,9 @@ export const ADD_EMPLOYEE = 'ADD_EMPLOYEE'
 export const FETCH_PLAYBOOKS = 'FETCH_PLAYBOOKS'
 export const FETCH_PLAYBOOK = 'FETCH_PLAYBOOK'
 export const FETCH_PLAYBOOK_SECTIONS = 'FETCH_PLAYBOOK_SECTIONS'
+export const FETCH_CALL = 'FETCH_CALL'
+export const CREATE_CALL = 'CREATE_CALL'
+export const UPDATE_CALL_STATE = 'UPDATE_CALL_STATE'
 
 export function logoutUser(callback) {
   const url = `users/sign_out`;
@@ -21,7 +24,7 @@ export function logoutUser(callback) {
       'X-CSRF-Token': csrfToken
     }
   }).then(r => r.json())
-    .then(r => typeof callback === 'function' ? callback(r) : r);
+    // .then(r => typeof callback === 'function' ? callback(r) : r);
 
   return {
     type: LOGOUT,
@@ -144,4 +147,60 @@ export function fetchSections(playbook_id) {
     type: FETCH_PLAYBOOK_SECTIONS,
     payload: promise
   }
+}
+
+export function fetchCall(call_id) {
+  const url = `${BASE_URL}/calls/${call_id}`;
+  const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
+
+  return {
+    type: FETCH_CALL,
+    payload: promise
+  }
+}
+
+export function createCall(playbook_id) {
+  const url = `${BASE_URL}/calls`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify({
+      playbook_id: playbook_id
+    })
+  }).then(r => r.json())
+    // .then(data => callback(data));
+    // .then(r => callback(r.json());
+
+  return {
+    type: CREATE_CALL,
+    payload: promise // Will be resolved by redux-promise
+  };
+}
+
+export function updateCallState(callId, selectedSection, body) {
+  const url = `${BASE_URL}/calls/${callId}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(body)
+  }).then(r => r.json())
+    // .then(data => callback(data));
+    // .then(r => callback(r.json());
+
+  return {
+    type: UPDATE_CALL_STATE,
+    payload: selectedSection
+  };
 }

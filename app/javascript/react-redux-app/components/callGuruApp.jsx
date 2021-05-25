@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom'
 import PageHeader from './pageHeader'
 
 const CallGuruApp = (props) => {
-  console.log('props', props)
   return (
     <div className="app-wrapper">
       <PageHeader key="PageHeader" page="Playbooks">

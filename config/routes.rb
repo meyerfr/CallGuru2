@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { invitations: 'users_invitations' }
+  devise_for :users, controllers: { invitations: 'users/invitations', sessions: 'users/sessions' }
   root to: 'pages#home'
 
   get '/playbooks', to: 'pages#home'
@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get '/backlog', to: 'pages#home'
   get '/companies/:id', to: 'pages#home'
   get '/playbooks/:id', to: 'pages#home'
-  get '/playbooks/:playbook_id/sections/:id', to: 'pages#home'
+  get '/calls/:call_id/playbooks/:playbook_id/sections/:id', to: 'pages#home'
+  get '/calls/:call_id/', to: 'pages#home'
 
   # get '/accept_invite', to: 'pages#home'
 
@@ -25,6 +26,7 @@ Rails.application.routes.draw do
       resources :playbooks, only: [ :show ] do
         resources :sections, only: [ :index ]
       end
+      resources :calls, only: [ :show, :create, :update ]
     end
   end
 

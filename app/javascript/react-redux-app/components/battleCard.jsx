@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faToggleOn } from '@fortawesome/free-solid-svg-icons'
 
 const BattleCard = (props) => {
-  console.log('battle_card', props)
   return (
     <div className="card battle">
       <div className="head">

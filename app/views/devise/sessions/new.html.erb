@@ -1,20 +1,45 @@
-<h2>Log in</h2>
-
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+<div class="login-wrapper">
+  <div class="left-scene">
+    <%= image_tag 'logo_banner_white', class: "logo" %>
+    <%= image_tag 'net.svg', class: 'net' %>
+    <div class="quote">
+      <%= image_tag('quote.svg') %>
+      <span class="large">Most people think ‘selling’ is the same as ‘talking’. But the most effective salespeople know that listening is the most important part of their job.</span>
+      <div class="stretch">
+        <span class="author">Roy Bartell</span>
+        <%= image_tag 'quote.svg', class: 'reverse' %>
+      </div>
+    </div>
   </div>
+  <div class="right-scene">
+    <div class="right-scene-container">
+      <div class="header">
+        <h4 class="bold">Welcome back!</h4>
+        <span class="normal">Please enter your email and your password to start CallGuru.</span>
+      </div>
+      <div class="seperater"></div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'login-form'}) do |f| %>
+        <div class="move-placeholder-wrapper">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: ' ', class: 'move-placeholder-input' %>
+          <%= f.label :email, class: 'move-placeholder-placeholder' %>
+        </div>
+
+        <div class="input-with-footer">
+          <div class="move-placeholder-wrapper">
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: ' ', class: 'move-placeholder-input' %>
+            <%= f.label :password, class: 'move-placeholder-placeholder' %>
+          </div>
+          <div class="footer right">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Log in", class: 'secondary stretch' %>
+        </div>
+      <% end %>
+
+    </div>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

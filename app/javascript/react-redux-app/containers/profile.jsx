@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link, NavLink } from 'react-router-dom'
 import PageHeader from '../components/pageHeader'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
+import { logoutUser } from '../actions'
+
 class Profile extends Component {
-  logout = () => {
-    this.props.logout()
+  logout = (callback) => {
+    this.props.logoutUser().then(() => console.log('logOut'))
+    .then(() => window.location.href = "http://localhost:3000")
   }
+
+
   render() {
     return (
       <div className="app-wrapper profile">
@@ -72,4 +79,14 @@ class Profile extends Component {
   }
 };
 
-export default Profile;
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ logoutUser }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

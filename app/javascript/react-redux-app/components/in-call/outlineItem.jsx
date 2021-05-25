@@ -1,36 +1,37 @@
 import React from 'react';
 
-import Default from './content-types/default'
+
+import Paragraph from './content-types/paragraph'
 import BulletList from './content-types/bulletList'
-import NumberedList from './content-types/numberedList'
+import List from './content-types/list'
 import SimpleSelect from './content-types/simpleSelect'
 import MultiSelect from './content-types/multiSelect'
 import NumberInput from './content-types/numberInput'
+import TextInput from './content-types/textInput'
+import DefaultInput from './content-types/defaultInput'
 
-const OutlineItem = ({content_block, id}) => {
-  switch (content_block.content_type.name) {
-    case 'default':
-      console.log('default');
-      return <Default content_block={content_block} />
+
+const OutlineItem = (props) => {
+  const {content_block, id} = props
+
+  switch (content_block.content_type.group) {
+    case 'text':
+      return <Paragraph content_block={content_block} />
       break;
-    case 'multiple select':
-      console.log('multiple select');
-      return <MultiSelect content_block={content_block} />
+    case 'multiselect':
+      return <MultiSelect content_block={content_block} selected={props.form_value} onChange={props.onMultiSelectChange} />
       break;
-    case 'simple select':
-      console.log('simple select');
-      return <SimpleSelect content_block={content_block} />
+    case 'select':
+      return <SimpleSelect content_block={content_block} selected={props.form_value} onChange={props.onSelectChange} />
       break;
-    case 'numbered list':
-      console.log('numbered list');
-      return <NumberedList content_block={content_block} />
+    case 'list':
+      return <List content_block={content_block} />
       break;
-    case 'bullet list':
-      console.log('bullet list');
-      return <BulletList content_block={content_block} />
+    case 'input':
+      return <DefaultInput content_block={content_block} form_value={props.form_value} onChange={props.onInputChange} />
       break;
     default:
-      return <span>{content_block.content_type.name} Doesn't exist</span>;
+      return <span className="outline-script">{content_block.content_type.name} Doesn't exist</span>;
   }
 };
 

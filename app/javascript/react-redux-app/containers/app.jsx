@@ -15,6 +15,8 @@ import PageHeader from '../components/pageHeader';
 import Backlog from './backlog';
 import CompanyShow from './companyShow';
 import InCallPage from './inCallPage';
+import Summary from './summary';
+
 
 import { logoutUser } from '../actions'
 
@@ -24,14 +26,6 @@ class App extends Component {
     this.state = {
       isLoggedIn: true
     }
-  }
-
-  logout = (callback) => {
-    this.props.logoutUser((r) => {
-      this.setState = {
-        isLoggedIn: false
-      }
-    })
   }
 
   acceptInvite = (callback) => {
@@ -61,7 +55,13 @@ class App extends Component {
             ]}
           />
           <Route
-            path="/playbooks/:playbook_id/sections/:id"
+            exact path="/calls/:call_id"
+            render={props => (
+              <Summary {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            )}
+          />
+          <Route
+            path="/calls/:call_id/playbooks/:playbook_id/sections/:id"
             render={props => (
               <InCallPage {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             )}
@@ -69,7 +69,7 @@ class App extends Component {
           <Route
             path="/knowledge"
             render={props => [
-              <AppNavigation key="appNavigation" />,
+              <AppNavigation key="appNavigation" sections={this.props.call?.playbook.sections} />,
               <KnowledgeIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             ]}
           />
@@ -98,7 +98,7 @@ class App extends Component {
             path="/profile"
             render={props => [
               <AppNavigation key="appNavigation" />,
-              <Profile {...props} key="component" loggedInStatus={this.state.isLoggedIn} logout={this.logout} />
+              <Profile {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             ]}
           />
           <Route
@@ -130,6 +130,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
+    call: state.call,
     currentUser: state.currentUser
   };
 }

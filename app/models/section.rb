@@ -1,6 +1,6 @@
 class Section < ApplicationRecord
   belongs_to :playbook
-  has_many :outlines
+  has_many :outlines, dependent: :destroy
 
   STATUSES = ["draft", "archive", "live"]
   validates :status, inclusion: { in: STATUSES, message: "must be one of the following #{STATUSES.join(", ")}" }, if: proc { |section| section.status.present? }

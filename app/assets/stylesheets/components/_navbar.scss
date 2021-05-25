@@ -12,8 +12,11 @@
       width: 45px;
     }
   }
-  .navbar-actions{
+
+  &:not(.in-call) .navbar-actions{
     background: $primary;
+  }
+  .navbar-actions{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -23,6 +26,18 @@
       display: grid;
       grid-gap: $space * 4px;
       justify-content: center;
+      a{
+        width: 40px;
+        &.active{
+          img{
+            width: 40px;
+          }
+        }
+        img{
+          transition: width .3s;
+          width: 30px;
+        }
+      }
       a{
         position: relative;
         span{

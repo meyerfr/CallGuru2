@@ -74,21 +74,28 @@ users = User.create!([
 # ])
 
 puts('create various ContentTypes')
-default = ContentType.create(name: 'default')
-text = ContentType.create(name: 'text input')
-number = ContentType.create(name: 'number input')
-date = ContentType.create(name: 'date input')
-percent = ContentType.create(name: 'percent input')
-simple_select = ContentType.create(name: 'simple select')
-multiple_select = ContentType.create(name: 'multiple select')
-dropdown = ContentType.create(name: 'dropdown')
-check = ContentType.create(name: 'check')
+# static content
+header = ContentType.create(group: 'text', style: 'header')
+subheader = ContentType.create(group: 'text', style: 'subheader')
+paragraph = ContentType.create(group: 'text', style: 'paragraph')
 
-bullet_list = ContentType.create(name: 'bullet list')
-numbered_list = ContentType.create(name: 'numbered list')
-photo = ContentType.create(name: 'photo')
-header = ContentType.create(name: 'header')
-subheader = ContentType.create(name: 'subheader')
+bullet = ContentType.create(group: 'list', style: 'bullet')
+numbered = ContentType.create(group: 'list', style: 'numbered')
+toggle = ContentType.create(group: 'list', style: 'toggle')
+
+img = ContentType.create(group: 'img')
+
+# input content
+input = ContentType.create(group: 'input', style: 'text', form_input: true)
+number = ContentType.create(group: 'input', style: 'number', form_input: true)
+date = ContentType.create(group: 'input', style: 'date', form_input: true)
+range = ContentType.create(group: 'input', style: 'range', form_input: true)
+
+simpleselect = ContentType.create(group: 'select', style: 'select', form_input: true)
+dropdown = ContentType.create(group: 'select', style: 'dropdown', form_input: true)
+
+multiselect = ContentType.create(group: 'multiselect', style: 'multiselect', form_input: true, complex: true)
+
 
 puts('create demo Playbook for CallGuru')
 demo_playbook = Playbook.create!(
@@ -108,7 +115,7 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'Hello my name is XY',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         },
@@ -117,19 +124,19 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'If you connect me to ABC, tell him that XY is waiting for him on the telephone line.',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "I'll give you a quick cue: it's about the handwritten letter.",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "I'll stay on the line then!",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "Thank you very much for putting me through. Thank you.",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         },
@@ -138,7 +145,7 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: "It's about the handwritten letter from XY, then he already knows!",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         },
@@ -146,7 +153,7 @@ demo_playbook = Playbook.create!(
           title: 'If not in office',
           content_blocks_attributes: [
             {
-              content_type_id: bullet_list.id,
+              content_type_id: bullet.id,
               content_options_attributes: [
                 {
                   name: 'When would you call again if you were me?'
@@ -166,11 +173,11 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: "What was your name again? And your first name?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "Thank you a lot!",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
           ]
         },
@@ -187,23 +194,23 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: "I would be interested to know if you know how you could improve the performance of your sales team.",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "Would it be intersting for you to find out new ways of improving?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "what was the last thing you did to support your team?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "How did they like it?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "Just think about a solution which they appriciate to use and leads to a measurable performance boost es Sales team?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         }
@@ -224,7 +231,7 @@ demo_playbook = Playbook.create!(
             },
             {
               text: 'Do you provide conversation scripts or guides for your agents?',
-              content_type_id: simple_select.id,
+              content_type_id: simpleselect.id,
               content_options_attributes: [
                 {
                   name: 'Yes'
@@ -236,11 +243,11 @@ demo_playbook = Playbook.create!(
             },
             {
               text: 'How do you provide the knowledge materials to your agents?',
-              content_type_id: text.id
+              content_type_id: input.id
             },
             {
               text: "What's the share of unexperienced agents in you team?",
-              content_type_id: percent.id
+              content_type_id: range.id
             }
           ]
         }
@@ -257,19 +264,19 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'From your point of view, when would you prefer us to talk again?',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: 'Is it better at the beginning or at the end of the week?',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: ' Would you prefer Wednesday or Friday?',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: ' In the morning or in the afternoon?',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         },
@@ -278,7 +285,7 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'I would still have time at, say, 1pm, 2.30pm, 3.30pm or 5pm.',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "If one of the dates fits, I'll post a date right away.",
@@ -291,7 +298,7 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'I would suggest a video call, do you use Google Meet? Alternatively Zoom, Teams etc.',
-              content_type_id: simple_select.id,
+              content_type_id: simpleselect.id,
               content_options_attributes: [
                 {
                   name: 'Zoom'
@@ -311,11 +318,11 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'What can I possibly prepare before the next meeting?',
-              content_type_id: default.id
+              content_type_id: paragraph.id
             },
             {
               text: "What needs to happen for our next appointment to be a success from your point of view?",
-              content_type_id: default.id
+              content_type_id: paragraph.id
             }
           ]
         }
@@ -326,7 +333,7 @@ demo_playbook = Playbook.create!(
 
 Outline.first.content_blocks.create({
   text: 'Test Content Options',
-  content_type_id: default.id,
+  content_type_id: paragraph.id,
   content_options_attributes: [
     {
       name: 'Option 1'

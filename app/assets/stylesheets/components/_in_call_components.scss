@@ -1,10 +1,12 @@
-$outline-width: 33%;
+$outline-width: 33vw;
+$outline-max-width: 350px;
 $outline-distance: $space * 10px;
 
 .outline-background{
   background: $gray5;
   position: fixed;
-  width: 33%;
+  width: $outline-width;
+  max-width: $outline-max-width;
   height: 100vh;
   z-index: -10;
   .logo.center{
@@ -21,16 +23,16 @@ $outline-distance: $space * 10px;
 
 .outline-item{
   display: grid;
-  grid-template-columns: calc(33% - 8px - (#{$outline-distance} / 2)) 1fr;
-  grid-gap: ($space * 0.5px) $outline-distance;
+  grid-gap: $space * 0.5px;
   &.section-wrapper{
     align-items: center;
   }
   .outline-title{
-    grid-column: 1;
   }
   .outline-script{
-    grid-column: 2;
+    ul, ol{
+      padding-left: 20px
+    }
   }
 }
 
@@ -45,7 +47,6 @@ $outline-distance: $space * 10px;
     backdrop-filter: blur(4px);
   }
   .right-actions{
-    grid-column: 2;
     display: flex;
     justify-content: center;
     padding: ($space * 2px) 0;

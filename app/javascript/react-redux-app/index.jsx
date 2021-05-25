@@ -26,7 +26,9 @@ const initialState = {
   currentUser: JSON.parse(reactReduxApp.dataset.current_user),
   companies: [],
   playbooks: [],
-  sections: []
+  sections: [],
+  call: null,
+  callSummary: null
 };
 
 const middlewares = applyMiddleware(logger, ReduxPromise);

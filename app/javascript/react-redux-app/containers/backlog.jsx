@@ -52,9 +52,9 @@ class Backlog extends Component {
             //     <span className="normal bold">Tab 3</span>
             //   </NavLink>
             // </div>
-            <div className="actions">
-              <button>LogOut</button>
-            </div>
+            // <div className="actions">
+            //  <button>LogOut</button>
+            // </div>
           }
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">

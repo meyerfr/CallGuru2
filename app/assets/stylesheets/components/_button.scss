@@ -1,8 +1,9 @@
-button{
+button, input[type=submit]{
   border: none;
   padding: ($space * 1.5px) ($space * 3px);
   border-radius: $space + px;
   width: fit-content;
+  justify-content: center;
   &.stretch{
     width: 100%;
   }
@@ -11,7 +12,7 @@ button{
   }
 }
 
-button.primary{
+button.primary, input[type=submit].primary{
   &:not(.outline){
     background: $primary;
     color: white;
@@ -23,7 +24,7 @@ button.primary{
   }
 }
 
-button.secondary{
+button.secondary, input[type=submit].secondary{
   &:not(.outline){
     background: $secondary;
     color: white;

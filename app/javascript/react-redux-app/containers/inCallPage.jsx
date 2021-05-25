@@ -5,23 +5,86 @@ import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useScrollData } from "scroll-data-hook";
 
-import { fetchPlaybook, fetchSections } from '../actions'
+import { fetchPlaybook, fetchCall, updateCallState } from '../actions'
 
+import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
-import PlaybookCard from '../components/playbookCard'
 import OutlineItem from '../components/in-call/outlineItem'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
-// import playbooks from '../db/playbooks'
-
 class InCallPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+    }
+  }
+
   componentDidMount() {
     if (this.props.playbook == undefined) {
       this.props.fetchPlaybook(this.props.match.params.playbook_id)
     }
-    this.props.fetchSections(this.props.match.params.playbook_id)
+
+    if (this.props.call == undefined) {
+      this.props.fetchCall(this.props.match.params.call_id)
+    } else{
+      this.setState({
+        selectedSection: this.props.selectedSection
+      })
+    }
+
     window.addEventListener("keydown", this.handleKeyDown)
+  }
+
+  updateContentBlock = (updatedContentBlock) => {
+    let copiedSelectedSection = this.state.selectedSection
+    let copiedOutlines = copiedSelectedSection.outlines.slice(0)
+    let outlineIndex = copiedOutlines.findIndex(outline => outline.id == updatedContentBlock.contentable_id)
+
+    // debugger
+    let copiedContentBlocks = copiedOutlines[outlineIndex].content_blocks.slice(0)
+    let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
+    copiedContentBlocks[contentBlockIndex] = updatedContentBlock
+
+    copiedOutlines[outlineIndex].content_blocks = copiedContentBlocks
+
+    copiedSelectedSection.outlines = copiedOutlines
+    // debugger
+    this.setState({
+      selectedSection: copiedSelectedSection
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // this will be the place to update CallSummaryItem and send all updates to the localStorage or Database, but definitly to ReduxState
+    if (this.props.selectedSection && this.props.selectedSection.id !== prevProps.selectedSection?.id) {
+      this.setState({
+        selectedSection: this.props.selectedSection
+      }, () => {
+        if (prevProps.call !== null) {
+          const prevSelectedSection = prevState.selectedSection
+
+          let summaryItems = []
+          prevSelectedSection.outlines.forEach((outline) => {
+            outline.content_blocks.forEach((block) => {
+              if (block.content_type.form_input) {
+                summaryItems.push(block.summary_item)
+              }
+            })
+          })
+
+          if (summaryItems.length > 0) {
+            const body = {
+              call: {
+                summary_items_attributes: summaryItems
+              }
+            }
+            this.props.updateCallState(this.props.call.id, prevState.selectedSection, body)
+          }
+
+        }
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -52,41 +115,70 @@ class InCallPage extends Component {
     let key = event.keyCode
     const playbook_id = this.props.match.params.playbook_id
     switch (true) {
-      case (key == 37):
+      case (key == 38):
         const prevSectionId = this.getPrevSectionId()
-        prevSectionId != this.props.selectedSection.id && this.props.history.push(`/playbooks/${playbook_id}/sections/${prevSectionId}`)
+        prevSectionId != this.props.selectedSection.id && this.props.history.push(this.url(prevSectionId))
         // document.querySelector('a.arrow.prev').click()
         break;
-      case (key == 39):
+      case (key == 40):
         const nextSectionId = this.getNextSectionId()
-        nextSectionId != this.props.selectedSection.id && this.props.history.push(`/playbooks/${playbook_id}/sections/${nextSectionId}`)
+        nextSectionId != this.props.selectedSection.id && this.props.history.push(this.url(nextSectionId))
         // document.querySelector('a.arrow.next').click()
         break;
     }
   }
 
   url = section_id => {
-    return `/playbooks/${this.props.match.params.playbook_id}/sections/${section_id}`
+    return `/calls/${this.props.match.params.call_id}/playbooks/${this.props.match.params.playbook_id}/sections/${section_id}`
   }
 
   endCall = () => {
-    this.props.history.push(`/playbooks`)
+    // this.saveSummary().then go to summary
+    this.props.history.push(`/calls/${this.props.call.id}`)
+  }
+
+  onInputChange = (content_block, event) => {
+    event.preventDefault()
+    let copiedContentBlock = content_block
+    content_block.summary_item.simple_answer_attributes.content = event.target.value
+    this.updateContentBlock(copiedContentBlock)
+  }
+
+  onSelectChange = (content_block, content_option_id) => {
+    let copiedContentBlock = content_block
+    content_block.summary_item.content_options_summary_items_attributes.content_option_id = content_option_id
+    this.updateContentBlock(copiedContentBlock)
+  }
+
+  onMultiSelectChange = (content_block, content_option_id) => {
+    let copiedContentBlock = content_block
+    let copiedContentOptionsAttributes = content_block.summary_item.content_options_attributes
+
+    if (copiedContentOptionsAttributes.includes(content_option_id)) {
+      optionIndex = copiedContentOptionsAttributes.findIndex(option => option === content_option_id)
+      copiedContentOptionsAttributes.slice(optionIndex, 1)
+    } else{
+      copiedContentOptionsAttributes.push(content_option_id)
+    }
+
+    copiedContentBlock = {
+      ...copiedContentBlock,
+      summary_item: {
+        ...copiedContentBlock.summary_item,
+        content_options_attributes: copiedContentOptionsAttributes
+      }
+    }
+    this.updateContentBlock(copiedContentBlock)
   }
 
   render() {
     const playbook = this.props.playbook
     const sections = this.props.sections
-    const selectedSection = this.props.selectedSection
-    // console.log(this.url(sections[0]?.id))
-    return (
-      <div className="app-wrapper no-margin in-call">
-        <div className="outline-background">
-          <div className="logo center">
-            <NavLink activeClassName="active" to={`/`}>
-              <img src={CallGuruLogo} alt="CallGuru Logo" />
-            </NavLink>
-          </div>
-        </div>
+    const selectedSection = this.state.selectedSection
+    console.log(selectedSection)
+    return[
+      <CallNavigation key="callNavigation" sections={sections} url={this.url} />,
+      <div className="app-wrapper in-call" key="inCall">
         <PageHeader key="PageHeader" page={playbook?.name}>
           {
             // <div className="tabs">
@@ -109,58 +201,74 @@ class InCallPage extends Component {
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
             <div className="outline-item section-wrapper">
-              <h5 className="bold">{selectedSection?.title}</h5>
-              <div className="d-flex justify-between section-nav">
-                {
-                  sections.map((section, index) =>
-                    <NavLink activeClassName="active" key={section.id} to={this.url(section.id)}>
-                      <img src={CallGuruLogo} alt="CallGuru Logo" />
-                    </NavLink>
-                  )
-                }
-              </div>
+              <h5 className="bold outline-title">{selectedSection?.title}</h5>
             </div>
             <div className="script-wrapper">
               {
                 selectedSection &&
-                selectedSection.outlines.map((outline, index) =>
-                  <div key={outline.id} className="outline-item">
-                    <span className="outline-title">{outline.title}</span>
-                    {
-                      outline.content_blocks.map((content_block, index) =>
-                        <OutlineItem content_block={content_block} key={content_block.id} />
-                      )
-                    }
-                  </div>
-                )
+                selectedSection.outlines.map((outline, index) => {
+                  return(
+                    <div key={outline.id} className="outline-item">
+                      <span className="outline-title large bold">{outline.title}</span>
+                      {
+                        outline.content_blocks.map((content_block, index) => {
+
+                          switch (content_block.content_type.group) {
+                            case 'multiselect':
+                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_items_attributes} key={content_block.id} onMultiSelectChange={this.onMultiSelectChange} />
+                              break;
+                            case 'select':
+                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_attributes.content_option_id} key={content_block.id} onSelectChange={this.onSelectChange} />
+                              break;
+                            case 'list':
+                              return <OutlineItem content_block={content_block} key={content_block.id} />
+                              break;
+                            case 'input':
+                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.simple_answer_attributes.content} key={content_block.id} onInputChange={this.onInputChange} />
+                              break;
+                            default:
+                              return <OutlineItem content_block={content_block} key={content_block.id} />
+                          }
+                        })
+                      }
+                    </div>
+                  )
+                })
               }
             </div>
           </div>
           <div className="in-call-actions outline-item">
-            <div className="left-actions"></div>
             <div className="right-actions">
               <img src={CallGuruLogo} alt="CallGuru Logo" onClick={this.endCall}/>
             </div>
           </div>
         </div>
       </div>
-    );
+    ];
   }
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps)
-  const playbookId = ownProps.match.params.playbook_id;
-  const sectionId = ownProps.match.params.id;
-  return {
-    playbook: state.playbooks.find((playbook) => playbook.id == playbookId),
-    sections: state.sections.filter((section) => section.playbook_id == playbookId),
-    selectedSection: state.sections.find((section) => section.id == sectionId)
+  if (state.call) {
+    const playbook = state.call.playbook
+    const sections = playbook.sections
+    const sectionId = ownProps.match.params.id;
+    return {
+      playbook: playbook,
+      sections: sections,
+      selectedSection: sections.find((section) => section.id == sectionId),
+      call: state.call
+      // callSummary: state.callSummary
+    }
+  }else{
+    return {
+      call: state.call
+    }
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPlaybook, fetchSections }, dispatch);
+  return bindActionCreators({ fetchPlaybook, fetchCall, updateCallState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InCallPage);

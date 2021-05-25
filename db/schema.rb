@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_20_091042) do
+ActiveRecord::Schema.define(version: 2021_05_20_105714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(version: 2021_04_20_091042) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["content_block_id"], name: "index_block_options_joins_on_content_block_id"
     t.index ["content_option_id"], name: "index_block_options_joins_on_content_option_id"
+  end
+
+  create_table "calls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "customer_name"
+    t.uuid "playbook_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["playbook_id"], name: "index_calls_on_playbook_id"
+    t.index ["user_id"], name: "index_calls_on_user_id"
   end
 
   create_table "companies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -51,8 +62,20 @@ ActiveRecord::Schema.define(version: 2021_04_20_091042) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "content_options_summary_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "summary_item_id", null: false
+    t.uuid "content_option_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_option_id"], name: "index_content_options_summary_items_on_content_option_id"
+    t.index ["summary_item_id"], name: "index_content_options_summary_items_on_summary_item_id"
+  end
+
   create_table "content_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
+    t.boolean "form_input", default: false
+    t.string "group"
+    t.string "style"
+    t.boolean "complex", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -84,6 +107,24 @@ ActiveRecord::Schema.define(version: 2021_04_20_091042) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["playbook_id"], name: "index_sections_on_playbook_id"
+  end
+
+  create_table "simple_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "content"
+    t.uuid "summary_item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["summary_item_id"], name: "index_simple_answers_on_summary_item_id"
+  end
+
+  create_table "summary_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "call_id", null: false
+    t.uuid "content_block_id", null: false
+    t.integer "order_no"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["call_id"], name: "index_summary_items_on_call_id"
+    t.index ["content_block_id"], name: "index_summary_items_on_content_block_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,9 +168,16 @@ ActiveRecord::Schema.define(version: 2021_04_20_091042) do
 
   add_foreign_key "block_options_joins", "content_blocks"
   add_foreign_key "block_options_joins", "content_options"
+  add_foreign_key "calls", "playbooks"
+  add_foreign_key "calls", "users"
   add_foreign_key "content_blocks", "content_types"
+  add_foreign_key "content_options_summary_items", "content_options"
+  add_foreign_key "content_options_summary_items", "summary_items"
   add_foreign_key "outlines", "sections"
   add_foreign_key "playbooks", "companies"
   add_foreign_key "sections", "playbooks"
+  add_foreign_key "simple_answers", "summary_items"
+  add_foreign_key "summary_items", "calls"
+  add_foreign_key "summary_items", "content_blocks"
   add_foreign_key "users", "companies"
 end

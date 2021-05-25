@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 
-import { fetchPlaybooks } from '../actions'
+import { fetchPlaybooks, createCall } from '../actions'
 
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
@@ -15,7 +15,6 @@ import PlaybookCard from '../components/playbookCard'
 class PlaybooksIndex extends Component {
   componentDidMount() {
     if (this.props.playbooks.length === 0) {
-      console.log(this.props.currentUser)
       this.props.fetchPlaybooks(this.props.currentUser.company_id)
     }
   }
@@ -23,7 +22,8 @@ class PlaybooksIndex extends Component {
   startCall = (playbook) => {
     // this is where the Action has to be called and the API has to create a call
     // then do the following
-    this.props.history.push(`/playbooks/${playbook.id}/sections/${playbook.first_section_id}`);
+    this.props.createCall(playbook.id)
+    .then((r) => this.props.history.push(`calls/${r.payload.id}/playbooks/${playbook.id}/sections/${playbook.first_section_id}`))
   }
 
   render() {
@@ -82,7 +82,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPlaybooks }, dispatch);
+  return bindActionCreators({ fetchPlaybooks, createCall }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaybooksIndex);

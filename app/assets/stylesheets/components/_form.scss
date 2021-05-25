@@ -1,0 +1,92 @@
+.move-placeholder-wrapper{
+  position: relative;
+  height: 52px;
+  border-radius: $space * 0.5px;
+  border: 1px solid $gray4;
+  background: white;
+  width: 100%;
+  &.error{
+    border-color: red;
+  }
+}
+.move-placeholder-input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  text-indent: 0.75rem;
+  color: $primary;
+  // box-shadow: none;
+  &:focus + .move-placeholder-placeholder{
+    color: black;
+    transform: translate(0.625rem, -10px) scale(0.8);
+    padding: 0 3px;
+  }
+  &:-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus{
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+.move-placeholder-input:not(:focus):placeholder-shown + .move-placeholder-placeholder{
+  transform: translate(0.75rem, 15px);
+}
+
+.move-placeholder-placeholder{
+  transform: translate(0.625rem, -10px) scale(0.8);
+  color: gray;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  font-weight: 700;
+  transform-origin: 0% 0%;
+  background: white;
+  pointer-events: none;
+  transition: 0.5s, background 0.3s;
+}
+
+
+.input-with-footer{
+  display: grid;
+  .footer.right{
+    display: flex;
+    justify-content: flex-end;
+    .small{
+      color: $gray4;
+      transition: color .3s;
+      &:hover{
+        color: $gray2;
+      }
+    }
+  }
+}
+
+
+form{
+  input:focus{
+    outline: none
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid $primary;
+  -webkit-text-fill-color: $primary;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  transition: background-color 5000s ease-in-out 0s;
+  outline: unset;
+  font-size: 16px !important;
+  &::first-line {
+    font-size: 16px !important;
+    // color: green;
+  }
+}

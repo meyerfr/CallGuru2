@@ -8,7 +8,6 @@ import BattleCard from './battleCard'
 import battle_cards from '../db/battle_cards'
 
 const KnowledgeIndex = (props) => {
-  console.log(battle_cards)
   return (
     <div className="app-wrapper">
       <PageHeader key="PageHeader" page="Knowledge Hub">

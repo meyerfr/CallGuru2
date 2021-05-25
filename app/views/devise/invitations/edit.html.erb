@@ -1,0 +1,40 @@
+<div class="login-wrapper">
+  <div class="left-scene">
+    <%= image_tag 'logo_banner_white', class: "logo" %>
+    <%= image_tag 'net.svg', class: 'net' %>
+    <div class="quote">
+      <%= image_tag('quote.svg') %>
+      <span class="large">Most people think ‘selling’ is the same as ‘talking’. But the most effective salespeople know that listening is the most important part of their job.</span>
+      <div class="stretch">
+        <span class="author">Roy Bartell</span>
+        <%= image_tag 'quote.svg', class: 'reverse' %>
+      </div>
+    </div>
+  </div>
+  <div class="right-scene">
+    <div class="right-scene-container">
+      <div class="header">
+        <h4 class="bold">Sign up to get access to CallGuru.</h4>
+        <span class="normal">Please set your password to start CallGuru.</span>
+      </div>
+      <div class="seperater"></div>
+
+      <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: {method: :put, class: 'login-form'}) do |f| %>
+        <%= f.hidden_field :invitation_token %>
+        <div class="move-placeholder-wrapper">
+          <%= f.password_field :password, autofocus: true, autocomplete: "password", placeholder: ' ', class: 'move-placeholder-input' %>
+          <%= f.label :password, class: 'move-placeholder-placeholder' %>
+        </div>
+        <div class="move-placeholder-wrapper">
+          <%= f.password_field :password_confirmation, autofocus: true, autocomplete: "password_confirmation", placeholder: ' ', class: 'move-placeholder-input' %>
+          <%= f.label :password_confirmation, class: 'move-placeholder-placeholder' %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Save & Login", class: 'secondary stretch' %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+.login-wrapper{
+  display: grid;
+  grid-template-columns: 40% 60%;
+  height: 100vh;
+  max-height: 100vh;
+  .left-scene{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    padding: ($space * 4px) ($space * 10px);
+    background-image: linear-gradient(rgba(9, 44, 76, 0.9), rgba(9, 44, 76, 0.9)), asset_url("login-background.png");
+    img.logo{
+      position: absolute;
+      top: 32px;
+      height: 60px;
+    }
+    img.net{
+      position: absolute;
+      right: 120px;
+      top: 180px;
+    }
+    span, p{
+      color: white;
+    }
+    .quote{
+      display: grid;
+      grid-template-columns: auto;
+      grid-gap: 20px;
+      span.large{
+        line-height: 22px;
+      }
+      .stretch{
+        img.reverse{
+          transform: scale(-1, -1);
+          width: fit-content;
+          height: fit-content;
+        }
+        span.author{
+          &:before, &:after{
+            background-color: white;
+            content: "";
+            display: inline-block;
+            height: 1px;
+            position: relative;
+            vertical-align: middle;
+            width: 8px;
+          }
+          &:before{
+            margin-right: $space * 1px;
+          }
+          &:after{
+            margin-left: $space * 1px;
+          }
+        }
+      }
+    }
+  }
+
+  .right-scene{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .right-scene-container{
+      display: grid;
+      grid-gap: $space * 3px;
+      width: 65%;
+      .header{
+        display: grid;
+        grid-gap: $space * 1px;
+        span.normal{
+          color: $gray3;
+        }
+      }
+      form.login-form{
+        display: inherit;
+        grid-gap: inherit;
+      }
+    }
+  }
+}
