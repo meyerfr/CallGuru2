@@ -79,7 +79,7 @@ class Summary extends Component {
             // </div>
           }
             <div className="actions">
-              <button className="secondary outline" onClick={() => startCall(this.porps.call.playbook_id, this.props.createCall, this.props.history)}>Restart</button>
+              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook_id, this.props.createCall, this.props.history)}>Restart</button>
               <button className="secondary" onClick={this.endCall}>Save & Exit</button>
             </div>
         </PageHeader>
