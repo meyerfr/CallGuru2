@@ -12,6 +12,7 @@ export const FETCH_PLAYBOOK = 'FETCH_PLAYBOOK'
 export const FETCH_PLAYBOOK_SECTIONS = 'FETCH_PLAYBOOK_SECTIONS'
 export const FETCH_CALL = 'FETCH_CALL'
 export const CREATE_CALL = 'CREATE_CALL'
+export const UPDATE_CALL_NAME = 'UPDATE_CALL_NAME'
 export const UPDATE_CALL_STATE = 'UPDATE_CALL_STATE'
 
 export function logoutUser(callback) {
@@ -217,4 +218,31 @@ export function updateCallState(contentBlocks, callId) {
     type: UPDATE_CALL_STATE,
     payload: contentBlocks
   };
+}
+
+export function updateCallName(callId, callName) {
+  const url = `${BASE_URL}/calls/${callId}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const body = {
+    call: {
+      name: callName
+    }
+  }
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(body)
+  }).then(r => r.json())
+
+  debugger
+  return {
+    type: UPDATE_CALL_NAME,
+    payload: callName
+  }
 }

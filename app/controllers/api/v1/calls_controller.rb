@@ -94,6 +94,7 @@ class Api::V1::CallsController < ApplicationController
   def calls_params
     params.require(:call).permit(
       :id,
+      :name,
       :playbook_id,
       summary_items_attributes: [
         :id,

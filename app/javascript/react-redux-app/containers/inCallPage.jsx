@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 // import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { fetchPlaybook, fetchCall, updateCallState } from '../actions'
+import { fetchPlaybook, fetchCall, updateCallName, updateCallState } from '../actions'
 
 import { getPrevSectionId, getNextSectionId } from '../helper-methods/callMethods'
 
@@ -18,6 +18,7 @@ class InCallPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      callName: ''
     }
   }
 
@@ -28,8 +29,13 @@ class InCallPage extends Component {
 
     if (this.props.call == undefined) {
       this.props.fetchCall(this.props.match.params.call_id)
+      .then(() => this.setState({
+          callName: this.props.call.name
+        })
+      )
     } else{
       this.setState({
+        callName: this.props.call.name,
         selectedSection: this.props.selectedSection
       })
     }
@@ -79,28 +85,12 @@ class InCallPage extends Component {
     }
   }
 
+  updateCallName = (event) => {
+    this.props.updateCallName(this.props.call.id, this.props.call.name)
+  }
+
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKeyDown);
-  }
-
-  getPrevSectionId = () => {
-    const currentSectionId = this.props.match.params.id
-    const allSectionIds = this.props.sections.map(s => s.id);
-    const currentSectionIdIdx = allSectionIds.indexOf(currentSectionId);
-    const prevSectionIdIdx = currentSectionIdIdx - 1 < 0 ? 0 : currentSectionIdIdx - 1;
-    const prevSectionId = this.props.sections[prevSectionIdIdx].id;
-    return prevSectionId;
-  }
-
-  getNextSectionId = () => {
-    const sections = this.props.sections
-
-    const currentSectionId = this.props.match.params.id
-    const allSectionIds = sections.map(s => s.id);
-    const currentSectionIdIdx = allSectionIds.indexOf(currentSectionId);
-    const nextSectionIdIdx = Math.min(allSectionIds.length - 1, currentSectionIdIdx + 1);
-    const nextSectionId = sections[nextSectionIdIdx].id;
-    return nextSectionId;
   }
 
   handleKeyDown = (event) => {
@@ -151,7 +141,7 @@ class InCallPage extends Component {
             //   </NavLink>
             // </div>
           }
-            <h6 className="medium">Call Name</h6>
+            <input className="medium" value={this.state.callName} placeholder="Customer Name" onChange={(e) => this.setState({callName: e.target.value})} onBlur={(e) => this.props.call.name !== this.state.callName && this.props.updateCallName(this.props.call.id, this.state.callName)}></input>
             <div className="actions">
               <button className="secondary" onClick={this.endCall}>End Call</button>
             </div>
@@ -209,7 +199,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPlaybook, fetchCall, updateCallState }, dispatch);
+  return bindActionCreators({ fetchPlaybook, fetchCall, updateCallName, updateCallState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InCallPage);

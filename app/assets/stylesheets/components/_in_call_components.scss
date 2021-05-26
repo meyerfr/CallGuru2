@@ -34,6 +34,12 @@ $outline-distance: $space * 10px;
       padding-left: 20px
     }
   }
+  .outline-script{
+    display: grid;
+    .inline-list{
+      display: flex;
+    }
+  }
 }
 
 .in-call-actions{
