@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link, NavLink } from 'react-router-dom'
+// import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useScrollData } from "scroll-data-hook";
 
 import { fetchPlaybook, fetchCall, updateCallState } from '../actions'
 
+import { getPrevSectionId, getNextSectionId } from '../helper-methods/callMethods'
+
 import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
-import OutlineItem from '../components/in-call/outlineItem'
+import ContentBlocks from './contentBlocks'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
@@ -55,6 +56,16 @@ class InCallPage extends Component {
     })
   }
 
+  updateCallState = (prevState) => {
+    const prevSelectedSection = prevState.selectedSection
+    const copiedContentBlocks = []
+
+    prevSelectedSection.outlines.forEach((outline) => {
+      copiedContentBlocks.push(...outline.content_blocks)
+    })
+    this.props.updateCallState(copiedContentBlocks, this.props.call.id)
+  }
+
   componentDidUpdate(prevProps, prevState) {
     // this will be the place to update CallSummaryItem and send all updates to the localStorage or Database, but definitly to ReduxState
     if (this.props.selectedSection && this.props.selectedSection.id !== prevProps.selectedSection?.id) {
@@ -62,26 +73,7 @@ class InCallPage extends Component {
         selectedSection: this.props.selectedSection
       }, () => {
         if (prevProps.call !== null) {
-          const prevSelectedSection = prevState.selectedSection
-
-          let summaryItems = []
-          prevSelectedSection.outlines.forEach((outline) => {
-            outline.content_blocks.forEach((block) => {
-              if (block.content_type.form_input) {
-                summaryItems.push(block.summary_item)
-              }
-            })
-          })
-
-          if (summaryItems.length > 0) {
-            const body = {
-              call: {
-                summary_items_attributes: summaryItems
-              }
-            }
-            this.props.updateCallState(this.props.call.id, prevState.selectedSection, body)
-          }
-
+          this.updateCallState(prevState)
         }
       })
     }
@@ -116,12 +108,12 @@ class InCallPage extends Component {
     const playbook_id = this.props.match.params.playbook_id
     switch (true) {
       case (key == 38):
-        const prevSectionId = this.getPrevSectionId()
+        const prevSectionId = getPrevSectionId(this.props.match.params.id, this.props.sections)
         prevSectionId != this.props.selectedSection.id && this.props.history.push(this.url(prevSectionId))
         // document.querySelector('a.arrow.prev').click()
         break;
       case (key == 40):
-        const nextSectionId = this.getNextSectionId()
+        const nextSectionId = getNextSectionId(this.props.match.params.id, this.props.sections)
         nextSectionId != this.props.selectedSection.id && this.props.history.push(this.url(nextSectionId))
         // document.querySelector('a.arrow.next').click()
         break;
@@ -134,48 +126,14 @@ class InCallPage extends Component {
 
   endCall = () => {
     // this.saveSummary().then go to summary
+    this.updateCallState(this.state)
     this.props.history.push(`/calls/${this.props.call.id}`)
-  }
-
-  onInputChange = (content_block, event) => {
-    event.preventDefault()
-    let copiedContentBlock = content_block
-    content_block.summary_item.simple_answer_attributes.content = event.target.value
-    this.updateContentBlock(copiedContentBlock)
-  }
-
-  onSelectChange = (content_block, content_option_id) => {
-    let copiedContentBlock = content_block
-    content_block.summary_item.content_options_summary_items_attributes.content_option_id = content_option_id
-    this.updateContentBlock(copiedContentBlock)
-  }
-
-  onMultiSelectChange = (content_block, content_option_id) => {
-    let copiedContentBlock = content_block
-    let copiedContentOptionsAttributes = content_block.summary_item.content_options_attributes
-
-    if (copiedContentOptionsAttributes.includes(content_option_id)) {
-      optionIndex = copiedContentOptionsAttributes.findIndex(option => option === content_option_id)
-      copiedContentOptionsAttributes.slice(optionIndex, 1)
-    } else{
-      copiedContentOptionsAttributes.push(content_option_id)
-    }
-
-    copiedContentBlock = {
-      ...copiedContentBlock,
-      summary_item: {
-        ...copiedContentBlock.summary_item,
-        content_options_attributes: copiedContentOptionsAttributes
-      }
-    }
-    this.updateContentBlock(copiedContentBlock)
   }
 
   render() {
     const playbook = this.props.playbook
     const sections = this.props.sections
     const selectedSection = this.state.selectedSection
-    console.log(selectedSection)
     return[
       <CallNavigation key="callNavigation" sections={sections} url={this.url} />,
       <div className="app-wrapper in-call" key="inCall">
@@ -211,25 +169,8 @@ class InCallPage extends Component {
                     <div key={outline.id} className="outline-item">
                       <span className="outline-title large bold">{outline.title}</span>
                       {
-                        outline.content_blocks.map((content_block, index) => {
-
-                          switch (content_block.content_type.group) {
-                            case 'multiselect':
-                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_items_attributes} key={content_block.id} onMultiSelectChange={this.onMultiSelectChange} />
-                              break;
-                            case 'select':
-                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.content_options_summary_items_attributes.content_option_id} key={content_block.id} onSelectChange={this.onSelectChange} />
-                              break;
-                            case 'list':
-                              return <OutlineItem content_block={content_block} key={content_block.id} />
-                              break;
-                            case 'input':
-                              return <OutlineItem content_block={content_block} form_value={content_block.summary_item.simple_answer_attributes.content} key={content_block.id} onInputChange={this.onInputChange} />
-                              break;
-                            default:
-                              return <OutlineItem content_block={content_block} key={content_block.id} />
-                          }
-                        })
+                        outline.content_blocks &&
+                        <ContentBlocks content_blocks={outline.content_blocks} updateContentBlock={this.updateContentBlock} />
                       }
                     </div>
                   )

@@ -7,6 +7,8 @@ import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 
 import { fetchPlaybooks, createCall } from '../actions'
 
+import { startCall } from '../helper-methods/callMethods'
+
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 
@@ -17,13 +19,6 @@ class PlaybooksIndex extends Component {
     if (this.props.playbooks.length === 0) {
       this.props.fetchPlaybooks(this.props.currentUser.company_id)
     }
-  }
-
-  startCall = (playbook) => {
-    // this is where the Action has to be called and the API has to create a call
-    // then do the following
-    this.props.createCall(playbook.id)
-    .then((r) => this.props.history.push(`calls/${r.payload.id}/playbooks/${playbook.id}/sections/${playbook.first_section_id}`))
   }
 
   render() {
@@ -64,7 +59,7 @@ class PlaybooksIndex extends Component {
               </div>
               {
                 playbooks &&
-                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => this.startCall(playbook)} />)
+                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => startCall(playbook.id, this.props.createCall, this.props.history)} />)
               }
             </div>
           </div>

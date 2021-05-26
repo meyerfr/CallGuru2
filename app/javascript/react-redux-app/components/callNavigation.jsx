@@ -62,13 +62,10 @@ const navLinks2 = [
 
 
 const CallNavigation = (props) => {
-  console.log(props)
   return(
     <div className="callguru-app-navigation in-call">
       <div className="logo center">
-        <NavLink activeClassName="active" to={`/`}>
-          <img src={CallGuruLogo} alt="CallGuru Logo" />
-        </NavLink>
+        <img src={CallGuruLogo} alt="CallGuru Logo" />
       </div>
       <div className="navbar-actions">
         <div className="list">

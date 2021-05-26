@@ -78,7 +78,7 @@ class Api::V1::CallsController < ApplicationController
   end
 
   def update
-    render json: @call.update(calls_params)
+    render json: @call.update!(calls_params)
   end
 
   private
@@ -173,17 +173,36 @@ class Api::V1::CallsController < ApplicationController
     case block.content_type.group
     when 'select'
       content_options_summary_items = summary_item.content_options_summary_items
+      content_options_summary_items_attributes = content_options_summary_items.length.positive? ? content_options_summary_items.first : summary_item.content_options_summary_items.new
       summary_item = summary_item.as_json.merge({
-        content_options_summary_items_attributes: content_options_summary_items.length.positive? ? content_options_summary_items.first : summary_item.content_options_summary_items.new
+        _destroy: present_summary_item ? '0' : '1',
+        content_options_summary_items_attributes: content_options_summary_items_attributes
       })
     when 'multiselect'
       content_options_summary_items = summary_item.content_options_summary_items
+      new_content_options_summary_items = []
+
+      block.content_options.each do |option|
+        existing_option = content_options_summary_items.find_by(content_option_id: option.id)
+        if existing_option
+          new_content_options_summary_items << existing_option.as_json.merge({_destroy: '0'})
+        else
+          new_content_options_summary_items << summary_item.content_options_summary_items.new(content_option_id: option.id).as_json.merge({_destroy: '1'})
+        end
+      end
+
+      destroy =  '0'
+      destroy =  '1' if content_options_summary_items.length < 0
+
       summary_item = summary_item.as_json.merge({
-        content_options_summary_items_attributes: content_options_summary_items.length.positive? ? content_options_summary_items : summary_item.content_options_summary_items.new
+        _destroy: destroy,
+        content_options_summary_items_attributes: new_content_options_summary_items
       })
     when 'input'
+      simple_answer_attributes = summary_item.simple_answer.present? ? summary_item.simple_answer: summary_item.build_simple_answer(content: '')
       summary_item = summary_item.as_json.merge({
-        simple_answer_attributes: summary_item.simple_answer.present? ? summary_item.simple_answer : summary_item.build_simple_answer(content: '')
+        _destroy: present_summary_item ? '0' : '1',
+        simple_answer_attributes: simple_answer_attributes
       })
     end
     return summary_item

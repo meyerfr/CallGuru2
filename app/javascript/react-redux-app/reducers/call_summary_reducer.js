@@ -20,21 +20,19 @@ export default function callSummaryReducer(state = null, action) {
       })
       return summary;
     case UPDATE_CALL_STATE:
-      let copiedSelectedSection = action.payload
-
       let toBeUpdatedIndex
-
-      copiedSelectedSection.outlines.forEach((outline) => {
-        contentBlockHelper = outline.content_blocks
-        contentBlockHelper.forEach((contentBlock) => {
-          if (contentBlock.content_type.form_input) {
-            toBeUpdatedIndex = copiedState.summaryContentBlocks.findIndex((summaryContentBlock) => summaryContentBlock.id === contentBlock.id)
-            copiedState.summaryContentBlocks[toBeUpdatedIndex] = contentBlock
-          }
-        })
+      let copySummaryContentBlocks = state.summaryContentBlocks
+      action.payload.forEach((contentBlock) => {
+        if (contentBlock.content_type.form_input) {
+          toBeUpdatedIndex = copySummaryContentBlocks.findIndex((summaryContentBlock) => summaryContentBlock.id === contentBlock.id)
+          copySummaryContentBlocks[toBeUpdatedIndex] = contentBlock
+        }
       })
 
-      return copiedState
+      return {
+        ...state,
+        summaryContentBlocks: copySummaryContentBlocks
+      }
     default:
       return state;
   }

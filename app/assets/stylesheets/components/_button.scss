@@ -18,8 +18,8 @@ button.primary, input[type=submit].primary{
     color: white;
   }
   &.outline{
-    background: transparent;
-    border: 2px solid $primary;
+    // background: transparent;
+    box-shadow: inset 0px 0px 0px 2px $primary;
     color: $primary;
   }
 }
@@ -30,8 +30,8 @@ button.secondary, input[type=submit].secondary{
     color: white;
   }
   &.outline{
-    background: transparent;
-    border: 2px solid $secondary;
+    // background: transparent;
+    box-shadow: inset 0px 0px 0px 2px $secondary;
     color: $secondary;
   }
 }
