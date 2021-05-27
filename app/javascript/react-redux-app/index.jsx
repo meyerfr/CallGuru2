@@ -28,7 +28,8 @@ const initialState = {
   playbooks: [],
   sections: [],
   call: null,
-  callSummary: null
+  callSummary: null,
+  contentTypes: []
 };
 
 const middlewares = applyMiddleware(logger, ReduxPromise);

@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get '/profile', to: 'pages#home'
   get '/backlog', to: 'pages#home'
   get '/companies/:id', to: 'pages#home'
-  get '/playbooks/:id', to: 'pages#home'
+  get '/playbooks/:playbook_id', to: 'pages#home'
+  get '/playbooks/:playbook_id/sections/:id', to: 'pages#home'
   get '/calls/:call_id/playbooks/:playbook_id/sections/:id', to: 'pages#home'
   get '/calls/:call_id/', to: 'pages#home'
 
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
         resources :sections, only: [ :index ]
       end
       resources :calls, only: [ :show, :create, :update ]
+      resources :content_types, only: [ :index ]
     end
   end
 

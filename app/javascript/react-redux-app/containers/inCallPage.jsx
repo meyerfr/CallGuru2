@@ -23,19 +23,19 @@ class InCallPage extends Component {
   }
 
   componentDidMount() {
-    if (this.props.playbook == undefined) {
-      this.props.fetchPlaybook(this.props.match.params.playbook_id)
-    }
+    // if (this.props.playbook == undefined) {
+    //   this.props.fetchPlaybook(this.props.match.params.playbook_id)
+    // }
 
     if (this.props.call == undefined) {
       this.props.fetchCall(this.props.match.params.call_id)
       .then(() => this.setState({
-          callName: this.props.call.name
+          callName: this.props.call.name || ''
         })
       )
     } else{
       this.setState({
-        callName: this.props.call.name,
+        callName: this.props.call.name || '',
         selectedSection: this.props.selectedSection
       })
     }

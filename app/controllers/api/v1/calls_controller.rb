@@ -3,67 +3,6 @@ class Api::V1::CallsController < ApplicationController
   before_action :set_call, only: [ :show, :update ]
   before_action :set_playbook, only: [ :create ]
 
-  # def show
-  #   call = @call
-  #   playbook = call.playbook
-  #   sections = playbook.sections.order(:order_no).map{ |section|
-  #     outlines = section.outlines.map{ |outline|
-  #       content_blocks = outline.content_blocks.map{|content_block|
-  #         content_type = content_block.content_type
-  #         merge_object = {
-  #           content_options: content_block.content_options,
-  #           content_type: content_type
-  #         }
-  #         if content_type.form_input
-  #           # check if call has a summary already. if so check if summaryItem with content_block if pr
-
-  #           summary = call.call_summary
-  #           if summary && summary.summary_items.find_by(content_block_id: content_block.id)
-  #             present_summary_item = summary.summary_items.find_by(content_block_id: content_block.id)
-  #             summary_item = if content_type.complex
-  #                               {
-  #                                 content_block_id: content_block.id,
-  #                                 content_options_attributes: present_summary_item.content_options.collect(&:id)
-  #                               }
-  #                            else
-  #                               {
-  #                                 content_block_id: content_block.id,
-  #                                 simple_answer: present_summary_item.simple_answer.content
-  #                               }
-  #                            end
-  #           else
-  #             summary_item = if content_type.complex
-  #               {
-  #                 content_block_id: content_block.id,
-  #                 content_options_attributes: []
-  #               }
-  #             else
-  #               {
-  #                 content_block_id: content_block.id,
-  #                 simple_answer: ''
-  #               }
-  #             end
-  #           end
-  #           merge_object[:summary_item] = summary_item
-  #         end
-  #         content_block.as_json.merge(merge_object)
-  #       }
-
-  #       outline.as_json.merge({
-  #         content_blocks: content_blocks
-  #       })
-  #     }
-
-  #     section.as_json.merge({
-  #       outlines: outlines
-  #     })
-  #   }
-  #   call = call.as_json.merge({
-  #     sections: sections
-  #   })
-
-  #   render json: call
-  # end
   def show
     @playbook = @call.playbook
     @call = load_call

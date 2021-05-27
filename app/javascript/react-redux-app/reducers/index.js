@@ -8,6 +8,7 @@ import playbooksReducer from './playbooks_reducer'
 import sectionsReducer from './sections_reducer'
 import callReducer from './call_reducer'
 import callSummaryReducer from './call_summary_reducer'
+import contentTypesReducer from './content_types_reducer'
 
 const identityReducer = (state = null, action) => state;
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   sections: sectionsReducer,
   call: callReducer,
   callSummary: callSummaryReducer,
+  contentTypes: contentTypesReducer,
   form: formReducer.plugin({
     newCompanyForm: (state, action) => { // <------ 'account' is name of form given to reduxForm()
       switch(action.type) {

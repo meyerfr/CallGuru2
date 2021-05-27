@@ -14,6 +14,7 @@ export const FETCH_CALL = 'FETCH_CALL'
 export const CREATE_CALL = 'CREATE_CALL'
 export const UPDATE_CALL_NAME = 'UPDATE_CALL_NAME'
 export const UPDATE_CALL_STATE = 'UPDATE_CALL_STATE'
+export const FETCH_CONTENT_TYPES = 'FETCH_CONTENT_TYPES'
 
 export function logoutUser(callback) {
   const url = `users/sign_out`;
@@ -240,9 +241,20 @@ export function updateCallName(callId, callName) {
     body: JSON.stringify(body)
   }).then(r => r.json())
 
-  debugger
+  // debugger
   return {
     type: UPDATE_CALL_NAME,
     payload: callName
   }
 }
+
+export function fetchContentTypes() {
+  const url = `${BASE_URL}/content_types`;
+  // const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
+
+  return {
+    type: FETCH_CONTENT_TYPES,
+    payload: promise
+  }}

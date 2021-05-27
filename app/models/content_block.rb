@@ -1,5 +1,6 @@
 class ContentBlock < ApplicationRecord
   self.implicit_order_column = "created_at"
+  has_many :content_blocks, as: :contentable
   belongs_to :contentable, polymorphic: true
   belongs_to :content_type
   has_many :block_options_joins, dependent: :destroy

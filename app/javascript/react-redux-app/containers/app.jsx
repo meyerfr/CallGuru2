@@ -17,6 +17,8 @@ import CompanyShow from './companyShow';
 import InCallPage from './inCallPage';
 import Summary from './summary';
 
+import EditSection from '../create-process/editSection'
+
 
 import { logoutUser } from '../actions'
 
@@ -55,15 +57,28 @@ class App extends Component {
             ]}
           />
           <Route
-            exact path="/calls/:call_id"
+            exact path="/playbooks"
+            render={props => [
+              <AppNavigation key="appNavigation" />,
+              <PlaybooksIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            ]}
+          />
+          <Route
+            path="/playbooks/:playbook_id/sections/:id"
             render={props => (
-              <Summary {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+              <EditSection {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             )}
           />
           <Route
             path="/calls/:call_id/playbooks/:playbook_id/sections/:id"
             render={props => (
               <InCallPage {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+            )}
+          />
+          <Route
+            path="/calls/:call_id"
+            render={props => (
+              <Summary {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
             )}
           />
           <Route
