@@ -63,21 +63,16 @@ class Api::V1::PlaybooksController < ApplicationController
         :status,
         :order_no,
         :_destroy,
-        outlines_attributes: [
+        content_blocks_attributes: [
           :id,
-          :title,
+          :text,
           :order_no,
           :_destroy,
-          content_blocks_attributes: [
+          content_blocks_attributes: [
             :id,
             :text,
             :order_no,
-            :_destroy,
-            content_options_attributes: [
-              :id,
-              :name,
-              :_destroy
-            ]
+            :_destroy
           ]
         ]
       ]
@@ -96,58 +91,76 @@ class Api::V1::PlaybooksController < ApplicationController
     end
 
     return sections.map{ |section|
-      outlines = load_outlines(section)
-      section.as_json.merge({ outlines_attributes: outlines, _destroy: destroy })
+      content_blocks = load_content_blocks(section)
+      section.as_json.merge({ _destroy: destroy, react_id: SecureRandom.uuid, content_blocks_attributes: content_blocks })
     }
   end
 
-  def load_outlines(section)
-    outlines = section.outlines
+  # def load_outlines(section)
+  #   outlines = section.outlines
 
-    if outlines.count.positive?
-      destroy = '0'
-    else
-      destroy = '1'
-      new_outline = section.outlines.new(title: '')
-      outlines = [new_outline]
-    end
+  #   if outlines.count.positive?
+  #     destroy = '0'
+  #   else
+  #     destroy = '1'
+  #     new_outline = section.outlines.new(title: '')
+  #     outlines = [new_outline]
+  #   end
 
-    return outlines.map{ |outline|
-      content_blocks = load_content_blocks(outline)
-      outline.as_json.merge({ content_blocks_attributes: content_blocks, _destroy: destroy, react_id: SecureRandom.uuid })
-    }
-  end
+  #   return outlines.map{ |outline|
+  #     content_blocks = load_content_blocks(outline)
+  #     outline.as_json.merge({ content_blocks_attributes: content_blocks, _destroy: destroy, react_id: SecureRandom.uuid })
+  #   }
+  # end
 
-  def load_content_blocks(outline)
-    content_blocks = outline.content_blocks.order(:order_no)
+  def load_content_blocks(block)
+    return unless block.has_content_blocks?
+
+    content_blocks = block.content_blocks
 
     if content_blocks.count.positive?
-      destroy = '0'
+      # return exisiting content_block_children
+      blocks_destroy = '0'
     else
-      destroy = '1'
-      new_content_block = outline.content_blocks.new(text: '')
+      # create new block
+      blocks_destroy = '1'
+      content_type_id = ContentType.find_by(group: 'text', style: 'paragraph')
+      new_content_block = block.content_blocks.new(text: '', content_type_id: content_type_id)
       content_blocks = [new_content_block]
     end
 
-    return content_blocks.map{ |block|
-      content_options = load_content_options(block)
-      block.as_json.merge({ content_options_attributes: content_options, _destroy: destroy, react_id: SecureRandom.uuid, content_type: block.content_type })
-    }
-  end
-
-  def load_content_options(block)
-    return [] unless block.content_type.has_content_options?
-
-    content_options = block.content_options
-
-    if content_options.count.positive?
-      destroy = '0'
+    if block.has_content_blocks?
+      return content_blocks.map{ |block|
+        blocks_content_blocks = load_content_blocks(block)
+          block.as_json.merge({
+            _destroy: blocks_destroy,
+            react_id: SecureRandom.uuid,
+            content_type: block.content_type,
+            content_blocks_attributes: blocks_content_blocks
+          })
+        }
     else
-      destroy = '1'
+      return [block.as_json.merge({
+          _destroy: blocks_destroy,
+          react_id: SecureRandom.uuid,
+          content_type: block.content_type,
+          content_blocks_attributes: content_blocks
+        })]
     end
-
-    return content_options.map{ |content_option|
-      content_option.as_json.merge({ react_id: SecureRandom.uuid, _destroy: destroy })
-    }
   end
+  # def load_content_options(block)
+  #   return [] unless block.content_type.has_content_options?
+
+  #   content_options = block.content_options
+
+  #   if content_options.count.positive?
+  #     destroy = '0'
+  #   else
+  #     destroy = '1'
+  #   end
+
+  #   return content_options.map{ |content_option|
+  #     content_option.as_json.merge({ react_id: SecureRandom.uuid, _destroy: destroy })
+  #   }
+  # end
 end

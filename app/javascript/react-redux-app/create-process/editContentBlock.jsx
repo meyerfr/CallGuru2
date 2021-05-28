@@ -4,11 +4,13 @@ import EditContentOption from './editContentOption'
 
 class EditContentBlock extends Component{
   constructor(props){
-    super(props)
+    super(props);
+    this.myRef = React.createRef();
     this.state = {
       selectMenuIsOpen: false,
       previousKey: '',
-      block: props.block
+      block: props.block,
+      updatedElement: null
     }
   }
 
@@ -36,14 +38,89 @@ class EditContentBlock extends Component{
     //       type: this.props.type
     //     })
     //   }
-    if (prevState.block.text !== this.state.block.text) {
-      // check constraints or if something should happen when this.state.value === ''
-      this.props.updateOutline(this.state.block, {content_block_id: this.props.block.id})
+//    if (this.props.updated !== prevProps.updated) {
+//      this.setState({
+//        ...this.state,
+//        updated: this.props.updated
+//      })
+//    }
+
+    let updatedObject = {}
+    if (this.props.updatedElement !== prevProps.updatedElement) {
+      this.setState({
+        updatedElement: this.props.updatedElement
+      })
     }
+//    if (nextProps.updatedObject !== prevProps.updatedObject) {
+//
+//    }
+
+
+
+    if (prevState.updatedElement !== this.state.updatedElement) {
+//      updatedObject = {
+//        updated_element: this.state.block.react_id,
+//        update: {
+//          ...this.state.updated
+//        }
+//      }
+      this.props.updateParentContentBlock(this.state.block, this.state.updatedElement)
+      //this.props.updateParentContentBlock(this.state.block)
+    }
+//else if (prevState.updated.updated_element !== this.state.updated.updated_element) {
+//      updatedObject = {
+//        updated_element: this.state.block.react_id,
+//        update: {
+//          ...this.state.updated
+//        }
+//      }
+//      debugger
+//      this.props.updateParentContentBlock(this.state.block, updatedObject)
+//    }
+
+//    if (this.props.updated.updated_element !== prevState.updated.updated_element) {
+//      this.setState({
+//        ...this.state,
+//        updated: this.props.updated
+//      })
+//    }
+//
+//    if (prevState.block.text !== this.state.block.text) {
+//      // check constraints or if something should happen when this.state.value === ''
+//      this.props.updateParentContentBlock(this.state.block, {updated_element: this.state.block.react_id, ...this.state.updated})
+//    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+    if (nextState.block.text !== this.state.block.text){
+      return true
+    }
+    if (this.state.updatedElement !== nextState.updatedElement) {
+      return true
+    }
+    return false
   }
 
 
-  // shouldComponentUpdate(nextProps, nextState){
+//      console.log('should update', nextState)
+//      return true
+//      if (nextState.updated.includes(this.myRef.current)) {
+//        return true
+//      }
+//
+//      if (nextState.block.text !== this.state.block.text) {
+//        return true
+//      }
+//      return false
+//
+//    if (nextProps.updated.includes(this.myRef.current)) {
+//      return true
+//    }
+//    if (nextState.block.text !== this.state.block.text) {
+//      return true
+//    }
+//    return false
+//    }
     // if (this.state.block.text != nextState.block.text) {return true}
     // if (nextProps.updated.content_block_id === this.props.block.id) {
     //   return true
@@ -64,7 +141,7 @@ class EditContentBlock extends Component{
 
   onKeyDownHandler = (e) => {
     if (e.key === "/") {
-      this.setState({ valueBackup: this.state.value }, () => console.log(this.state));
+      this.setState({ valueBackup: this.state.value });
     }
     if (e.key === "Enter" && !this.state.selectMenuIsOpen) {
       if (this.state.previousKey !== "Shift") {
@@ -105,18 +182,29 @@ class EditContentBlock extends Component{
     //   });
     // }
 
-    this.setState({ previousKey: e.key });
+  }
+
+  updateParentContentBlock = (contentBlock, updatedObject={}) => {
+    let copiedBlocks = this.state.block.content_blocks_attributes
+    let blockReactId = contentBlock.react_id
+    let toBeUpdatedIndex = copiedBlocks.findIndex((block) => block.react_id === blockReactId)
+
+    copiedBlocks[toBeUpdatedIndex] = contentBlock
+
+    this.setState({
+      block: {
+        ...this.state.block,
+        content_blocks_attributes: copiedBlocks
+      },
+      updatedElement: {
+        elementId: this.state.block.id,
+        childElements: updatedObject
+      }
+    })
   }
 
 
-  updateContentOption = (contentOption, updatedObject={}) => {
-    let copiedContentBlocksContentOptions = this.props.block.content_options_attributes
-    let contentOptionReactId = contentOption.react_id
-    let toBeUpdatedContentOptionIndex = copiedContentBlocksContentOptions.findIndex((option) => option.react_id === contentOptionReactId)
-    copiedContentBlocksContentOptions[toBeUpdatedContentOptionIndex] = contentOption
 
-    this.props.updateOutline({...this.props.block, content_options_attributes: copiedContentBlocksContentOptions}, {content_block_id: this.props.block.id, ...updatedObject})
-  }
 
   onNameUpdate = (e) => {
     let block = {
@@ -125,42 +213,41 @@ class EditContentBlock extends Component{
     }
 
     this.setState({
-      block: block
+      block: block,
+      updatedElement: {
+        elementId: block.id
+      }
     })
     // this.props.updateOutline({...this.props.block, text: e.target.value}, {content_block_id: this.props.block.id})
   }
 
 
   render(){
-    // if (!this.props.value) {console.log('undefined', this.props)}
     const block = this.state.block
+    console.log('render', this.state.block.text)
     return[
       <div key="contentBlock" style={{display: 'grid'}}>
         <span>{block.content_type.style}</span>
         {
-          block.content_type.group !== 'list' &&
-            <input key="outlineTitle" onKeyDown={this.onKeyDownHandler} value={block.text} onChange={this.onNameUpdate} placeholder="contentBlock Text" />
+          block.content_type.group !== 'list' ?
+            <input ref={this.myRef} key="outlineTitle" onKeyDown={this.onKeyDownHandler} value={block.text} onChange={this.onNameUpdate} placeholder="contentBlock Text" />
+          :
+            <span>List</span>
         }
         {
-          block.content_options_attributes.map((option) =>
-            <EditContentOption
-              key={option.react_id}
-              value={option.name}
-              option={option}
-              updateContentBlock={this.updateContentOption}
-              updated={this.props.updated}
-            />
-          )
+          block.content_blocks_attributes && block.content_blocks_attributes.length > 0 &&
+            block.content_blocks_attributes.map((block) =>
+              <EditContentBlock
+                key={block.react_id}
+                value={block.text}
+                block={block}
+                updateParentContentBlock={this.updateParentContentBlock}
+                updatedObject={this.state.updatedElement}
+                parent='content_block'
+              />
+            )
         }
-      </div>,
-      <button key="addBlockButton" onClick={() => this.props.addBlockHandler()}>Add Block</button>
-      // <div key="contentBlockWrapper" className="section-wrapper">
-      //   {
-      //     block.content_options_attributes.map((option) =>
-      //       <span key={option.react_id}>1{option.name}</span>
-      //     )
-      //   }
-      // </div>
+      </div>
     ]
   }
 }
