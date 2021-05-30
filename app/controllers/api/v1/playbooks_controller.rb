@@ -92,7 +92,7 @@ class Api::V1::PlaybooksController < ApplicationController
 
     return sections.map{ |section|
       content_blocks = load_content_blocks(section)
-      section.as_json.merge({ _destroy: destroy, react_id: SecureRandom.uuid, content_blocks_attributes: content_blocks })
+      section.as_json.merge({ _destroy: destroy, react_id: SecureRandom.uuid, content_blocks_attributes: content_blocks, react_show: true })
     }
   end
 
@@ -136,7 +136,8 @@ class Api::V1::PlaybooksController < ApplicationController
             _destroy: blocks_destroy,
             react_id: SecureRandom.uuid,
             content_type: block.content_type,
-            content_blocks_attributes: blocks_content_blocks
+            content_blocks_attributes: blocks_content_blocks,
+            react_show: true
           })
         }
     else
@@ -144,7 +145,8 @@ class Api::V1::PlaybooksController < ApplicationController
           _destroy: blocks_destroy,
           react_id: SecureRandom.uuid,
           content_type: block.content_type,
-          content_blocks_attributes: content_blocks
+          content_blocks_attributes: content_blocks,
+          react_show: true
         })]
     end
   end
