@@ -163,17 +163,23 @@ class EditSection extends Component {
   }
 
   onNameUpdate = (e) => {
-    this.props.updateSectionOutline({...this.props.outline, title: e.target.value}, {outline_id: this.props.outline.id})
+    this.setState({
+      ...this.state,
+      section: {
+        ...this.state.section,
+        title: e.target.value
+      }
+    })
+    // this.props.updateSectionOutline({...this.props.outline, title: e.target.value}, {outline_id: this.props.outline.id})
   }
 
   render() {
     const playbook = this.props.playbook
     const section = this.state.section
-    console.log(section)
     return [
       <CallNavigation key="callNavigation" sections={playbook?.sections_attributes} url={this.url} />,
       <div className="app-wrapper" key='editSection'>
-        <PageHeader key="PageHeader" page="Playbooks">
+        <PageHeader key="PageHeader" page={playbook?.name}>
           {
             // <div className="tabs">
             //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
@@ -197,7 +203,7 @@ class EditSection extends Component {
               {
                 section &&
                   <div className="section-wrapper">
-                    <span>{section.title}</span>
+                    <input className="title block-input" onChange={this.onNameUpdate} value={section.title} />
                     {
                       section.content_blocks_attributes.map((block) =>
                         <EditContentBlock
@@ -214,7 +220,6 @@ class EditSection extends Component {
                         />
                       )
                     }
-                    <button className="secondary" onClick={this.addOutlineHandler}>Add Outline</button>
                   </div>
               }
             </div>
