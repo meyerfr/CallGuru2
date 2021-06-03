@@ -12,13 +12,16 @@ import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
 
+import EditContentBlock from '../create-process/editContentBlock'
+
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
 class InCallPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      callName: ''
+      callName: '',
+      updatedElement: null
     }
   }
 
@@ -43,22 +46,19 @@ class InCallPage extends Component {
     window.addEventListener("keydown", this.handleKeyDown)
   }
 
-  updateContentBlock = (updatedContentBlock) => {
+  updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedSelectedSection = this.state.selectedSection
-    let copiedOutlines = copiedSelectedSection.outlines.slice(0)
-    let outlineIndex = copiedOutlines.findIndex(outline => outline.id == updatedContentBlock.contentable_id)
 
     // debugger
-    let copiedContentBlocks = copiedOutlines[outlineIndex].content_blocks.slice(0)
+    let copiedContentBlocks = copiedSelectedSection.content_blocks.slice(0)
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock
 
-    copiedOutlines[outlineIndex].content_blocks = copiedContentBlocks
+    copiedSelectedSection.content_blocks = copiedContentBlocks
 
-    copiedSelectedSection.outlines = copiedOutlines
-    // debugger
     this.setState({
-      selectedSection: copiedSelectedSection
+      selectedSection: copiedSelectedSection,
+      updatedElement: updatedObject
     })
   }
 
@@ -66,8 +66,8 @@ class InCallPage extends Component {
     const prevSelectedSection = prevState.selectedSection
     const copiedContentBlocks = []
 
-    prevSelectedSection.outlines.forEach((outline) => {
-      copiedContentBlocks.push(...outline.content_blocks)
+    prevSelectedSection.content_blocks.forEach((block) => {
+      copiedContentBlocks.push(block)
     })
     this.props.updateCallState(copiedContentBlocks, this.props.call.id)
   }
@@ -154,17 +154,14 @@ class InCallPage extends Component {
             <div className="script-wrapper">
               {
                 selectedSection &&
-                selectedSection.outlines.map((outline, index) => {
-                  return(
-                    <div key={outline.id} className="outline-item">
-                      <span className="outline-title large bold">{outline.title}</span>
-                      {
-                        outline.content_blocks &&
-                        <ContentBlocks content_blocks={outline.content_blocks} updateContentBlock={this.updateContentBlock} />
-                      }
-                    </div>
-                  )
-                })
+                selectedSection.content_blocks.map((block, index) =>
+                  <EditContentBlock
+                    key={block.id}
+                    block={block}
+                    updateParentContentBlock={this.updateContentBlock}
+                    updatedObject={this.state.updatedElement}
+                  />
+                )
               }
             </div>
           </div>

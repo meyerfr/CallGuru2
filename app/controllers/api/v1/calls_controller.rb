@@ -53,7 +53,7 @@ class Api::V1::CallsController < ApplicationController
         ],
         content_options_summary_items_attributes: [
           :id,
-          :content_option_id,
+          :content_block_id,
           :summary_item_id,
           :created_at,
           :updated_at,
@@ -64,7 +64,7 @@ class Api::V1::CallsController < ApplicationController
   end
 
   def load_call
-    sections = load_call_sections
+    sections = load_call_sections(@playbook)
 
     @playbook = @playbook.as_json.merge({ sections: sections })
 
@@ -75,37 +75,51 @@ class Api::V1::CallsController < ApplicationController
     return @call
   end
 
-  def load_call_sections
-    sections = @playbook.sections.order(:order_no).map{ |section|
-      outlines = section.outlines.map{ |outline|
-        content_blocks = outline.content_blocks.map{ |block|
-          content_type = block.content_type
+  def load_call_sections(playbook)
+    sections = playbook.sections.order(:order_no)
 
-          if content_type.form_input
-            summary_item = load_summary_item(block)
-
-            block.as_json.merge({
-              summary_item: summary_item,
-              content_options: block.content_options,
-              content_type: content_type
-            })
-          else
-            block.as_json.merge({
-              content_options: block.content_options,
-              content_type: content_type
-            })
-          end
-        }
-        outline.as_json.merge({ content_blocks: content_blocks })
-      }
-      section.as_json.merge({ outlines: outlines })
+    return sections.map{ |section|
+      content_blocks = load_content_blocks(section)
+      section.as_json.merge({ content_blocks: content_blocks })
     }
-    return sections
+  end
+
+  def load_content_blocks(block)
+    return unless block.has_content_blocks?
+
+    content_blocks = block.content_blocks
+
+    if block.has_content_blocks?
+      return content_blocks.map{ |block|
+        blocks_content_blocks = load_content_blocks(block)
+        if block.content_type.form_input
+          summary_item = load_summary_item(block)
+          block.as_json.merge({
+            summary_item: summary_item,
+            content_type: block.content_type,
+            react_id: SecureRandom.uuid,
+            content_blocks_attributes: blocks_content_blocks
+          })
+        else
+          block.as_json.merge({
+            content_type: block.content_type,
+            react_id: SecureRandom.uuid,
+            content_blocks_attributes: blocks_content_blocks
+          })
+        end
+      }
+    else
+      return [block.as_json.merge({
+        content_type: block.content_type,
+        react_id: SecureRandom.uuid,
+        content_blocks_attributes: content_blocks
+      })]
+    end
   end
 
   def load_summary_item(block)
     # present_summary_item = @call.summary_items.select { |summary| summary.id && summary.content_block.id === block.id }.first
-    present_summary_item = @call.summary_items.find_by(content_block_id: block.id )
+    present_summary_item = @call.summary_items.find_by(content_block_id: block.id)
 
     summary_item = present_summary_item ? present_summary_item : @call.summary_items.new(content_block_id: block.id)
 

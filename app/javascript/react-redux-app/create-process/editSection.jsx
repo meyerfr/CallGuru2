@@ -13,6 +13,7 @@ import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 import EditOutlineItem from './editOutlineItem'
+import EditContentBlock from './editContentBlock'
 
 // import playbooks from '../db/playbooks'
 
@@ -20,23 +21,32 @@ class EditSection extends Component {
   constructor(props){
     super(props)
     this.state = {
-      updated: {
-      }
+      updatedElement: null
     }
   }
 
   componentDidMount() {
     if (!this.props.playbook) {
-      this.props.fetchPlaybook(this.props.match.params.playbook_id)
       this.props.fetchContentTypes()
+      this.props.fetchPlaybook(this.props.match.params.playbook_id)
       // .then((r) => this.setSectionToState(r.payload))
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   debugger
+  //   return true
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.playbook || prevProps.section.id !== this.props.section.id) {
       this.setSectionToState(this.props.section)
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState){
+
+    return true
   }
 
   setSectionToState = (section) => {
@@ -49,7 +59,7 @@ class EditSection extends Component {
     this.props.updateSection(this.state.section)
   }
 
-  updateSectionOutline = (outline, updatedObject={}) => {
+  updateSectionOutline = (outline, updatedObject=[]) => {
     let copiedSectionOutlines = this.state.section.outlines_attributes
     const outlineReactId = outline.react_id
     let toBeUpdatedOutlineIndex = copiedSectionOutlines.findIndex((outline) => outline.react_id === outlineReactId)
@@ -70,56 +80,106 @@ class EditSection extends Component {
   //   return true
   // }
 
-  addOutlineHandler = () => {
-    console.log(this.state)
-    const contentType = this.props.contentTypes.find((type) => type.group === 'text' && type.style === 'paragraph')
-    const newOutline = {
+  addBlock = (currentBlock, updatedObject) => {
+    const outlineContentType = this.props.contentTypes.find((type) => type.group === 'outline' && type.style === 'outline')
+    const paragraphContentType = this.props.contentTypes.find((type) => type.group === 'text' && type.style === 'paragraph')
+    const copiedSection = this.state.section
+    const copiedSectionBlocks = copiedSection.content_blocks_attributes
+    const currentBlockIndex = copiedSectionBlocks.map((block) => block.react_id).indexOf(currentBlock.react_id)
+    const updatedSectionBlocks = copiedSectionBlocks.slice(0)
+
+    const newBlock = {
       id: null,
-      title: "",
-      section_id: this.props.section.id,
-      content_blocks_attributes: [
-        {
-          id: null,
-          contentable_type: "Outline",
-          contentable_id: null,
-          content_type_id: contentType.id,
-          text: "",
-          order_no: null,
-          content_options_attributes: [],
-          _destroy: "1",
-          react_id: uuid(),
-          content_type: contentType
-        }
-      ],
-      _destroy: "1",
-      react_id: uuid()
+      contentable_type: 'Section',
+      contentable_id: this.state.section.id,
+      content_type_id: outlineContentType.id,
+      text: '',
+      order_no: null,
+      content_blocks_attributes: [{
+        id: null,
+        contentable_type: 'ContentBlock',
+        contentable_id: null,
+        content_type_id: paragraphContentType.id,
+        text: '',
+        order_no: null,
+        content_blocks_attributes: [],
+        _destroy: '1',
+        react_id: uuid(),
+        content_type: paragraphContentType
+      }],
+      _destroy: '1',
+      react_id: uuid(),
+      content_type: outlineContentType
     }
 
-    let newOutlines = this.state.section.outlines_attributes
+    updatedSectionBlocks.splice(currentBlockIndex + 1, 0, newBlock)
 
-    newOutlines.push(newOutline)
+    updatedSectionBlocks[currentBlockIndex] = {
+      ...updatedSectionBlocks[currentBlockIndex],
+      ...currentBlock
+    }
 
     this.setState({
       ...this.state,
       section: {
         ...this.state.section,
-        outlines_attributes: newOutlines
-      }
+        content_blocks_attributes: updatedSectionBlocks
+      },
+      updatedElement: updatedObject
     })
   }
 
-   url = section_id => {
+  deleteBlock = (currentBlock, updatedObject) => {
+    const blocks = this.state.section.content_blocks_attributes
+    const updatedBlocks = blocks.filter((block) => block.react_id !== currentBlock.react_id)
+    if (updatedBlocks.length > 0) {
+      this.setState({
+        section: {
+          ...this.state.section,
+          content_blocks_attributes: updatedBlocks
+        },
+        updatedElement: updatedObject
+      })
+    }
+  }
+
+  url = section_id => {
     return `/playbooks/${this.props.match.params.playbook_id}/sections/${section_id}`
+  }
+
+  updateContentBlock = (contentBlock, updatedObject) => {
+    let copiedOutlineContentBlocks = this.state.section.content_blocks_attributes
+    let contentBlockReactId = contentBlock.react_id
+    let toBeUpdatedContentBlockIndex = copiedOutlineContentBlocks.findIndex((block) => block.react_id === contentBlockReactId)
+    copiedOutlineContentBlocks[toBeUpdatedContentBlockIndex] = contentBlock
+    this.setState({
+      ...this.state,
+      section: {
+        ...this.state.section,
+        content_blocks_attributes: copiedOutlineContentBlocks
+      },
+      updatedElement: updatedObject
+    })
+  }
+
+  onNameUpdate = (e) => {
+    this.setState({
+      ...this.state,
+      section: {
+        ...this.state.section,
+        title: e.target.value
+      }
+    })
+    // this.props.updateSectionOutline({...this.props.outline, title: e.target.value}, {outline_id: this.props.outline.id})
   }
 
   render() {
     const playbook = this.props.playbook
     const section = this.state.section
-    console.log('section', section)
     return [
       <CallNavigation key="callNavigation" sections={playbook?.sections_attributes} url={this.url} />,
       <div className="app-wrapper" key='editSection'>
-        <PageHeader key="PageHeader" page="Playbooks">
+        <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
           {
             // <div className="tabs">
             //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
@@ -139,26 +199,29 @@ class EditSection extends Component {
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
-            <div className="wrapped-list">
-              {
-                section &&
-                  <div className="section-wrapper">
-                    <span>{section.title}</span>
-                    {
-                      section.outlines_attributes.map((outline) =>
-                        <EditOutlineItem
-                          key={outline.react_id}
-                          value={outline.title}
-                          updateSectionOutline={this.updateSectionOutline}
-                          outline={outline}
-                          updated={this.state.updated}
-                        />
-                      )
-                    }
-                    <button className="secondary" onClick={this.addOutlineHandler}>Add Outline</button>
-                  </div>
-              }
-            </div>
+            {
+              section &&
+                <div className="section-wrapper">
+                  <input className="title block-input" onChange={this.onNameUpdate} value={section.title} />
+                  {
+                    section.content_blocks_attributes.map((block) =>
+                      <EditContentBlock
+                        key={block.react_id}
+                        editable={true}
+                        value={block.text}
+                        addBlock={this.addBlockHandler}
+                        updateParentContentBlock={this.updateContentBlock}
+                        block={block}
+                        updatedObject={this.state.updatedElement}
+                        parent='master'
+                        addBlock={this.addBlock}
+                        deleteBlock={this.deleteBlock}
+                        contentTypes={this.props.contentTypes}
+                      />
+                    )
+                  }
+                </div>
+            }
           </div>
         </div>
       </div>

@@ -96,6 +96,8 @@ dropdown = ContentType.create(group: 'select', style: 'dropdown', form_input: tr
 
 multiselect = ContentType.create(group: 'multiselect', style: 'multiselect', form_input: true, complex: true)
 
+outline = ContentType.create(group: 'outline', style: 'outline', form_input: false, complex: false)
+
 
 puts('create demo Playbook for CallGuru')
 demo_playbook = Playbook.create!(
@@ -109,9 +111,10 @@ demo_playbook = Playbook.create!(
       description: "Am 'Gatekeeper' vorbei kommen",
       status: 'live',
       order_no: 1,
-      outlines_attributes: [
+      content_blocks_attributes: [
         {
-          title: 'Welcome',
+          text: 'Welcome',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'Hello my name is XY',
@@ -120,7 +123,8 @@ demo_playbook = Playbook.create!(
           ]
         },
         {
-          title: 'Assistance relationship',
+          text: 'Assistance relationship',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'If you connect me to ABC, tell him that XY is waiting for him on the telephone line.',
@@ -141,7 +145,8 @@ demo_playbook = Playbook.create!(
           ]
         },
         {
-          title: 'What is it about?',
+          text: 'What is it about?',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: "It's about the handwritten letter from XY, then he already knows!",
@@ -150,26 +155,31 @@ demo_playbook = Playbook.create!(
           ]
         },
         {
-          title: 'If not in office',
+          text: 'If not in office',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               content_type_id: bullet.id,
-              content_options_attributes: [
+              content_blocks_attributes: [
                 {
-                  name: 'When would you call again if you were me?'
+                  text: 'When would you call again if you were me?',
+                  content_type_id: paragraph.id
                 },
                 {
-                  name: 'What extension would you use to reach him? '
+                  text: 'What extension would you use to reach him? ',
+                  content_type_id: paragraph.id
                 },
                 {
-                  name: "I would send him another email in advance, the email hasn't changed yet - is it still firstname.lastname@?"
+                  text: "I would send him another email in advance, the email hasn't changed yet - is it still firstname.lastname@?",
+                  content_type_id: paragraph.id
                 }
               ]
             }
           ]
         },
         {
-          title: 'Goodbye',
+          text: 'Goodbye',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: "What was your name again? And your first name?",
@@ -188,9 +198,10 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt den Aufbau von CallGuru',
       status: 'live',
       order_no: 2,
-      outlines_attributes: [
+      content_blocks_attributes: [
         {
-          title: 'Team',
+          text: 'Team',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: "I would be interested to know if you know how you could improve the performance of your sales team.",
@@ -221,9 +232,10 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt die Navigation in der CallGuru App',
       status: 'live',
       order_no: 3,
-      outlines_attributes: [
+      content_blocks_attributes: [
         {
-          title: 'Team',
+          text: 'Team',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'How big is your current sales team?',
@@ -232,12 +244,14 @@ demo_playbook = Playbook.create!(
             {
               text: 'Do you provide conversation scripts or guides for your agents?',
               content_type_id: simpleselect.id,
-              content_options_attributes: [
+              content_blocks_attributes: [
                 {
-                  name: 'Yes'
+                  text: 'Yes',
+                  content_type_id: paragraph.id
                 },
                 {
-                  name: 'No'
+                  text: 'No',
+                  content_type_id: paragraph.id
                 }
               ]
             },
@@ -258,9 +272,10 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt die Knowledge Hub der CallGuru App',
       status: 'live',
       order_no: 4,
-      outlines_attributes: [
+      content_blocks_attributes: [
         {
-          title: 'Find an appointment',
+          text: 'Find an appointment',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'From your point of view, when would you prefer us to talk again?',
@@ -281,7 +296,8 @@ demo_playbook = Playbook.create!(
           ]
         },
         {
-          title: 'Schedule appointment',
+          text: 'Schedule appointment',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'I would still have time at, say, 1pm, 2.30pm, 3.30pm or 5pm.',
@@ -294,27 +310,32 @@ demo_playbook = Playbook.create!(
           ]
         },
         {
-          title: 'Video Call',
+          text: 'Video Call',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'I would suggest a video call, do you use Google Meet? Alternatively Zoom, Teams etc.',
               content_type_id: simpleselect.id,
-              content_options_attributes: [
+              content_blocks_attributes: [
                 {
-                  name: 'Zoom'
+                  text: 'Zoom',
+                  content_type_id: paragraph.id
                 },
                 {
-                  name: 'Google Meet'
+                  text: 'Google Meet',
+                  content_type_id: paragraph.id
                 },
                 {
-                  name: 'Teams'
+                  text: 'Teams',
+                  content_type_id: paragraph.id
                 }
               ]
             }
           ]
         },
         {
-          title: 'Appointment perparation',
+          text: 'Appointment perparation',
+          content_type_id: outline.id,
           content_blocks_attributes: [
             {
               text: 'What can I possibly prepare before the next meeting?',
@@ -331,19 +352,22 @@ demo_playbook = Playbook.create!(
   ]
 )
 
-Outline.first.content_blocks.create({
-  text: 'Test Content Options',
-  content_type_id: paragraph.id,
-  content_options_attributes: [
-    {
-      name: 'Option 1'
-    },
-    {
-      name: 'Option 2'
-    },
-    {
-      name: 'Option 3'
-    },
-  ]
-})
+# Outline.first.content_blocks.create({
+#   text: 'Test Content Options',
+#   content_type_id: paragraph.id,
+#   content_blocks_attributes: [
+#     {
+#       text: 'Option 1',
+#       content_type_id: paragraph.id
+#     },
+#     {
+#       text: 'Option 2',
+#       content_type_id: paragraph.id
+#     },
+#     {
+#       text: 'Option 3',
+#       content_type_id: paragraph.id
+#     },
+#   ]
+# })
 

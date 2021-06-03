@@ -9,9 +9,12 @@ import { createCall, fetchCall, updateCallState } from '../actions'
 
 import { startCall } from '../helper-methods/callMethods'
 
+import EditContentBlock from '../create-process/editContentBlock'
 import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
+
+
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
@@ -19,6 +22,7 @@ class Summary extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      updatedElement: null
     }
   }
 
@@ -44,13 +48,17 @@ class Summary extends Component {
     }
   }
 
-  updateContentBlock = (updatedContentBlock) => {
+  updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedContentBlocks = this.state.content_blocks
+
+    // debugger
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock
-    // debugger
+
+
     this.setState({
-      content_blocks: copiedContentBlocks
+      content_blocks: copiedContentBlocks,
+      updatedElement: updatedObject
     })
   }
 
@@ -88,7 +96,14 @@ class Summary extends Component {
             <div className="script-wrapper">
               {
                 content_blocks &&
-                  <ContentBlocks content_blocks={content_blocks} updateContentBlock={this.updateContentBlock} />
+                content_blocks.map((block, index) =>
+                  <EditContentBlock
+                    key={block.id}
+                    block={block}
+                    updateParentContentBlock={this.updateContentBlock}
+                    updatedObject={this.state.updatedElement}
+                  />
+                )
               }
             </div>
           </div>

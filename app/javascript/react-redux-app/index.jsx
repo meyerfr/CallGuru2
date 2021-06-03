@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import logger from 'redux-logger'
 import ReduxPromise from 'redux-promise';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -32,7 +32,11 @@ const initialState = {
   contentTypes: []
 };
 
-const middlewares = applyMiddleware(logger, ReduxPromise);
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const middlewares = composeEnhancers(applyMiddleware(logger, ReduxPromise));
 const store = createStore(rootReducers, initialState, middlewares);
 
 ReactDOM.render(
