@@ -179,7 +179,7 @@ class EditSection extends Component {
     return [
       <CallNavigation key="callNavigation" sections={playbook?.sections_attributes} url={this.url} />,
       <div className="app-wrapper" key='editSection'>
-        <PageHeader key="PageHeader" page={playbook?.name}>
+        <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
           {
             // <div className="tabs">
             //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
@@ -199,30 +199,29 @@ class EditSection extends Component {
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
-            <div className="wrapped-list">
-              {
-                section &&
-                  <div className="section-wrapper">
-                    <input className="title block-input" onChange={this.onNameUpdate} value={section.title} />
-                    {
-                      section.content_blocks_attributes.map((block) =>
-                        <EditContentBlock
-                          key={block.react_id}
-                          value={block.text}
-                          addBlock={this.addBlockHandler}
-                          updateParentContentBlock={this.updateContentBlock}
-                          block={block}
-                          updatedObject={this.state.updatedElement}
-                          parent='master'
-                          addBlock={this.addBlock}
-                          deleteBlock={this.deleteBlock}
-                          contentTypes={this.props.contentTypes}
-                        />
-                      )
-                    }
-                  </div>
-              }
-            </div>
+            {
+              section &&
+                <div className="section-wrapper">
+                  <input className="title block-input" onChange={this.onNameUpdate} value={section.title} />
+                  {
+                    section.content_blocks_attributes.map((block) =>
+                      <EditContentBlock
+                        key={block.react_id}
+                        editable={true}
+                        value={block.text}
+                        addBlock={this.addBlockHandler}
+                        updateParentContentBlock={this.updateContentBlock}
+                        block={block}
+                        updatedObject={this.state.updatedElement}
+                        parent='master'
+                        addBlock={this.addBlock}
+                        deleteBlock={this.deleteBlock}
+                        contentTypes={this.props.contentTypes}
+                      />
+                    )
+                  }
+                </div>
+            }
           </div>
         </div>
       </div>

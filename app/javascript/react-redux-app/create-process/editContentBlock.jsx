@@ -4,6 +4,11 @@ import { uuid, setCaretToEnd } from './helperFunctions'
 
 import EditContentOption from './editContentOption'
 
+import List from './content-types-components/list'
+import Select from './content-types-components/select'
+import Input from './content-types-components/input'
+import Paragraph from './content-types-components/paragraph'
+
 class EditContentBlock extends Component{
   constructor(props){
     super(props);
@@ -12,10 +17,10 @@ class EditContentBlock extends Component{
       selectMenuIsOpen: false,
       previousKey: '',
       block: props.block,
-      updatedElement: null
+      updatedElement: null,
+      editable: props.editable ? props.editable : false
     }
   }
-
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.updatedElement !== prevProps.updatedElement) {
@@ -36,9 +41,11 @@ class EditContentBlock extends Component{
     if (this.state.updatedElement !== nextState.updatedElement) {
       return true
     }
+    if (this.props.selected !== nextProps.selected) {
+      return true
+    }
     return false
   }
-
 
   onKeyDownHandler = (e) => {
     if (e.key === "/") {
@@ -119,7 +126,6 @@ class EditContentBlock extends Component{
     let toBeUpdatedIndex = copiedBlocks.findIndex((block) => block.react_id === blockReactId)
 
     copiedBlocks[toBeUpdatedIndex] = contentBlock
-
     this.setState({
       block: {
         ...this.state.block,
@@ -132,6 +138,49 @@ class EditContentBlock extends Component{
     })
   }
 
+  onClick = (clicked_content_block, updatedObject={}) => {
+    let copiedContentBlock = this.state.block
+    if (Array.isArray(copiedContentBlock.summary_item.content_options_summary_items_attributes)) {
+      copiedContentBlock.summary_item.content_options_summary_items_attributes.map((item) => {
+        if (item.content_block_id !== clicked_content_block.id) {
+          return item
+        }
+
+        return {
+          ...item,
+          _destroy: item._destroy === '1' ? '0' : '1'
+        }
+      })
+    } else{
+      copiedContentBlock.summary_item.content_options_summary_items_attributes.content_block_id = clicked_content_block.id
+      copiedContentBlock.summary_item._destroy = '0'
+    }
+
+    this.setState({
+      block: copiedContentBlock,
+      updatedElement: {
+        elementId: this.state.block.react_id,
+        childElements: updatedObject
+      }
+    })
+  }
+
+  onInputChange = () => {
+    event.preventDefault()
+    let copiedContentBlock = this.state.block
+    copiedContentBlock.summary_item.simple_answer_attributes.content = event.target.value
+    if (copiedContentBlock.summary_item.simple_answer_attributes.content === '') {
+      copiedContentBlock.summary_item._destroy = '1'
+    }else{
+      copiedContentBlock.summary_item._destroy = '1'
+    }
+    this.setState({
+      block: copiedContentBlock,
+      updatedElement: {
+        elementId: this.state.block.react_id
+      }
+    })
+  }
 
   onNameUpdate = (e) => {
     let block = {
@@ -212,30 +261,94 @@ class EditContentBlock extends Component{
 
   render(){
     const block = this.state.block
-    return[
-      <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
-        {
-          block.content_type.group !== 'list' &&
-            <input ref={this.myRef} className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.onKeyDownHandler} onChange={this.onNameUpdate} value={block.text} placeholder={block.content_type.style} />
-        }
-        {
-          block.content_blocks_attributes && block.content_blocks_attributes.length > 0 &&
-            block.content_blocks_attributes.map((block) =>
-              <EditContentBlock
-                key={block.react_id}
-                value={block.text}
-                block={block}
-                updateParentContentBlock={this.updateParentContentBlock}
-                updatedObject={this.state.updatedElement}
-                parent='content_block'
-                addBlock={this.addBlock}
-                deleteBlock={this.deleteBlock}
-                contentTypes={this.props.contentTypes}
-              />
-            )
-        }
-      </div>
-    ]
+    const editable = this.state.editable
+    if (editable) {
+      switch(block.content_type.group){
+        case 'list':
+          return(
+            <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
+              {
+                block.content_blocks_attributes.map((block) =>
+                  <EditContentBlock
+                    updatedObject={this.state.updatedElement}
+                    editable={this.state.editable}
+                    key={block.id}
+                    value={block.text}
+                    block={block}
+                    updateParentContentBlock={this.updateParentContentBlock}
+                    updatedObject={this.state.updatedElement}
+                    parent='content_block'
+                    addBlock={this.addBlock}
+                    deleteBlock={this.deleteBlock}
+                    contentTypes={this.props.contentTypes}
+                  />
+                )
+              }
+            </div>
+          )
+        default:
+          return(
+            <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
+              <input ref={this.myRef} className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.onKeyDownHandler} onChange={this.onNameUpdate} value={block.text} placeholder={block.content_type.style} />
+              {
+                block.content_blocks_attributes &&
+                block.content_blocks_attributes.map((block) =>
+                  <EditContentBlock
+                    updatedObject={this.state.updatedElement}
+                    editable={this.state.editable}
+                    key={block.id}
+                    value={block.text}
+                    block={block}
+                    updateParentContentBlock={this.updateParentContentBlock}
+                    updatedObject={this.state.updatedElement}
+                    parent='content_block'
+                    addBlock={this.addBlock}
+                    deleteBlock={this.deleteBlock}
+                    contentTypes={this.props.contentTypes}
+                  />
+                )
+              }
+            </div>
+          )
+      }
+    }else{
+      switch(block.content_type.group){
+        case 'input':
+          return <Input block={block} editable={this.state.editable} onChange={this.onInputChange} />
+          break;
+        case 'select':
+        case 'multiselect':
+          return <Select
+            block={block}
+            editable={this.state.editable}
+            updatedElement={this.state.updatedElement}
+            updateParentContentBlock={this.updateParentContentBlock}
+            onClick={this.onClick}
+          />
+        case 'outline':
+          return(
+            <div className="block outline">
+              <p className="extra-large bold">{block.text}</p>
+              {
+                block.content_blocks_attributes.map((block) =>
+                  <EditContentBlock
+                    updatedObject={this.state.updatedElement}
+                    editable={this.state.editable}
+                    key={block.id}
+                    value={block.text}
+                    block={block}
+                    updateParentContentBlock={this.updateParentContentBlock}
+                  />
+                )
+              }
+            </div>
+          )
+        case 'list':
+          return <List block={block} editable={this.props.editable} updatedElement={this.state.updatedElement} updateParentContentBlock={this.updateContentBlock} />
+        default:
+          return <Paragraph classPrefix={this.props.classPrefix} block={block} editable={this.props.editable} updatedElement={this.state.updatedElement} onClick={this.props.onClick} selected={this.props.selected} myRef={this.myRef.current} />
+      }
+    }
   }
 }
 
