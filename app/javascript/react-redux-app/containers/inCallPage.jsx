@@ -3,39 +3,44 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCog } from '@fortawesome/free-solid-svg-icons'
 
 import { fetchPlaybook, fetchCall, updateCallName, updateCallState } from '../actions'
 
 import { getPrevSectionId, getNextSectionId } from '../helper-methods/callMethods'
 
-import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
 
+import EditContentBlock from '../create-process/editContentBlock'
+
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
+
+import Sidebar from '../components/sidebar'
 
 class InCallPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      callName: ''
+      callName: '',
+      updatedElement: null
     }
   }
 
   componentDidMount() {
-    if (this.props.playbook == undefined) {
-      this.props.fetchPlaybook(this.props.match.params.playbook_id)
-    }
+    // if (this.props.playbook == undefined) {
+    //   this.props.fetchPlaybook(this.props.match.params.playbook_id)
+    // }
 
     if (this.props.call == undefined) {
       this.props.fetchCall(this.props.match.params.call_id)
       .then(() => this.setState({
-          callName: this.props.call.name
+          callName: this.props.call.name || ''
         })
       )
     } else{
       this.setState({
-        callName: this.props.call.name,
+        callName: this.props.call.name || '',
         selectedSection: this.props.selectedSection
       })
     }
@@ -43,22 +48,19 @@ class InCallPage extends Component {
     window.addEventListener("keydown", this.handleKeyDown)
   }
 
-  updateContentBlock = (updatedContentBlock) => {
+  updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedSelectedSection = this.state.selectedSection
-    let copiedOutlines = copiedSelectedSection.outlines.slice(0)
-    let outlineIndex = copiedOutlines.findIndex(outline => outline.id == updatedContentBlock.contentable_id)
 
     // debugger
-    let copiedContentBlocks = copiedOutlines[outlineIndex].content_blocks.slice(0)
+    let copiedContentBlocks = copiedSelectedSection.content_blocks_attributes.slice(0)
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock
 
-    copiedOutlines[outlineIndex].content_blocks = copiedContentBlocks
+    copiedSelectedSection.content_blocks = copiedContentBlocks
 
-    copiedSelectedSection.outlines = copiedOutlines
-    // debugger
     this.setState({
-      selectedSection: copiedSelectedSection
+      selectedSection: copiedSelectedSection,
+      updatedElement: updatedObject
     })
   }
 
@@ -66,8 +68,8 @@ class InCallPage extends Component {
     const prevSelectedSection = prevState.selectedSection
     const copiedContentBlocks = []
 
-    prevSelectedSection.outlines.forEach((outline) => {
-      copiedContentBlocks.push(...outline.content_blocks)
+    prevSelectedSection.content_blocks_attributes.forEach((block) => {
+      copiedContentBlocks.push(block)
     })
     this.props.updateCallState(copiedContentBlocks, this.props.call.id)
   }
@@ -124,58 +126,62 @@ class InCallPage extends Component {
     const playbook = this.props.playbook
     const sections = this.props.sections
     const selectedSection = this.state.selectedSection
-    return[
-      <CallNavigation key="callNavigation" sections={sections} url={this.url} />,
-      <div className="app-wrapper in-call" key="inCall">
-        <PageHeader key="PageHeader" page={playbook?.name}>
-          {
-            // <div className="tabs">
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
-            //     <span className="normal bold">Tab 1</span>
-            //   </NavLink>
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab2`}>
-            //     <span className="normal bold">Tab 2</span>
-            //   </NavLink>
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab3`}>
-            //     <span className="normal bold">Tab 3</span>
-            //   </NavLink>
-            // </div>
-          }
-            <input className="medium" value={this.state.callName} placeholder="Customer Name" onChange={(e) => this.setState({callName: e.target.value})} onBlur={(e) => this.props.call.name !== this.state.callName && this.props.updateCallName(this.props.call.id, this.state.callName)}></input>
-            <div className="actions">
-              <button className="secondary" onClick={this.endCall}>End Call</button>
-            </div>
-        </PageHeader>
-        <div className="page-content-wrapper row-2 a-fr">
-          <div className="page-content-container">
-            <div className="outline-item section-wrapper">
-              <h5 className="bold outline-title">{selectedSection?.title}</h5>
-            </div>
-            <div className="script-wrapper">
-              {
-                selectedSection &&
-                selectedSection.outlines.map((outline, index) => {
-                  return(
-                    <div key={outline.id} className="outline-item">
-                      <span className="outline-title large bold">{outline.title}</span>
-                      {
-                        outline.content_blocks &&
-                        <ContentBlocks content_blocks={outline.content_blocks} updateContentBlock={this.updateContentBlock} />
-                      }
-                    </div>
+
+    const links = sections?.map((section) => {
+      return {
+        title: section.title,
+        path: `/calls/${this.props.match.params.call_id}/playbooks/${this.props.match.params.playbook_id}/sections/${section.id}`,
+        icon: faCog
+      }
+    })
+
+    if (sections) {
+      return[
+        <Sidebar currentUser={this.props.currentUser} key="Sidebar" links={links} lightStyle={true} endCall={this.endCall} />,
+        <div className="app-wrapper in-call" key="inCall">
+          <PageHeader key="PageHeader" page={playbook?.name}>
+            {
+              // <div className="tabs">
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
+              //     <span className="normal bold">Tab 1</span>
+              //   </NavLink>
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab2`}>
+              //     <span className="normal bold">Tab 2</span>
+              //   </NavLink>
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab3`}>
+              //     <span className="normal bold">Tab 3</span>
+              //   </NavLink>
+              // </div>
+              // <input className="medium" value={this.state.callName} placeholder="Customer Name" onChange={(e) => this.setState({callName: e.target.value})} onBlur={(e) => this.props.call.name !== this.state.callName && this.props.updateCallName(this.props.call.id, this.state.callName)}></input>
+            }
+          </PageHeader>
+          <div className="page-content-wrapper row-2 a-fr">
+            <div className="page-content-container">
+              <div className="outline-item section-wrapper">
+                <h5 className="bold outline-title">{selectedSection?.title}</h5>
+              </div>
+              <div className="script-wrapper">
+                {
+                  selectedSection &&
+                  selectedSection.content_blocks_attributes.map((block, index) =>
+                    <EditContentBlock
+                      key={block.id}
+                      block={block}
+                      updateParentContentBlock={this.updateContentBlock}
+                      updatedObject={this.state.updatedElement}
+                    />
                   )
-                })
-              }
-            </div>
-          </div>
-          <div className="in-call-actions outline-item">
-            <div className="right-actions">
-              <img src={CallGuruLogo} alt="CallGuru Logo" onClick={this.endCall}/>
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    ];
+      ];
+    } else{
+      return(
+        <div></div>
+      )
+    }
   }
 };
 

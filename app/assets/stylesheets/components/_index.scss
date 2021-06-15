@@ -1,5 +1,6 @@
 // Import your components CSS files here.
 @import "alert";
+@import "block";
 @import "avatar";
 @import "button";
 @import "navbar";
@@ -14,6 +15,8 @@
 @import "filter_search";
 @import "in_call_components";
 @import "in_call";
+@import "edit_block";
+@import "sidebar";
 
 
 body{
@@ -55,34 +58,34 @@ body{
     line-height: 20px;
   }
 
-  p.extra-small, span.extra-small, button.extra-small {
-    font-size: 8px;
-    line-height: 8px;
-  }
-
-  p.small, span.small, button.small {
-    font-size: 10px;
-    line-height: 10px;
-  }
-
-  p.medium, span.medium, button.medium {
+  p.extra-small, span.extra-small, button.extra-small, label.extra-small {
     font-size: 14px;
-    line-height: 14px;
+    line-height: 18px;
   }
 
-  p, p.normal, span.normal, button.normal {
+  p.small, span.small, button.small, label.small {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  p.medium, span.medium, button.medium, label.medium {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  p, p.normal, span.normal, button.normal, label.normal {
     font-size: 16px;
     line-height: 16px;
   }
 
-  p.large, span.large, button.large {
-    font-size: 18px;
-    line-height: 18px;
+  p.large, span.large, button.large, label.large {
+    font-size: 20px;
+    line-height: 24px;
   }
 
-  p.extra-large, span.extra-large, button.extra-large {
-    font-size: 20px;
-    line-height: 20px;
+  p.extra-large, span.extra-large, button.extra-large, label.extra-large {
+    font-size: 24px;
+    line-height: 28px;
   }
 }
 
@@ -115,4 +118,28 @@ body{
 .seperater-horizontal{
   width: 1px;
   background: $gray4;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.light1{
+  color: $light1;
+}
+
+.light2{
+  color: $light2;
+}
+
+.light3{
+  color: $light3;
+}
+
+.light4{
+  color: $light4;
+}
+
+.light5{
+  color: $light5;
 }

@@ -12,13 +12,29 @@ import { startCall } from '../helper-methods/callMethods'
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 
+import PlaybookModal from '../components/playbookModal'
+
 // import playbooks from '../db/playbooks'
 
 class PlaybooksIndex extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      showModal: false
+    }
+  }
+
   componentDidMount() {
     if (this.props.playbooks.length === 0) {
       this.props.fetchPlaybooks(this.props.currentUser.company_id)
     }
+  }
+
+  toggleModal = (playbook) => {
+    this.setState({
+      showModal: !this.state.showModal,
+      modalPlaybook: playbook
+    })
   }
 
   render() {
@@ -44,24 +60,20 @@ class PlaybooksIndex extends Component {
           }
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
-          <div className="stretch">
-            <span className="large">This is a list of all your Playbooks. Just click on “start Call” and get going. Otherwise you can also filter or query your Playbooks</span>
-            <div className="filters">
-              <FontAwesomeIcon icon={faSearch} />
-              <FontAwesomeIcon icon={faFilter} />
-            </div>
-          </div>
           <div className="page-content-container">
+            <div className="search-form-control form-group">
+              <input className="form-control string required" placeholder="Search for Playbook" type="text" name="search[query]" id="search_query" />
+              <button name="button" type="submit" className="btn btn-flat">
+                <i className="fas fa-search"></i>
+              </button>
+            </div>
             <div className="wrapped-list">
-              <div className="card center bg-secondary action">
-                <h5 className="bold">Create</h5>
-                <h5 className="bold">Playbook</h5>
-              </div>
               {
                 playbooks &&
-                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => startCall(playbook.id, this.props.createCall, this.props.history)} />)
+                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => this.toggleModal(playbook)} />)
               }
             </div>
+            <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} createCall={this.props.createCall} playbook={this.state.modalPlaybook} />
           </div>
         </div>
       </div>

@@ -1,0 +1,108 @@
+.app{
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.sidebar{
+  height: 100vh; width: 80px;
+  padding-bottom: 30px;
+  background: $primary;
+  transition: width .5s;
+  color: white;
+
+  overflow: hidden;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  &.light{
+    background: white;
+    filter: drop-shadow(0px 4px 20px rgba(59, 149, 232, 0.05));
+    span, &.light .icon{
+      color: $gray4;
+      transition: color .5s;
+    }
+    .sidebar-item:hover span, .sidebar-item:hover .icon{
+      color: $gray2;
+    }
+  }
+  a, span{
+    color: white;
+  }
+  &.expanded{
+    width: 250px;
+    .list .sidebar-item{
+      .icon{
+        font-size: 22px;
+        width: 28px;
+      }
+      span{
+        opacity: 1;
+      }
+    }
+    .navbar-actions button.end-call{
+      width: calc(100% - 40px);
+    }
+  }
+  .logo{
+    height: 100px;
+    .logo-container{
+      transition: all .5s;
+      &.switch{
+        transform: rotateY(360deg)
+      }
+    }
+  }
+  .navbar-actions{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: inherit;
+    button.end-call{
+      width: 100%;
+      justify-self: center;
+
+      transition: width .3s;
+    }
+  }
+  .list{
+    display: grid;
+    width: inherit;
+    .sidebar-item{
+      height: 50px; width: inherit;
+      padding: 0 25px;
+      position: relative;
+      align-items: center;
+
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 20px;
+      transition: background .5s;
+      .icon{
+        width: 32px;
+        transition: all .5s;
+        font-size: 26px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      span{
+        opacity: 0;
+        transition: opacity .2s, color .5s;
+      }
+      &.active{
+        background: linear-gradient(90deg, rgba(255, 75, 117, 0.3) 0%, rgba(9, 44, 76, 0) 100%);
+        .icon, span{
+          color: $secondary;
+        }
+        &::before{
+          content: '';
+          position: absolute;
+          left: 0;
+          width: 5px;
+          height: 100%;
+          background: red;
+        }
+      }
+    }
+  }
+}

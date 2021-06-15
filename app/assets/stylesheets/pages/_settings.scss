@@ -1,0 +1,68 @@
+.app-wrapper.settings{
+  .page-content-container{
+    display: grid;
+    grid-gap: $space * 3px;
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .card{
+    display: grid;
+    grid-gap: 20px;
+    height: fit-content;
+    .inline{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 20px;
+    }
+    button{
+      width: 50%;
+    }
+    .extra-small{
+      color: $gray3;
+    }
+    .card-heading{
+      display: grid;
+      grid-gap: 5px;
+    }
+  }
+  .card.avatar{
+    width: 100%; height: 230px;
+    grid-template-rows: min-content;
+    .avatar-wrapper{
+      height: 140px; width: 140px;
+      justify-self: center;
+      label{
+        width: 100%; height: 100%;
+        border-radius: 50%;
+        position: relative;
+        border: 1px solid $primary;
+        padding: 0;
+        .avatar-placeholder{
+          font-size: 26px;
+        }
+        img{
+          width: 100%; height: 100%;
+          object-fit: contain;
+          border-radius: 50%;
+        }
+        .position-upload-icon{
+          position: absolute;
+          bottom: 0; right: 0;
+          height: 54px; width: 54px;
+          border-radius: 50%;
+          svg.icon{
+            font-size: 25px;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}

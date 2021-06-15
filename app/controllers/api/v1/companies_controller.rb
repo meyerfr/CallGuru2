@@ -4,11 +4,6 @@ class Api::V1::CompaniesController < ApplicationController
 
   def index
     companies = Company.all
-    companies = companies.map { |company|
-      company.as_json.merge({
-        users: company.users
-      })
-    }
     render json: companies
   end
 
@@ -41,6 +36,7 @@ class Api::V1::CompaniesController < ApplicationController
       :website,
       :branch,
       :description,
+      :logo,
       user_attibutes: [
         :first_name,
         :last_name,

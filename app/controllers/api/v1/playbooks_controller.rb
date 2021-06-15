@@ -1,26 +1,22 @@
+require 'securerandom'
+
 class Api::V1::PlaybooksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_company, only: [ :index, :create ]
   before_action :set_playbook, only: [ :show, :update ]
 
   def index
-    playbooks = @company.playbooks.map{|playbook|
-      playbook.as_json.merge({
-        first_section_id: playbook.sections.order(:order_no).first.id
-      })
-    }
-    render json: playbooks
+    render json: @company.playbooks, with_playbook_children: false
   end
 
   def create
-    render json: playbook
+    playbook = @company.playbooks.create
+
+    render json: playbook, with_playbook_children: true
   end
 
   def show
-    playbook = @playbook.as_json.merge({
-      first_section_id: @playbook.sections.order(:order_no).first.id
-    })
-    render json: playbook
+    render json: @playbook, with_playbook_children: true
   end
 
   def update
@@ -41,9 +37,29 @@ class Api::V1::PlaybooksController < ApplicationController
 
   def playbooks_params
     params.require(:playbook).permit(
+      :id,
       :name,
       :description,
-      :status
+      :status,
+      sections_attributes: [
+        :id,
+        :title,
+        :status,
+        :order_no,
+        :_destroy,
+        content_blocks_attributes: [
+          :id,
+          :text,
+          :order_no,
+          :_destroy,
+          content_blocks_attributes: [
+            :id,
+            :text,
+            :order_no,
+            :_destroy
+          ]
+        ]
+      ]
     )
   end
 end

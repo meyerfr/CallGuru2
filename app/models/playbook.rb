@@ -1,7 +1,7 @@
 class Playbook < ApplicationRecord
   belongs_to :company
+  belongs_to :owner, class_name: 'User'
   has_many :sections, dependent: :destroy
-  has_many :outlines, through: :sections
   self.implicit_order_column = "created_at"
 
   STATUSES = ["draft", "archive", "live"]

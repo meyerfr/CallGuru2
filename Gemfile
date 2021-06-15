@@ -47,6 +47,9 @@ gem 'devise_invitable', '~> 2.0.0'
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass'
 gem 'simple_form'
+
+gem 'active_model_serializers'
+
 group :development, :test do  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'

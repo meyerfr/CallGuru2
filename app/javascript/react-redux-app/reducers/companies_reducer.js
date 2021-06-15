@@ -1,4 +1,4 @@
-import { FETCH_COMPANIES, CREATE_COMPANY, FETCH_USERS, ADD_EMPLOYEE } from '../actions'
+import { FETCH_COMPANIES, CREATE_COMPANY, FETCH_USERS, ADD_EMPLOYEE, UPDATE_COMPANY } from '../actions'
 
 export default function companiesReducer(state = null, action) {
   let copiedCompanies = []
@@ -7,7 +7,6 @@ export default function companiesReducer(state = null, action) {
       return state.concat(action.payload);
     case FETCH_COMPANIES:
       return action.payload;
-
     case FETCH_USERS:
       copiedCompanies = state.slice(0)
       return (

@@ -7,6 +7,7 @@ class User < ApplicationRecord
   USER_ROLES = ["Account Manager", "Team Manager", "Agent", "CallGuru Admin"]
 
   belongs_to :company
+  has_one_attached :avatar
   has_many :invitations, class_name: self.to_s, as: :invited_by
   has_many :calls
   validates :first_name, :last_name, presence: true

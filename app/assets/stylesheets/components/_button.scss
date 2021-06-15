@@ -6,16 +6,30 @@ button, input[type=submit]{
   justify-content: center;
   &.stretch{
     width: 100%;
+    justify-content: center;
   }
   &.small-btn{
     padding: ($space + px) ($space * 2px)
   }
 }
 
-button.primary, input[type=submit].primary{
+button.primary, input[type=submit].primary, .button-style.primary{
   &:not(.outline){
     background: $primary;
     color: white;
+    transition: color .3s, width .3s, border .3s, background .3s;
+    &:hover{
+      background: $primary-dark1;
+    }
+    &:focus{
+      border: 8px solid #1462A9;
+    }
+    &:active{
+      background: $primary-light1;
+    }
+    &:disabled{
+      background: $primary-light2;
+    }
   }
   &.outline{
     // background: transparent;
@@ -24,14 +38,45 @@ button.primary, input[type=submit].primary{
   }
 }
 
-button.secondary, input[type=submit].secondary{
+button.secondary, input[type=submit].secondary, .button-style.secondary{
   &:not(.outline){
     background: $secondary;
     color: white;
+    transition: color .3s, width .3s, box-shadow .3s, background .3s;
+    &:hover{
+      background: $secondary-dark1;
+    }
+    &:focus{
+      box-shadow: inset #ffe5eb 0 0 10px;
+    }
+    &:active{
+      background: $secondary-light1;
+    }
+    &:disabled{
+      background: $secondary-light2;
+    }
   }
   &.outline{
     // background: transparent;
     box-shadow: inset 0px 0px 0px 2px $secondary;
+    color: $secondary;
+  }
+}
+
+label{
+  padding: 7px 16px;
+  border-radius: 50px;
+  width: fit-content; height: fit-content;
+  margin: unset;
+  &.primary{
+    background: $primary;
+  }
+  &.secondary{
+    background: $secondary;
+    color: $secondary;
+  }
+  &.secondary-light2{
+    background: $secondary-light2;
     color: $secondary;
   }
 }

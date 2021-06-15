@@ -9,9 +9,11 @@ import { createCall, fetchCall, updateCallState } from '../actions'
 
 import { startCall } from '../helper-methods/callMethods'
 
-import CallNavigation from '../components/callNavigation'
+import EditContentBlock from '../create-process/editContentBlock'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
+
+
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
@@ -19,6 +21,7 @@ class Summary extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      updatedElement: null
     }
   }
 
@@ -44,25 +47,28 @@ class Summary extends Component {
     }
   }
 
-  updateContentBlock = (updatedContentBlock) => {
+  updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedContentBlocks = this.state.content_blocks
+
+    // debugger
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock
-    // debugger
+
+
     this.setState({
-      content_blocks: copiedContentBlocks
+      content_blocks: copiedContentBlocks,
+      updatedElement: updatedObject
     })
   }
 
   endCall = () => {
     this.props.updateCallState(this.state.content_blocks, this.props.match.params.call_id)
-    this.props.history.push(`/playbooks`)
+    this.props.history.push(`/`)
   }
 
   render() {
     const content_blocks = this.state.content_blocks
     return[
-      <CallNavigation key="callNavigation" />,
       <div className="app-wrapper in-call" key="inCall">
         <PageHeader key="PageHeader" page="Call Summary">
           {
@@ -79,7 +85,7 @@ class Summary extends Component {
             // </div>
           }
             <div className="actions">
-              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook_id, this.props.createCall, this.props.history)}>Restart</button>
+              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook.id, this.props.createCall, this.props.history)}>Restart</button>
               <button className="secondary" onClick={this.endCall}>Save & Exit</button>
             </div>
         </PageHeader>
@@ -88,7 +94,14 @@ class Summary extends Component {
             <div className="script-wrapper">
               {
                 content_blocks &&
-                  <ContentBlocks content_blocks={content_blocks} updateContentBlock={this.updateContentBlock} />
+                content_blocks.map((block, index) =>
+                  <EditContentBlock
+                    key={block.id}
+                    block={block}
+                    updateParentContentBlock={this.updateContentBlock}
+                    updatedObject={this.state.updatedElement}
+                  />
+                )
               }
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import logger from 'redux-logger'
 import ReduxPromise from 'redux-promise';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -16,7 +16,6 @@ import App from './containers/app'
 // import KnowledgeIndex from './components/knowledgeIndex';
 // import Profile from './components/profile';
 // import Insights from './components/insights';
-// import AppNavigation from './containers/appNavigation';
 // import PageHeader from './components/pageHeader';
 
 const reactReduxApp = document.getElementById('react_redux_app');
@@ -28,10 +27,15 @@ const initialState = {
   playbooks: [],
   sections: [],
   call: null,
-  callSummary: null
+  callSummary: null,
+  contentTypes: []
 };
 
-const middlewares = applyMiddleware(logger, ReduxPromise);
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const middlewares = composeEnhancers(applyMiddleware(logger, ReduxPromise));
 const store = createStore(rootReducers, initialState, middlewares);
 
 ReactDOM.render(

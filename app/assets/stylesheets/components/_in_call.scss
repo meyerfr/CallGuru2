@@ -20,10 +20,6 @@
       grid-auto-rows: max-content;
       grid-gap: $space * 1.5px;
       overflow: scroll;
-      &:after{
-        content: '';
-        height: 80px;
-      }
     }
   }
 }
