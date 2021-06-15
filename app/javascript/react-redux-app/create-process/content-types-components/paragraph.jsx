@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Paragraph = ({ block, selected, classPrefix, editable }) => {
+const Paragraph = ({ block, selected, classPrefix, editable, updatedElement, myRef, onClick }) => {
   const contentType = block.content_type
 
   if (selected !== null && selected !== undefined) {

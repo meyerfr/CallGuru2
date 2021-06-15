@@ -1,6 +1,7 @@
 .card{
   box-shadow: $shadow-soft-primary;
   padding: $space * 3px;
+  border: none;
   &.bg-secondary{
     box-shadow: $shadow-soft-secondary;
   }
@@ -9,7 +10,7 @@
   &.bg-secondary:hover{
     box-shadow: $shadow-hard-secondary;
   }
-  &:hover{
+  &:not(.no-hover):hover{
     box-shadow: $shadow-hard-primary;
   }
   .title.stretch{

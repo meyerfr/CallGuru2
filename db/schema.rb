@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_20_105714) do
+ActiveRecord::Schema.define(version: 2021_06_10_114029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.uuid "record_id", null: false
+    t.uuid "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.uuid "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "calls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -70,9 +98,11 @@ ActiveRecord::Schema.define(version: 2021_05_20_105714) do
     t.text "description"
     t.string "status", default: "draft"
     t.uuid "company_id", null: false
+    t.uuid "owner_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_playbooks_on_company_id"
+    t.index ["owner_id"], name: "index_playbooks_on_owner_id"
   end
 
   create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -143,12 +173,15 @@ ActiveRecord::Schema.define(version: 2021_05_20_105714) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "calls", "playbooks"
   add_foreign_key "calls", "users"
   add_foreign_key "content_blocks", "content_types"
   add_foreign_key "content_options_summary_items", "content_blocks"
   add_foreign_key "content_options_summary_items", "summary_items"
   add_foreign_key "playbooks", "companies"
+  add_foreign_key "playbooks", "users", column: "owner_id"
   add_foreign_key "sections", "playbooks"
   add_foreign_key "simple_answers", "summary_items"
   add_foreign_key "summary_items", "calls"

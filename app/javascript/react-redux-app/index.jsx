@@ -16,7 +16,6 @@ import App from './containers/app'
 // import KnowledgeIndex from './components/knowledgeIndex';
 // import Profile from './components/profile';
 // import Insights from './components/insights';
-// import AppNavigation from './containers/appNavigation';
 // import PageHeader from './components/pageHeader';
 
 const reactReduxApp = document.getElementById('react_redux_app');

@@ -10,7 +10,6 @@ import { createCall, fetchCall, updateCallState } from '../actions'
 import { startCall } from '../helper-methods/callMethods'
 
 import EditContentBlock from '../create-process/editContentBlock'
-import CallNavigation from '../components/callNavigation'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
 
@@ -64,13 +63,12 @@ class Summary extends Component {
 
   endCall = () => {
     this.props.updateCallState(this.state.content_blocks, this.props.match.params.call_id)
-    this.props.history.push(`/playbooks`)
+    this.props.history.push(`/`)
   }
 
   render() {
     const content_blocks = this.state.content_blocks
     return[
-      <CallNavigation key="callNavigation" />,
       <div className="app-wrapper in-call" key="inCall">
         <PageHeader key="PageHeader" page="Call Summary">
           {
@@ -87,7 +85,7 @@ class Summary extends Component {
             // </div>
           }
             <div className="actions">
-              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook_id, this.props.createCall, this.props.history)}>Restart</button>
+              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook.id, this.props.createCall, this.props.history)}>Restart</button>
               <button className="secondary" onClick={this.endCall}>Save & Exit</button>
             </div>
         </PageHeader>

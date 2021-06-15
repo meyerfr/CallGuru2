@@ -7,8 +7,6 @@ import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 
 import { fetchPlaybook } from '../actions'
 
-import CallNavigation from '../components/callNavigation'
-
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 
@@ -68,7 +66,6 @@ class EditPlaybook extends Component {
     const playbook = this.state.playbook
     return (
       <div className="app-wrapper">
-        <CallNavigation key="callNavigation" sections={playbook.sections} url={this.url} />,
         <PageHeader key="PageHeader" page="Playbooks">
           {
             // <div className="tabs">

@@ -1,26 +1,26 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom'
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faCog } from '@fortawesome/free-solid-svg-icons'
 
+import Illustration from '../../../assets/images/illustration.svg'
+
 const PlaybookCard = (props) => {
   return (
-    <div className="card playbook">
-      <div className="title stretch">
-        <p className="large bold">{props.playbook.name}</p>
-        <div className="edit-actions">
-          <FontAwesomeIcon icon={faPencilAlt} />
-          <FontAwesomeIcon icon={faCog} />
-        </div>
-      </div>
+    <div className="card playbook pointer" onClick={props.onClick}>
+      <img
+        src={Illustration}
+        alt="Playbook Illustration"
+      />
       <div className="content">
-        {props.playbook.description}
-      </div>
-      <div className="card-actions stretch">
-        <br/>
-        <button className="secondary medium" onClick={props.onClick}>Start Call</button>
+        <p className="medium bold">{props.playbook.name}</p>
+        <span className="description extra-small">
+          {props.playbook.description}
+        </span>
+        <div className="card-actions">
+          <label className="secondary-light2 extra-small">Start Call</label>
+        </div>
       </div>
     </div>
   );

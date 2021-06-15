@@ -8,8 +8,6 @@ import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { fetchPlaybook, fetchContentTypes } from '../actions'
 import { uuid } from './helperFunctions'
 
-import CallNavigation from '../components/callNavigation'
-
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 import EditOutlineItem from './editOutlineItem'
@@ -177,7 +175,6 @@ class EditSection extends Component {
     const playbook = this.props.playbook
     const section = this.state.section
     return [
-      <CallNavigation key="callNavigation" sections={playbook?.sections_attributes} url={this.url} />,
       <div className="app-wrapper" key='editSection'>
         <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
           {

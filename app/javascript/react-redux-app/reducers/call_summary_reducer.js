@@ -13,7 +13,7 @@ export default function callSummaryReducer(state = null, action) {
       }
 
       copiedSections.forEach((section) => {
-        section.content_blocks.forEach((outlineBlock) => {
+        section.content_blocks_attributes.forEach((outlineBlock) => {
           contentBlockHelper = outlineBlock.content_blocks_attributes
           contentBlockHelper.forEach((contentBlock) => contentBlock.content_type.form_input && summary.summaryContentBlocks.push(contentBlock))
         })

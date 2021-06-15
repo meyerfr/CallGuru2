@@ -7,13 +7,14 @@ import companiesReducer from './companies_reducer'
 import playbooksReducer from './playbooks_reducer'
 import sectionsReducer from './sections_reducer'
 import callReducer from './call_reducer'
+import userReducer from './user_reducer'
 import callSummaryReducer from './call_summary_reducer'
 import contentTypesReducer from './content_types_reducer'
 
 const identityReducer = (state = null, action) => state;
 
 const rootReducer = combineReducers({
-  currentUser: identityReducer,
+  currentUser: userReducer,
   companies: companiesReducer,
   playbooks: playbooksReducer,
   sections: sectionsReducer,

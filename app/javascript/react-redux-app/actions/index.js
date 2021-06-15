@@ -3,6 +3,9 @@ const BASE_URL = '/api/v1';
 export const LOGOUT = 'LOGOUT'
 export const ACCEPT_INVITE = 'ACCEPT_INVITE'
 export const FETCH_COMPANIES = 'FETCH_COMPANIES'
+export const FETCH_COMPANY = 'FETCH_COMPANY'
+export const UPDATE_COMPANY = 'UPDATE_COMPANY'
+export const UPLOAD_LOGO = 'UPLOAD_LOGO'
 export const CREATE_COMPANY = 'CREATE_COMPANY'
 export const FETCH_USERS = 'FETCH_USERS'
 export const ADD_EMPLOYEE = 'ADD_EMPLOYEE'
@@ -15,6 +18,9 @@ export const CREATE_CALL = 'CREATE_CALL'
 export const UPDATE_CALL_NAME = 'UPDATE_CALL_NAME'
 export const UPDATE_CALL_STATE = 'UPDATE_CALL_STATE'
 export const FETCH_CONTENT_TYPES = 'FETCH_CONTENT_TYPES'
+
+export const UPDATE_USER = 'UPDATE_USER'
+export const UPLOAD_AVATAR = 'UPLOAD_AVATAR'
 
 export function logoutUser(callback) {
   const url = `users/sign_out`;
@@ -63,6 +69,65 @@ export function fetchCompanies(callback) {
 
   return {
     type: FETCH_COMPANIES,
+    payload: promise
+  }
+}
+
+export function fetchCompany(company_id, callback) {
+  const url = `${BASE_URL}/companies/${company_id}`;
+  const promise = fetch(url, {
+    credentials: "same-origin"
+  }).then(r => r.json())
+    // .then(r => typeof callback === 'function' ? callback(r) : r);
+  // console.log("fetchCompanies")
+
+  return {
+    type: FETCH_COMPANY,
+    payload: promise
+  }
+}
+
+export function updateCompany(company, callback) {
+  const url = `${BASE_URL}/companies/${company.id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(company)
+  }).then(r => r.json())
+    .then(r => typeof callback === 'function' && callback(r));
+
+  // debugger
+  return {
+    type: UPDATE_COMPANY,
+    payload: company
+  }
+}
+
+export function uploadLogo(company, callback) {
+  const url = `${BASE_URL}/companies/${company.id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+  const data = new FormData()
+  data.append('company[logo]', company.logo)
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      // 'Accept': 'application/json',
+      // 'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: data
+  }).then(r => r.json())
+    .then(r => typeof callback === 'function' ? callback(r) : r);
+
+  return{
+    type: UPLOAD_LOGO,
     payload: promise
   }
 }
@@ -213,7 +278,6 @@ export function updateCallState(contentBlocks, callId) {
     }).then(r => r.json())
   }
     // .then(data => callback(data));
-    // .then(r => callback(r.json());
 
   return {
     type: UPDATE_CALL_STATE,
@@ -257,4 +321,52 @@ export function fetchContentTypes() {
   return {
     type: FETCH_CONTENT_TYPES,
     payload: promise
-  }}
+  }
+}
+
+
+export function uploadAvatar(user, callback) {
+  const url = `${BASE_URL}/users/${user.id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+  const data = new FormData()
+  data.append('user[avatar]', user.avatar)
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      // 'Accept': 'application/json',
+      // 'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: data
+  }).then(r => r.json())
+    .then(r => typeof callback === 'function' ? callback(r) : r);
+
+  return{
+    type: UPLOAD_AVATAR,
+    payload: promise
+  }
+}
+
+
+export function updateUser(user, callback) {
+  const url = `${BASE_URL}/users/${user.id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(user)
+  }).then(r => r.json())
+    .then(r => typeof callback === 'function' ? callback(r) : r);
+
+  // debugger
+  return {
+    type: UPDATE_USER,
+    payload: user
+  }
+}
