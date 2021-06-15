@@ -105,6 +105,7 @@ demo_playbook = Playbook.create!(
   description: 'Dieses Playbook zeigt dir die Möglichkeiten die CallGuru bietet.',
   status: 'live',
   company_id: companies.first.id,
+  owner_id: User.first.id,
   sections_attributes: [
     {
       title: 'Welcome',

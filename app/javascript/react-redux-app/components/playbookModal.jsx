@@ -44,10 +44,15 @@ const PlaybookModal = (props) => {
             </div>
             <div className="list-item">
               <span className="small bold">Created by</span>
-              <div className="inline-grid">
-                <img src={props.playbook?.owner.avatar} className="avatar small" alt="Avatar" />
-                <span className="small light5">Anthony</span>
-              </div>
+              {
+                props.playbook?.owner.avatar ?
+                  <div className="inline-grid">
+                    <img src={props.playbook?.owner.avatar} className="avatar small" alt="Avatar" />
+                    <span className="small light5">{props.playbook?.owner.first_name}</span>
+                  </div>
+                :
+                  <span className="small light5">{props.playbook?.owner.first_name}</span>
+              }
             </div>
             <div className="list-item">
               <span className="small bold">Last change</span>

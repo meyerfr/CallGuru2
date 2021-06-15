@@ -1,4 +1,4 @@
-import { FETCH_PLAYBOOKS, FETCH_PLAYBOOK } from '../actions'
+import { FETCH_PLAYBOOKS, FETCH_PLAYBOOK, UPLOAD_AVATAR } from '../actions'
 
 export default function playbooksReducer(state = null, action) {
   let copiedPlaybooks = []
@@ -16,6 +16,20 @@ export default function playbooksReducer(state = null, action) {
         copiedPlaybooks.map((playbook) => {
           if (playbook.id == action.payload.id) {
             return action.payload
+          }
+          return playbook
+        })
+      )
+    case UPLOAD_AVATAR:
+      copiedPlaybooks = state.slice()
+      debugger
+      return (
+        copiedPlaybooks.map((playbook) => {
+          if (playbook.owner.id == action.payload.id) {
+            return {
+              ...payload,
+              owner: action.payload
+            }
           }
           return playbook
         })
