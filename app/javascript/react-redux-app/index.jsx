@@ -35,9 +35,9 @@ const initialState = {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-let middlewares = []
+let middlewares = [ReduxPromise]
 if (process.env.NODE_ENV !== 'production') {
-  middlewares = [...middlewares, logger, ReduxPromise]
+  middlewares = [...middlewares, logger]
 }
 
 const store = createStore(rootReducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));

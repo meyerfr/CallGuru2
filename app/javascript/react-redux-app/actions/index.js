@@ -102,7 +102,7 @@ export function updateCompany(company, callback) {
   }).then(r => r.json())
     .then(r => typeof callback === 'function' && callback(r));
 
-  // debugger
+
   return {
     type: UPDATE_COMPANY,
     payload: company
@@ -257,7 +257,7 @@ export function updateCallState(contentBlocks, callId) {
       summaryItems.push(block.summary_item)
     }
   })
-  // debugger
+
   if (summaryItems.length > 0) {
     const body = {
       call: {
@@ -305,7 +305,7 @@ export function updateCallName(callId, callName) {
     body: JSON.stringify(body)
   }).then(r => r.json())
 
-  // debugger
+
   return {
     type: UPDATE_CALL_NAME,
     payload: callName
@@ -364,7 +364,7 @@ export function updateUser(user, callback) {
   }).then(r => r.json())
     .then(r => typeof callback === 'function' ? callback(r) : r);
 
-  // debugger
+
   return {
     type: UPDATE_USER,
     payload: user

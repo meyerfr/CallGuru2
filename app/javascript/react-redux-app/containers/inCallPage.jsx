@@ -51,7 +51,7 @@ class InCallPage extends Component {
   updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedSelectedSection = this.state.selectedSection
 
-    // debugger
+
     let copiedContentBlocks = copiedSelectedSection.content_blocks_attributes.slice(0)
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock

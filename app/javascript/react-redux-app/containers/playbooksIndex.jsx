@@ -52,7 +52,7 @@ class PlaybooksIndex extends Component {
     const value = event.target.value
     this.setState({
       ...this.state,
-      playbooks: this.props.playbooks.filter((playbook) => playbook.name.includes(value)),
+      playbooks: this.props.playbooks.filter((playbook) => playbook.name.toLowerCase().includes(value.toLowerCase())),
       filter: value
     })
   }

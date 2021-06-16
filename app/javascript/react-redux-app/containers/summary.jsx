@@ -38,7 +38,7 @@ class Summary extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // debugger
+
     if (prevProps.callSummary == null) {
       console.log('setState')
       this.setState({
@@ -50,7 +50,7 @@ class Summary extends Component {
   updateContentBlock = (updatedContentBlock, updatedObject) => {
     let copiedContentBlocks = this.state.content_blocks
 
-    // debugger
+
     let contentBlockIndex = copiedContentBlocks.findIndex(content_block => content_block.id == updatedContentBlock.id)
     copiedContentBlocks[contentBlockIndex] = updatedContentBlock
 

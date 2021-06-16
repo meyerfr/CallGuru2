@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 class EditContentOption extends Component{
 
   shouldComponentUpdate(nextProps){
-      // debugger
+
     if (nextProps.updated.content_option_id === this.props.option.id) {
-      // debugger
+
       return true
     }
     return false
