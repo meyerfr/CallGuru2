@@ -71,6 +71,9 @@ label{
   &.primary{
     background: $primary;
   }
+  &.primary-light2{
+    background: rgba(59, 149, 232, 0.2);
+  }
   &.secondary{
     background: $secondary;
     color: $secondary;
@@ -78,5 +81,8 @@ label{
   &.secondary-light2{
     background: $secondary-light2;
     color: $secondary;
+  }
+  i{
+    margin-right: $space * 0.5px;
   }
 }

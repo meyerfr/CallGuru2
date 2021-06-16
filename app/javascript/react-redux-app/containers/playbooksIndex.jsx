@@ -20,13 +20,24 @@ class PlaybooksIndex extends Component {
   constructor(props){
     super(props)
     this.state = {
-      showModal: false
+      showModal: false,
+      filter: '',
+      playbooks: props.playbook
     }
   }
 
   componentDidMount() {
     if (this.props.playbooks.length === 0) {
       this.props.fetchPlaybooks(this.props.currentUser.company_id)
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.playbooks.length !== this.props.playbooks.length) {
+      this.setState({
+        ...this.state,
+        playbooks: this.props.playbooks
+      })
     }
   }
 
@@ -37,8 +48,17 @@ class PlaybooksIndex extends Component {
     })
   }
 
+  filterPlaybooks = () => {
+    const value = event.target.value
+    this.setState({
+      ...this.state,
+      playbooks: this.props.playbooks.filter((playbook) => playbook.name.includes(value)),
+      filter: value
+    })
+  }
+
   render() {
-    const playbooks = this.props.playbooks
+    const playbooks = this.state.playbooks
     return (
       <div className="app-wrapper">
         <PageHeader key="PageHeader" page="Playbooks">
@@ -62,7 +82,7 @@ class PlaybooksIndex extends Component {
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
             <div className="search-form-control form-group">
-              <input className="form-control string required" placeholder="Search for Playbook" type="text" name="search[query]" id="search_query" />
+              <input className="form-control string required" value={this.state.filter} placeholder="Search for Playbook" type="text" onChange={this.filterPlaybooks} name="search[query]" id="search_query" />
               <button name="button" type="submit" className="btn btn-flat">
                 <i className="fas fa-search"></i>
               </button>

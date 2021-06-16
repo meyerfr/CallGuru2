@@ -35,8 +35,12 @@ const initialState = {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const middlewares = composeEnhancers(applyMiddleware(logger, ReduxPromise));
-const store = createStore(rootReducers, initialState, middlewares);
+let middlewares = []
+if (process.env.NODE_ENV !== 'production') {
+  middlewares = [...middlewares, logger, ReduxPromise]
+}
+
+const store = createStore(rootReducers, initialState, composeEnhancers(applyMiddleware(...middlewares)));
 
 ReactDOM.render(
   <Provider store={store}>

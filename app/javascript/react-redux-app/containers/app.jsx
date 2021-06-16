@@ -98,7 +98,7 @@ class App extends Component {
               ]}
             />
             <Route
-              path="/backlog"
+              path="/backoffice"
               render={props => [
                 <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
                 <Backlog {...props} key="component" loggedInStatus={this.state.isLoggedIn} />

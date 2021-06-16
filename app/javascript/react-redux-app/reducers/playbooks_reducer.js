@@ -22,7 +22,6 @@ export default function playbooksReducer(state = null, action) {
       )
     case UPLOAD_AVATAR:
       copiedPlaybooks = state.slice()
-      debugger
       return (
         copiedPlaybooks.map((playbook) => {
           if (playbook.owner.id == action.payload.id) {

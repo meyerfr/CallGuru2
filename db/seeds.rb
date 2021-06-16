@@ -106,6 +106,7 @@ demo_playbook = Playbook.create!(
   status: 'live',
   company_id: companies.first.id,
   owner_id: User.first.id,
+  duration: 15,
   sections_attributes: [
     {
       title: 'Welcome',
@@ -353,22 +354,15 @@ demo_playbook = Playbook.create!(
   ]
 )
 
-# Outline.first.content_blocks.create({
-#   text: 'Test Content Options',
-#   content_type_id: paragraph.id,
-#   content_blocks_attributes: [
-#     {
-#       text: 'Option 1',
-#       content_type_id: paragraph.id
-#     },
-#     {
-#       text: 'Option 2',
-#       content_type_id: paragraph.id
-#     },
-#     {
-#       text: 'Option 3',
-#       content_type_id: paragraph.id
-#     },
-#   ]
-# })
+tags = Tag.create([
+  {
+    name: 'Marketing'
+  },
+  {
+    name: 'Closing'
+  },
+  {
+    name: 'Customers'
+  }
+])
 

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/teams', to: 'pages#home'
   get '/settings', to: 'pages#home'
   get '/settings/company', to: 'pages#home'
-  get '/backlog', to: 'pages#home'
+  get '/backoffice', to: 'pages#home'
   get '/companies/:id', to: 'pages#home'
   get '/playbooks/:playbook_id', to: 'pages#home'
   get '/playbooks/:playbook_id/sections/:id', to: 'pages#home'

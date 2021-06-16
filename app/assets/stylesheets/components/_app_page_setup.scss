@@ -33,7 +33,6 @@
       transform: translateX(-50%);
 
       height: 100px;
-
       a{
         display: flex;
         justify-content: center;
@@ -154,6 +153,12 @@
       @media (min-width: 1441px) {
         .wrapped-list {
           grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+      }
+      // Extra Extra large devices (large desktops, 1200px and up)
+      @media (min-width: 2100px) {
+        .wrapped-list {
+          grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         }
       }
     }

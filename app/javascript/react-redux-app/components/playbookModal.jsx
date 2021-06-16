@@ -40,7 +40,7 @@ const PlaybookModal = (props) => {
           <div className="list">
             <div className="list-item">
               <span className="small bold">Duration</span>
-              <span className="small light5">15 minutes</span>
+              <span className="small light5">{props.playbook?.duration} minutes</span>
             </div>
             <div className="list-item">
               <span className="small bold">Created by</span>
@@ -57,6 +57,27 @@ const PlaybookModal = (props) => {
             <div className="list-item">
               <span className="small bold">Last change</span>
               <span className="small light5">{moment(props.playbook?.updated_at).format('Do MMMM')}</span>
+            </div>
+            <div className="list-item">
+              <span className="small bold">Tags</span>
+              <div className="d-flex f-wrap card-actions">
+                {
+                  props.playbook?.duration &&
+                  <label className="extra-small duration">
+                    <i className="far fa-clock"></i>
+                    {props.playbook?.duration} minutes
+                  </label>
+                }
+                {
+                  props.playbook?.tags.map((tag) => {
+                    return(
+                      <label key={tag.name} className="primary-light2 extra-small">
+                        {tag.name}
+                      </label>
+                    )
+                  })
+                }
+              </div>
             </div>
           </div>
         </div>

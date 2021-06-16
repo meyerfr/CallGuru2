@@ -47,8 +47,8 @@ const defaultLinks = [
     icon: faCog
   },
   {
-    title: 'Backlog',
-    path: '/backlog',
+    title: 'Back office',
+    path: '/backoffice',
     icon: faCog
   },
 ]
@@ -143,7 +143,7 @@ class Sidebar extends Component {
                 if ((navLink.title == 'Backlog' && currentUser.role == "CallGuru Admin") || navLink.title !== "Backlog") {
                   return (
                     <OverlayNavLink key={navLink.title} position="right" tooltip_text={navLink.title}>
-                      <NavLink activeClassName="active" exact className="sidebar-item" to={navLink.path}>
+                      <NavLink activeClassName="active" exact={navLink.path === "/"} className="sidebar-item" to={navLink.path}>
                         <FontAwesomeIcon icon={navLink.icon} className="icon" />
                         <span className="small">{navLink.title}</span>
                       </NavLink>

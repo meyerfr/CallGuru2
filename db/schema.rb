@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_10_114029) do
+ActiveRecord::Schema.define(version: 2021_06_16_100007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2021_06_10_114029) do
     t.uuid "owner_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "duration"
     t.index ["company_id"], name: "index_playbooks_on_company_id"
     t.index ["owner_id"], name: "index_playbooks_on_owner_id"
   end
@@ -132,6 +133,22 @@ ActiveRecord::Schema.define(version: 2021_06_10_114029) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["call_id"], name: "index_summary_items_on_call_id"
     t.index ["content_block_id"], name: "index_summary_items_on_content_block_id"
+  end
+
+  create_table "tag_joins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id", null: false
+    t.string "tagable_type", null: false
+    t.uuid "tagable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_tag_joins_on_tag_id"
+    t.index ["tagable_type", "tagable_id"], name: "index_tag_joins_on_tagable"
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -186,5 +203,6 @@ ActiveRecord::Schema.define(version: 2021_06_10_114029) do
   add_foreign_key "simple_answers", "summary_items"
   add_foreign_key "summary_items", "calls"
   add_foreign_key "summary_items", "content_blocks"
+  add_foreign_key "tag_joins", "tags"
   add_foreign_key "users", "companies"
 end
