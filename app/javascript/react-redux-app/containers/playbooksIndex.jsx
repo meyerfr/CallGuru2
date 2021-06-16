@@ -59,6 +59,8 @@ class PlaybooksIndex extends Component {
 
   render() {
     const playbooks = this.state.playbooks
+    console.log(playbooks)
+    console.log(playbooks ? true : false)
     return (
       <div className="app-wrapper">
         <PageHeader key="PageHeader" page="Playbooks">
