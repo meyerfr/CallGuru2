@@ -43,7 +43,7 @@
 
 <div class="mail-wrapper">
   <div class="header">
-    <%= image_tag attachments['logo.png'].url %>
+    <%= image_tag attachments['logo.svg'].try(:url) %>
     <h2>Password reset</h2>
   </div>
   <div class="content">
