@@ -31,7 +31,7 @@ export function logoutUser(callback) {
       'Content-Type': 'application/json',
       'X-CSRF-Token': csrfToken
     }
-  }).then(r => r.json())
+  })
     // .then(r => typeof callback === 'function' ? callback(r) : r);
 
   return {
