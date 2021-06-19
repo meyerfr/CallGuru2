@@ -44,21 +44,20 @@
 <div class="mail-wrapper">
   <div class="header">
     <%= image_tag "logo_banner_blue.svg" %>
-    <h2>Password reset</h2>
+    <h2>Welcome to CallGuru</h2>
   </div>
   <div class="content">
-    <span class="bold">Hey <%= @resource.first_name %></span>
-    <span>You can confirm your account email through the link below:</span>
+    <span class="bold">Hello <%= @user.first_name %></span>
+    <span>Thank you for your registration at CallGuru.</span>
 
-    <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @resource.confirmation_token), class: 'button-style secondary' %>
+    <%= link_to 'Set up Account', settings_url, class: 'secondary button-style' %>
+
+    <span>In case of any problems or questions please do not hesitate to reach out to me directly. We are still evolving and looking for any feedback we can get - so if you have anything in your mind feel free to just shoot.</span>
+
+    <span>I wish you a great start and would get back to you latest in 14 days to check if everything is how you imagined it :)</span>
 
     <span>Best,</span>
     <span>Your CallGuru Team</span>
-    <div class="ps">
-      <span>
-        PS: If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one.
-      </span>
-    </div>
   </div>
 
 </div>

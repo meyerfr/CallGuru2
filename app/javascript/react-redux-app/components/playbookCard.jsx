@@ -7,8 +7,6 @@ import { faPencilAlt, faClock } from '@fortawesome/free-solid-svg-icons'
 import Illustration from '../../../assets/images/illustration.svg'
 
 const PlaybookCard = (props) => {
-  console.log(props.playbook)
-
   return (
     <div className="card playbook pointer" onClick={props.onClick}>
       <img

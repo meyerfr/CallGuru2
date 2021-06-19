@@ -1,20 +1,38 @@
-<h2>Resend confirmation instructions</h2>
-
-<%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
-  <%= f.full_error :confirmation_token %>
-
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
-                input_html: { autocomplete: "email" } %>
+<div class="login-wrapper">
+  <div class="left-scene">
+    <%= image_tag 'logo_banner_white.svg', class: "logo" %>
+    <%= image_tag 'net.svg', class: 'net' %>
+    <div class="quote">
+      <%= image_tag('quote.svg') %>
+      <span class="large">Most people think ‘selling’ is the same as ‘talking’. But the most effective salespeople know that listening is the most important part of their job.</span>
+      <div class="stretch">
+        <span class="author">Roy Bartell</span>
+        <%= image_tag 'quote.svg', class: 'reverse' %>
+      </div>
+    </div>
   </div>
+  <div class="right-scene">
+    <div class="right-scene-container">
+      <div class="header">
+        <h4 class="bold"><%= "Hey#{resource.first_name ? " #{resource.first_name}" : ''}" %>, sign up to get access</h4>
+        <span class="normal">Please set your password to start CallGuru.</span>
+      </div>
+      <div class="seperater"></div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Resend confirmation instructions" %>
+      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'login-form' }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="move-placeholder-wrapper">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'move-placeholder-input' %>
+          <%= f.label :email, class: 'move-placeholder-placeholder' %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Resend confirmation instructions", class: 'secondary stretch' %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>
 
 <%= render "devise/shared/links" %>

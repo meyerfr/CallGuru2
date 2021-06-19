@@ -17,7 +17,6 @@ export const getCaretCoordinates = (fromStart = true) => {
   const isSupported = typeof window.getSelection !== "undefined";
   if (isSupported) {
     const selection = window.getSelection();
-    console.log(selection)
     if (selection.rangeCount !== 0) {
       const range = selection.getRangeAt(0).cloneRange();
       range.collapse(fromStart ? true : false);

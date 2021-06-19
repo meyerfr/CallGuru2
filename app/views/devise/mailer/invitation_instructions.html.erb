@@ -1,10 +1,76 @@
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  .button-style.secondary{
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    width: fit-content;
+    justify-content: center;
+    background: #FF4B75;
+    color: white;
+    text-decoration: none;
+  }
+  .mail-wrapper{
+    margin: 0 100px;
+    font-family: "Inter";
+  }
+  .header{
+    display: grid;
+    justify-items: center;
+  }
+  .header img{
+    width: 320px;
+  }
+  .content{
+    display: grid;
+    grid-gap: 8px;
+    font-size: 18px;
+    color: #4F4F4F;
+  }
+  .content a{
+    justify-self: center;
+    font-size: 16px;
+    margin: 20px 0;
+  }
+  .bold{
+    font-weight: bold;
+  }
+  .ps{
+    font-size: 12px;
+    display: grid;
+  }
+</style>
 
-<p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_user_invitation_url(@resource, invitation_token: @token) %></p>
+<div class="mail-wrapper">
+  <div class="header">
+    <%= image_tag "logo_banner_blue.svg" %>
+    <h2>Your CallGuru is ready for action</h2>
+  </div>
+  <div class="content">
+    <span class="bold">Hello <%= @resource.first_name %></span>
+    <% if @resource.created_by_invite? && @resource.invited_by.role === 'CallGuru Admin' %>
+      <span>I just set up your new CallGuru account and you are now ready to skyrock your team performance.</span>
+    <% else %>
+      <span><%= @resource.invited_by.first_name %> just invited you to join CallGuru. Set up your Account to get started.</span>
+    <% end %>
 
-<% if @resource.invitation_due_at %>
-  <p><%= t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :'devise.mailer.invitation_instructions.accept_until_format')) %></p>
-<% end %>
+    <%= link_to t("devise.mailer.invitation_instructions.accept"), accept_user_invitation_url(@resource, invitation_token: @token), class: 'secondary button-style' %>
 
-<p><%= t("devise.mailer.invitation_instructions.ignore") %></p>
+    <span>In case of any problems or questions please do not hesitate to reach out to me directly. We are still evolving and looking for any feedback we can get - so if you have anything in your mind feel free to just shoot.</span>
+
+    <span>I wish you a great start and would get back to you latest in 14 days to check if everything is how you imagined it :)</span>
+
+    <span>Best,</span>
+    <span>Your CallGuru Team</span>
+    <div class="ps">
+      <span>
+        PS:
+        <% if @resource.invitation_due_at %>
+          <%= t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :'devise.mailer.invitation_instructions.accept_until_format')) %>
+        <% end %>
+        <%= t("devise.mailer.invitation_instructions.ignore") %>
+      </span>
+    </div>
+  </div>
+
+</div>

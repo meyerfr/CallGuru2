@@ -40,7 +40,6 @@ class Summary extends Component {
   componentDidUpdate(prevProps, prevState) {
 
     if (prevProps.callSummary == null) {
-      console.log('setState')
       this.setState({
         content_blocks: this.props.callSummary.summaryContentBlocks
       })

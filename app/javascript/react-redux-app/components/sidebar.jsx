@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Link, NavLink } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faFolderOpen, faComments, faUser, faUserFriends, faChartPie, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faFolderOpen, faComments, faUser, faUserFriends, faChartPie, faCog, faSignOutAlt, faUserLock } from '@fortawesome/free-solid-svg-icons'
 
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
@@ -49,7 +49,7 @@ const defaultLinks = [
   {
     title: 'Back office',
     path: '/backoffice',
-    icon: faCog
+    icon: faUserLock
   },
 ]
 
@@ -94,7 +94,7 @@ class Sidebar extends Component {
   }
 
   logout = (callback) => {
-    this.props.logoutUser().then(() => console.log('logOut'))
+    this.props.logoutUser()
     .then(() => window.location.href = "/")
   }
 
@@ -140,7 +140,7 @@ class Sidebar extends Component {
           <div className="list">
             {
               firstLinks.map(navLink => {
-                if ((navLink.title == 'Backlog' && currentUser.role == "CallGuru Admin") || navLink.title !== "Backlog") {
+                if ((navLink.title == 'Back office' && currentUser.role == "CallGuru Admin") || navLink.title !== "Back office") {
                   return (
                     <OverlayNavLink key={navLink.title} position="right" tooltip_text={navLink.title}>
                       <NavLink activeClassName="active" exact={navLink.path === "/"} className="sidebar-item" to={navLink.path}>

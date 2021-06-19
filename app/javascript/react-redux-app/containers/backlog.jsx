@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +9,9 @@ import { faSearch, faFilter, faPencilAlt, faCog } from '@fortawesome/free-solid-
 import PageHeader from '../components/pageHeader'
 import CompanyCard from '../components/companyCard'
 import CreateCompanyModal from './createCompanyModal'
+import BackOffice from '../components/backOffice'
+import CompanyShow from './companyShow';
+
 
 import { fetchCompanies } from '../actions'
 
@@ -26,13 +30,7 @@ class Backlog extends Component {
   }
 
   chooseCompany = (company_id) => {
-    this.props.history.push(`/companies/${company_id}`);
-  }
-
-  toggleCreateCompanyModal = () => {
-    this.setState({
-      showCreateModal: !this.state.showCreateModal
-    })
+    this.props.history.push(`/backoffice/companies/${company_id}`);
   }
 
   render() {
@@ -57,29 +55,16 @@ class Backlog extends Component {
             // </div>
           }
         </PageHeader>
-        <div className="page-content-wrapper row-2 a-fr">
-          <div className="stretch">
-            <span className="large">This is a list of all your Playbooks. Just click on “start Call” and get going. Otherwise you can also filter or query your Playbooks</span>
-            <div className="filters">
-              <FontAwesomeIcon icon={faSearch} />
-              <FontAwesomeIcon icon={faFilter} />
-            </div>
-          </div>
-          <div className="page-content-container">
-            <div className="wrapped-list">
-              <div className="card center bg-secondary action" onClick={this.toggleCreateCompanyModal}>
-                <h5 className="bold">Create</h5>
-                <h5 className="bold">Company</h5>
-              </div>
-              {
-                companies &&
-                companies.map((company, index) => <CompanyCard key={index} company={company} chooseCompany={this.chooseCompany} />)
-              }
-            </div>
-          </div>
-        </div>
-      </div>,
-      <CreateCompanyModal key='Modal' show={this.state.showCreateModal} onHide={this.toggleCreateCompanyModal} />
+        <Route
+          exact
+          path="/backoffice"
+          render={props => <BackOffice {...props} key="component" companies={companies} />}
+        />
+        <Route
+          path="/backoffice/companies/:id"
+          render={props => <CompanyShow {...props} key="component" />}
+        />
+      </div>
     ];
   }
 };

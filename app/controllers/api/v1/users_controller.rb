@@ -10,9 +10,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
+    skip_invitation = params.fetch(:sendAutomaticMail) === 'true' ? false : true
     user = User.invite!(users_params.as_json.merge({ company_id: @company.id }), current_user) do |user|
       # only send invite when user is not Agent
-      user.skip_invitation = user.role === 'Agent' ? false : true
+      user.skip_invitation = skip_invitation
     end
 
     user = user.serializable_hash.merge({

@@ -27,6 +27,8 @@ en:
         subject: "Email Changed"
       password_change:
         subject: "Password Changed"
+      invitation_instructions:
+        subject: "CallGuru is now ready for action"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

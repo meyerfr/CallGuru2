@@ -64,6 +64,13 @@
     display: grid;
     grid-gap: 32px;
     overflow: hidden;
+    position: relative;
+    .bottom-right-corner{
+      position: absolute;
+      right: 32px; bottom: 0;
+      width: 50px; height: 50px;
+      padding: 0 !important;
+    }
     &.columns-2{
       padding: 0 40px;
       &.fr-a{
@@ -108,8 +115,8 @@
         grid-gap: $space * 2.5px;
       }
       .list{
-        display: grid;
-        grid-gap: $space * 3px;
+        // display: grid;
+        // grid-gap: $space * 3px;
         .content-item{
           display: grid;
           grid-gap: $space * 2px;

@@ -37,7 +37,6 @@ class EditContentOption extends Component{
 
 
   render(){
-    if (!this.props.value) {console.log('undefined', this.props)}
     return(
       <input key="contentOption" value={this.props.value} onChange={this.onNameUpdate} placeholder="contentOption Text" />
       // <div key="contentBlockWrapper" className="section-wrapper">

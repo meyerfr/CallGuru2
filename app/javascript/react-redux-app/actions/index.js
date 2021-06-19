@@ -65,7 +65,6 @@ export function fetchCompanies(callback) {
     credentials: "same-origin"
   }).then(r => r.json())
     // .then(r => typeof callback === 'function' ? callback(r) : r);
-  // console.log("fetchCompanies")
 
   return {
     type: FETCH_COMPANIES,
@@ -79,7 +78,6 @@ export function fetchCompany(company_id, callback) {
     credentials: "same-origin"
   }).then(r => r.json())
     // .then(r => typeof callback === 'function' ? callback(r) : r);
-  // console.log("fetchCompanies")
 
   return {
     type: FETCH_COMPANY,
@@ -152,8 +150,8 @@ export function createCompany(company, callback) {
   }
 }
 
-export function addEmployee(company_id, user, callback) {
-  const url = `${BASE_URL}/companies/${company_id}/users`;
+export function addEmployee(company_id, user, sendAutomaticMail) {
+  const url = `${BASE_URL}/companies/${company_id}/users?sendAutomaticMail=${sendAutomaticMail}`;
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   const promise = fetch(url, {
     method: 'POST',
@@ -174,7 +172,6 @@ export function addEmployee(company_id, user, callback) {
 
 export function fetchUsers(company_id) {
   const url = `${BASE_URL}/companies/${company_id}/users`;
-  // console.log("fetchUsers")
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
 
   return {
@@ -185,7 +182,6 @@ export function fetchUsers(company_id) {
 
 export function fetchPlaybooks(company_id) {
   const url = `${BASE_URL}/companies/${company_id}/playbooks`;
-  // console.log("fetchUsers")
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
 
   return {
@@ -196,7 +192,6 @@ export function fetchPlaybooks(company_id) {
 
 export function fetchPlaybook(playbook_id) {
   const url = `${BASE_URL}/playbooks/${playbook_id}`;
-  // console.log("fetchUsers")
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
 
   return {
@@ -207,7 +202,6 @@ export function fetchPlaybook(playbook_id) {
 
 export function fetchSections(playbook_id) {
   const url = `${BASE_URL}/playbooks/${playbook_id}/sections`;
-  // console.log("fetchUsers")
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
 
   return {

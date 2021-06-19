@@ -6,6 +6,12 @@ import Modal from 'react-bootstrap/Modal'
 import { addEmployee } from '../actions'
 
 class AddEmployeeModal extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      sendAutomaticMail: true
+    }
+  }
 
   copyAcceptInvitationLink = (accept_user_invitation_url) => {
     const el = document.createElement('textarea');
@@ -17,11 +23,10 @@ class AddEmployeeModal extends Component {
   };
 
   onSubmit = (values) => {
-    this.props.addEmployee(this.props.company_id, values).then((r) => {
+    this.props.addEmployee(this.props.company.id, values, this.state.sendAutomaticMail).then((r) => {
       this.copyAcceptInvitationLink(r.payload.accept_user_invitation_url)
       // this.props.resetForm()
       this.props.onHide()
-
     })
   }
 
@@ -61,8 +66,15 @@ class AddEmployeeModal extends Component {
                   <option value="Agent">Agent</option>
                   <option value="Account Manager">Account Manager</option>
                   <option value="Team Manager">Team Manager</option>
-                  <option value="CallGuru Admin">CallGuru Admin</option>
+                  {
+                    this.props.company?.name === 'CallGuru' && this.props.currentUser.role === 'CallGuru Admin' &&
+                    <option value="CallGuru Admin">CallGuru Admin</option>
+                  }
                 </Field>
+              </div>
+              <div className="d-inline">
+                <input type="checkbox" id="sendAutomaticMail" value="sendAutomaticMail" checked={this.state.sendAutomaticMail} onChange={() => this.setState({sendAutomaticMail: !this.state.sendAutomaticMail})} />
+                <label className="label" htmlFor="sendAutomaticMail">send Automatic Mail</label>
               </div>
               <button className="primary" type="submit">Add employee</button>
             </form>

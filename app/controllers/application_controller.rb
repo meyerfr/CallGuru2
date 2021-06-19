@@ -6,13 +6,13 @@ class ApplicationController < ActionController::Base
   #   root_path
   # end
 
-  # def after_accept_path_for(resource)
-  #   root_path
-  # end
-
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name])
   end
+
+  # def after_accept_path_for(resource)
+  #   root_path
+  # end
 end

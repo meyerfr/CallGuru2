@@ -9,7 +9,7 @@ class Api::V1::CompaniesController < ApplicationController
 
   def create
     company = Company.new(companies_params)
-    if company.save
+    if company.save!
       render json: company
     end
   end
@@ -37,7 +37,7 @@ class Api::V1::CompaniesController < ApplicationController
       :branch,
       :description,
       :logo,
-      user_attibutes: [
+      users_attributes: [
         :first_name,
         :last_name,
         :email

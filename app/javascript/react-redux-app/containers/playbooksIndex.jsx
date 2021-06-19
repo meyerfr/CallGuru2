@@ -29,6 +29,11 @@ class PlaybooksIndex extends Component {
   componentDidMount() {
     if (this.props.playbooks.length === 0) {
       this.props.fetchPlaybooks(this.props.currentUser.company_id)
+    } else{
+      this.setState({
+        ...this.state,
+        playbooks: this.props.playbooks
+      })
     }
   }
 
@@ -59,8 +64,6 @@ class PlaybooksIndex extends Component {
 
   render() {
     const playbooks = this.state.playbooks
-    console.log(playbooks)
-    console.log(playbooks ? true : false)
     return (
       <div className="app-wrapper">
         <PageHeader key="PageHeader" page="Playbooks">
@@ -97,6 +100,7 @@ class PlaybooksIndex extends Component {
             </div>
             <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} createCall={this.props.createCall} playbook={this.state.modalPlaybook} />
           </div>
+          <button className="bottom-right-corner secondary center avatar"><i className="fas fa-plus"></i></button>
         </div>
       </div>
     );

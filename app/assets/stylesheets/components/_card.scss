@@ -17,4 +17,58 @@
     display: flex;
     justify-content: space-between;
   }
+  &.list{
+    &.col3 tr{
+      grid-template-columns: 74px 30% 35% 100%;
+    }
+    thead{
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
+    }
+    tr{
+      display: grid;
+      grid-template-columns: 17% 20% 23% 33% 100%;
+      th, td{
+        padding: 15px;
+        border-right: 1px solid $light3;
+        align-items: start;
+        position: relative;
+        img{
+          margin-right: $space + px;
+        }
+        .open{
+          position: absolute;
+          right: 2px; top: 2px;
+          z-index: 1;
+          padding: 4px 6px;
+          box-shadow: $shadow-soft-primary;
+          background: white;
+          opacity: 0;
+          transition: opacity .3s;
+          i{
+            margin-right: 4px;
+          }
+          &:hover{
+            box-shadow: $shadow-hard-primary;
+          }
+        }
+      }
+      &:hover .open{
+        opacity: 1;
+      }
+      th:last-child, td:last-child{
+        border-right: none;
+      }
+      &:first-child{
+        border-bottom: 1px solid $light3;
+      }
+    }
+    tbody tr{
+      &:nth-child(odd){
+        background: $light1;
+      }
+    }
+  }
 }

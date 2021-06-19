@@ -14,7 +14,6 @@ import DefaultInput from './content-types/defaultInput'
 const OutlineItem = (props) => {
   const {content_block, id} = props
 
-  console.log(content_block)
   switch (content_block.content_type.group) {
     case 'text':
       return <Paragraph content_block={content_block} />

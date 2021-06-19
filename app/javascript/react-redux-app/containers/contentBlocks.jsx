@@ -50,7 +50,6 @@ const ContentBlocks = ({ content_blocks, updateContentBlock }) => {
         case 'multiselect':
           let content_option_ids = []
           content_block.summary_item.content_options_summary_items_attributes.forEach((item) => item._destroy === '1' && content_option_ids.push(item.content_option_id))
-          console.log(content_block.summary_item.content_options_summary_items_attributes)
           return <OutlineItem content_block={content_block} form_value={content_option_ids} key={content_block.id} onMultiSelectChange={onMultiSelectChange} />
           break;
         case 'select':

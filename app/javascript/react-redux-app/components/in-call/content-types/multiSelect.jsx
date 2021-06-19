@@ -1,7 +1,6 @@
 import React from 'react';
 
 const MultiSelect = ({content_block, selected, onChange}) => {
-  console.log('MultiSelect', content_block.summary_item)
   return (
     <div className="outline-script">
       <span>{content_block.text}</span>

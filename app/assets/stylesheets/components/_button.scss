@@ -22,7 +22,7 @@ button.primary, input[type=submit].primary, .button-style.primary{
       background: $primary-dark1;
     }
     &:focus{
-      border: 8px solid #1462A9;
+      box-shadow: inset $primary-light2 0 0 10px;
     }
     &:active{
       background: $primary-light1;

@@ -26,7 +26,6 @@ class EditOutlineItem extends Component{
   }
 
   updateContentBlock = (contentBlock, updatedObject={}) => {
-    console.log(this.props)
     let copiedOutlineContentBlocks = this.props.outline.content_blocks_attributes
     let contentBlockReactId = contentBlock.react_id
     let toBeUpdatedContentBlockIndex = copiedOutlineContentBlocks.findIndex((block) => block.react_id === contentBlockReactId)
@@ -68,7 +67,6 @@ class EditOutlineItem extends Component{
   }
 
   render(){
-    console.log('render', this.props.outline)
     return[
       <input key="outlineTitle" value={this.props.value} onChange={this.onNameUpdate} placeholder="outline Title" />,
       this.props.outline.content_blocks_attributes.map((block) =>

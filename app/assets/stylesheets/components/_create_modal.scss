@@ -1,0 +1,13 @@
+.create-modal.playbook{
+  .modal-content{
+    height: unset;
+    .finish-apply-modal{
+      display: grid;
+      grid-gap: 12px;
+      .finish-apply-modal-body, .finish-apply-modal-body .inline{
+        display: grid;
+        grid-gap: 8px;
+      }
+    }
+  }
+}
