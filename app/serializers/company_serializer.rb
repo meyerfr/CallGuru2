@@ -5,7 +5,11 @@ class CompanySerializer < ActiveModel::Serializer
 
   def logo
     if object.logo.attached?
-      rails_blob_url(object.logo)
+      if Rails.env === 'production'
+        object.logo.url
+      else
+        rails_blob_url(object.logo)
+      end
     end
   end
 end

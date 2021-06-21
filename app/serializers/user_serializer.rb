@@ -8,7 +8,11 @@ class UserSerializer < ActiveModel::Serializer
 
   def avatar
     if object.avatar.attached?
-      rails_blob_url(object.avatar)
+      if Rails.env === 'production'
+        object.avatar.url
+      else
+        rails_blob_url(object.avatar)
+      end
     end
   end
 
