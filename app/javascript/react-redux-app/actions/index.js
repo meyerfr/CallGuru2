@@ -334,7 +334,7 @@ export function uploadAvatar(user, callback) {
     },
     body: data
   }).then(r => r.json())
-    .then(r => typeof callback === 'function' ? callback(r) : r);
+    // .then(r => typeof callback === 'function' ? callback(r) : r);
 
   return{
     type: UPLOAD_AVATAR,

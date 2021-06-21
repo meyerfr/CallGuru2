@@ -135,13 +135,13 @@ class CompanySettings extends Component {
         </div>
         <div className="card no-hover avatar">
           <div className="card-heading">
-            <p className="medium bold">Avatar</p>
+            <p className="medium bold">Logo</p>
           </div>
           <div className="avatar-wrapper">
             <label className="label center pointer" htmlFor="upload-button">
               {
                 logoPreview ?
-                  <img src={logoPreview}  alt="Avatar" />
+                  <img src={logoPreview}  alt="Logo" />
                 :
                   <div className="avatar-placeholder">
                     {company.name.charAt(0)}
