@@ -172,7 +172,7 @@ class EditContentBlock extends Component{
     if (copiedContentBlock.summary_item.simple_answer_attributes.content === '') {
       copiedContentBlock.summary_item._destroy = '1'
     }else{
-      copiedContentBlock.summary_item._destroy = '1'
+      copiedContentBlock.summary_item._destroy = '0'
     }
     this.setState({
       block: copiedContentBlock,

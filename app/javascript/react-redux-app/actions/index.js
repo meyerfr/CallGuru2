@@ -245,10 +245,19 @@ export function createCall(playbook_id) {
 }
 
 export function updateCallState(contentBlocks, callId) {
+
   let summaryItems = []
   contentBlocks.forEach((block) => {
-    if (block.content_type.form_input) {
-      summaryItems.push(block.summary_item)
+    if (block.content_blocks_attributes.length > 0) {
+      block.content_blocks_attributes.forEach((contentBlockAttribute) => {
+        if (contentBlockAttribute.content_type.form_input) {
+          summaryItems.push(contentBlockAttribute.summary_item)
+        }
+      })
+    } else{
+      if (block.content_type.form_input) {
+        summaryItems.push(block.summary_item)
+      }
     }
   })
 
@@ -260,6 +269,7 @@ export function updateCallState(contentBlocks, callId) {
     }
     const url = `${BASE_URL}/calls/${callId}`;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
 
     const promise = fetch(url, {
       method: 'PATCH',

@@ -1,6 +1,18 @@
 Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 Rails.application.routes.draw do
-  devise_for :users, controllers: { invitations: 'users/invitations' }
+  devise_for :users,
+    # defaults: { format: :json },
+    # path: '',
+    # path_names: {
+    #   sign_in: 'api/login',
+    #   sign_out: 'api/logout',
+    #   registration: 'api/signup'
+    # },
+    controllers: {
+      invitations: 'users/invitations',
+      sessions: 'users/sessions'
+      # registrations: 'registrations'
+    }
   root to: 'pages#home'
 
   get '/knowledge', to: 'pages#home'
