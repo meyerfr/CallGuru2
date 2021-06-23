@@ -6,17 +6,17 @@ const Select = ({ block, editable, updatedElement, updateParentContentBlock, onC
   const contentType = block.content_type
   let selected_block_ids = []
 
-  if(Array.isArray(block.summary_item.content_options_summary_items_attributes)){
-    block.summary_item.content_options_summary_items_attributes.forEach((item) => item._destroy === '1' && selected_block_ids.push(item.content_block_id))
+  if(block.content_type.style === 'multiselect'){
+    block.summary_item.content_options_summary_items_attributes.forEach((item) => item._destroy === '0' && selected_block_ids.push(item.content_block_id))
   } else{
     selected_block_ids.push(block.summary_item.content_options_summary_items_attributes.content_block_id)
   }
 
   switch (contentType.style) {
     case 'select':
-      return(
-        <div className={`block ${contentType.style}`}>
-          <p>{block.text}</p>
+      return[
+        <p className="block" key={block.id}>{block.text}</p>,
+        <div className="blocks inline form-field select" key={`${block.id}-blocks`}>
           {
             block.content_blocks_attributes.map((block) =>
               <EditContentBlock
@@ -33,11 +33,11 @@ const Select = ({ block, editable, updatedElement, updateParentContentBlock, onC
             )
           }
         </div>
-      );
+      ];
     case 'multiselect':
-      return(
-        <div className={`block ${contentType.style}`}>
-          <p>{block.text}</p>
+      return[
+        <p className="block" key={block.id}>{block.text}</p>,
+        <div className="blocks inline form-field multiselect" key={`${block.id}-blocks`}>
           {
             block.content_blocks_attributes.map((block) =>
               <EditContentBlock
@@ -54,7 +54,7 @@ const Select = ({ block, editable, updatedElement, updateParentContentBlock, onC
             )
           }
         </div>
-      );
+      ];
     default:
       return <span className="block">{contentType.style} - No Component for List style</span>;
   }

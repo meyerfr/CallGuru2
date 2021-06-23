@@ -9,18 +9,18 @@ class SummaryItemSerializer < ActiveModel::Serializer
       content_options_summary_items = object.content_options_summary_items
       return content_options_summary_items.length.positive? ? content_options_summary_items.first : object.content_options_summary_items.new
     when 'multiselect'
-      content_options_summary_items = object.content_options_summary_items
-      new_content_options_summary_items = []
+      # content_options_summary_items = object.content_options_summary_items
+      # new_content_options_summary_items = []
 
-      object.content_options.each do |option|
-        existing_option = content_options_summary_items.find_by(content_option_id: option.id)
-        if existing_option
-          new_content_options_summary_items << existing_option
-        else
-          new_content_options_summary_items << summary_item.content_options_summary_items.new(content_option_id: option.id)
-        end
-      end
-      return new_content_options_summary_items
+      # content_options_summary_items.each do |option|
+      #   existing_option = content_options_summary_items.find_by(content_option_id: option.id)
+      #   if existing_option
+      #     new_content_options_summary_items << existing_option
+      #   else
+      #     new_content_options_summary_items << summary_item.content_options_summary_items.new(content_option_id: option.id)
+      #   end
+      # end
+      ActiveModel::Serializer::CollectionSerializer.new(object.content_options_summary_items, serializer: ContentOptionSummaryOptionSerializer)
     end
   end
 

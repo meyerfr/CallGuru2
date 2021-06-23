@@ -90,7 +90,7 @@ class Summary extends Component {
         </PageHeader>
         <div className="page-content-wrapper row-2 a-fr">
           <div className="page-content-container">
-            <div className="script-wrapper">
+            <div className="blocks wrapper">
               {
                 content_blocks &&
                 content_blocks.map((block, index) =>

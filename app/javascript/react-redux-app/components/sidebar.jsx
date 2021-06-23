@@ -143,7 +143,7 @@ class Sidebar extends Component {
                 if ((navLink.title == 'Back office' && currentUser.role == "CallGuru Admin") || navLink.title !== "Back office") {
                   return (
                     <OverlayNavLink key={navLink.title} position="right" tooltip_text={navLink.title}>
-                      <NavLink activeClassName="active" exact={navLink.path === "/"} className="sidebar-item" to={navLink.path}>
+                      <NavLink activeClassName="active" exact={navLink.path === "/"} className="sidebar-item pointer" to={navLink.path}>
                         <FontAwesomeIcon icon={navLink.icon} className="icon" />
                         <span className="small">{navLink.title}</span>
                       </NavLink>
@@ -175,7 +175,7 @@ class Sidebar extends Component {
                     }
                     return (
                       <OverlayNavLink key={navLink.title} position="right" tooltip_text={navLink.title}>
-                        <NavLink activeClassName="active" className="sidebar-item" to={navLink.path}>
+                        <NavLink activeClassName="active" className="sidebar-item pointer" to={navLink.path}>
                           <FontAwesomeIcon icon={navLink.icon} className="icon" />
                           <span className="small">{navLink.title}</span>
                         </NavLink>

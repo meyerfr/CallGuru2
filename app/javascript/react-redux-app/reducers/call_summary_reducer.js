@@ -6,6 +6,7 @@ export default function callSummaryReducer(state = null, action) {
   switch (action.type) {
     case CREATE_CALL:
     case FETCH_CALL:
+    case UPDATE_CALL_STATE:
       let copiedSections = action.payload.playbook.sections
       let summary = {
         id: null,
@@ -19,20 +20,21 @@ export default function callSummaryReducer(state = null, action) {
         })
       })
       return summary;
-    case UPDATE_CALL_STATE:
-      let toBeUpdatedIndex
-      let copySummaryContentBlocks = state.summaryContentBlocks
-      action.payload.forEach((contentBlock) => {
-        if (contentBlock.content_type.form_input) {
-          toBeUpdatedIndex = copySummaryContentBlocks.findIndex((summaryContentBlock) => summaryContentBlock.id === contentBlock.id)
-          copySummaryContentBlocks[toBeUpdatedIndex] = contentBlock
-        }
-      })
+    // case UPDATE_CALL_STATE:
+    //   debugger
+    //   let toBeUpdatedIndex
+    //   let copySummaryContentBlocks = state.summaryContentBlocks
+    //   action.payload.forEach((contentBlock) => {
+    //     if (contentBlock.content_type.form_input) {
+    //       toBeUpdatedIndex = copySummaryContentBlocks.findIndex((summaryContentBlock) => summaryContentBlock.id === contentBlock.id)
+    //       copySummaryContentBlocks[toBeUpdatedIndex] = contentBlock
+    //     }
+    //   })
 
-      return {
-        ...state,
-        summaryContentBlocks: copySummaryContentBlocks
-      }
+    //   return {
+    //     ...state,
+    //     summaryContentBlocks: copySummaryContentBlocks
+    //   }
     default:
       return state;
   }

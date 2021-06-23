@@ -71,6 +71,7 @@ class InCallPage extends Component {
     prevSelectedSection.content_blocks_attributes.forEach((block) => {
       copiedContentBlocks.push(block)
     })
+
     this.props.updateCallState(copiedContentBlocks, this.props.call.id)
   }
 
@@ -135,6 +136,7 @@ class InCallPage extends Component {
       }
     })
 
+
     if (sections) {
       return[
         <Sidebar currentUser={this.props.currentUser} key="Sidebar" links={links} lightStyle={true} endCall={this.endCall} />,
@@ -157,10 +159,7 @@ class InCallPage extends Component {
           </PageHeader>
           <div className="page-content-wrapper row-2 a-fr">
             <div className="page-content-container">
-              <div className="outline-item section-wrapper">
-                <h5 className="bold outline-title">{selectedSection?.title}</h5>
-              </div>
-              <div className="script-wrapper">
+              <div className="blocks wrapper">
                 {
                   selectedSection &&
                   selectedSection.content_blocks_attributes.map((block, index) =>

@@ -14,7 +14,8 @@ class Api::V1::CallsController < ApplicationController
   end
 
   def update
-    render json: @call.update!(calls_params)
+    @call.update(calls_params)
+    render json: @call
   end
 
   private
