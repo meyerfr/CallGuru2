@@ -5,9 +5,9 @@ const Paragraph = ({ block, selected, classPrefix, editable, updatedElement, myR
 
   if (selected !== null && selected !== undefined) {
     return(
-      <div className="d-flex block">
-        <input type="radio" id={block.id} value={block.text} checked={selected} onChange={() => onClick({...block, ref: myRef}, updatedElement)} />
-        <label className="label" htmlFor={block.id}>{block.text}</label>
+      <div className="d-flex block pointer">
+        <input type={classPrefix.includes('multiselect') ? 'checkbox' : 'radio'} className="pointer" id={block.id} value={block.text} checked={selected} onChange={() => onClick({...block, ref: myRef}, updatedElement)} />
+        <label className="label pointer" htmlFor={block.id}>{block.text}</label>
       </div>
     )
   } else{
@@ -20,7 +20,7 @@ const Paragraph = ({ block, selected, classPrefix, editable, updatedElement, myR
       case 'paragraph':
         ElementTag = 'p'
     }
-    return <ElementTag className={`block ${classPrefix ? classPrefix : ''}`}>{block.text}</ElementTag>
+    return <ElementTag className={`block${classPrefix ? ` ${classPrefix}` : ''}`}>{block.text}</ElementTag>
   }
 };
 

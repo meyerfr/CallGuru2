@@ -140,17 +140,28 @@ class EditContentBlock extends Component{
 
   onClick = (clicked_content_block, updatedObject={}) => {
     let copiedContentBlock = this.state.block
-    if (Array.isArray(copiedContentBlock.summary_item.content_options_summary_items_attributes)) {
-      copiedContentBlock.summary_item.content_options_summary_items_attributes.map((item) => {
-        if (item.content_block_id !== clicked_content_block.id) {
-          return item
-        }
-
-        return {
-          ...item,
-          _destroy: item._destroy === '1' ? '0' : '1'
-        }
-      })
+    if (this.state.block.content_type.style === 'multiselect') {
+      let presentContentOption = copiedContentBlock.summary_item.content_options_summary_items_attributes.find((item) => item.content_block_id === clicked_content_block.id)
+      if (presentContentOption) {
+        const newContentOptions = copiedContentBlock.summary_item.content_options_summary_items_attributes.map((item) => {
+          if (item.content_block_id === presentContentOption.content_block_id) {
+            return {
+              ...item,
+              _destroy: item._destroy === '1' ? '0' : '1'
+            }
+          } else{
+            return item
+          }
+        })
+        copiedContentBlock.summary_item.content_options_summary_items_attributes = newContentOptions
+      } else{
+        copiedContentBlock.summary_item.content_options_summary_items_attributes.push({id: null, summary_item_id: copiedContentBlock.summary_item.id, content_block_id: clicked_content_block.id, _destroy: '0'})
+      }
+      if (this.state.block.summary_item.content_options_summary_items_attributes.every((element) => element._destroy === '1')) {
+        copiedContentBlock.summary_item._destroy = '1'
+      } else{
+        copiedContentBlock.summary_item._destroy = '0'
+      }
     } else{
       copiedContentBlock.summary_item.content_options_summary_items_attributes.content_block_id = clicked_content_block.id
       copiedContentBlock.summary_item._destroy = '0'
@@ -165,14 +176,15 @@ class EditContentBlock extends Component{
     })
   }
 
-  onInputChange = () => {
-    event.preventDefault()
+  onInputChange = (block, event) => {
+    if (event.target) {event.preventDefault()}
+    const newValue = event.target ? event.target.value : event
     let copiedContentBlock = this.state.block
-    copiedContentBlock.summary_item.simple_answer_attributes.content = event.target.value
+    copiedContentBlock.summary_item.simple_answer_attributes.content = newValue
     if (copiedContentBlock.summary_item.simple_answer_attributes.content === '') {
       copiedContentBlock.summary_item._destroy = '1'
     }else{
-      copiedContentBlock.summary_item._destroy = '1'
+      copiedContentBlock.summary_item._destroy = '0'
     }
     this.setState({
       block: copiedContentBlock,
@@ -327,20 +339,23 @@ class EditContentBlock extends Component{
           />
         case 'outline':
           return(
-            <div className="block outline">
-              <p className="extra-large bold">{block.text}</p>
-              {
-                block.content_blocks_attributes.map((block) =>
-                  <EditContentBlock
-                    updatedObject={this.state.updatedElement}
-                    editable={this.state.editable}
-                    key={block.id}
-                    value={block.text}
-                    block={block}
-                    updateParentContentBlock={this.updateParentContentBlock}
-                  />
-                )
-              }
+            <div className="blocks outline" key={block.id}>
+              <p className="large bold">{block.text}</p>
+              <div className="blocks">
+                {
+                  block.content_blocks_attributes.map((block) => {
+                    return <EditContentBlock
+                      updatedObject={this.state.updatedElement}
+                      editable={editable}
+                      key={block.id}
+                      value={block.text}
+                      block={block}
+                      updateParentContentBlock={this.updateParentContentBlock}
+                    />
+                  }
+                  )
+                }
+              </div>
             </div>
           )
         case 'list':

@@ -245,37 +245,52 @@ export function createCall(playbook_id) {
 }
 
 export function updateCallState(contentBlocks, callId) {
+
   let summaryItems = []
   contentBlocks.forEach((block) => {
-    if (block.content_type.form_input) {
-      summaryItems.push(block.summary_item)
+    if (block.content_blocks_attributes.length > 0) {
+      block.content_blocks_attributes.forEach((contentBlockAttribute) => {
+        if (contentBlockAttribute.content_type.form_input) {
+          summaryItems.push(contentBlockAttribute.summary_item)
+        }
+      })
+    } else{
+      if (block.content_type.form_input) {
+        summaryItems.push(block.summary_item)
+      }
     }
   })
 
-  if (summaryItems.length > 0) {
-    const body = {
-      call: {
-        summary_items_attributes: summaryItems
-      }
+  if (summaryItems.length === 0) {
+    return{
+      type: "NOTHING_CHANGED",
+      payload: null
     }
-    const url = `${BASE_URL}/calls/${callId}`;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
-
-    const promise = fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
-      },
-      body: JSON.stringify(body)
-    }).then(r => r.json())
   }
-    // .then(data => callback(data));
+
+  const body = {
+    call: {
+      summary_items_attributes: summaryItems
+    }
+  }
+  const url = `${BASE_URL}/calls/${callId}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(body)
+  }).then(r => r.json())
+  // .then(data => callback(data));
 
   return {
     type: UPDATE_CALL_STATE,
-    payload: contentBlocks
+    payload: promise
   };
 }
 

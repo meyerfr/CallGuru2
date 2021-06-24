@@ -7,7 +7,7 @@ const List = ({ block, editable, updatedElement, updateParentContentBlock }) => 
   switch (contentType.style) {
     case 'bullet':
       return(
-        <div className="block list bullet">
+        <div className="blocks list bullet">
           {
             block.content_blocks_attributes.map((block) =>
               <EditContentBlock
@@ -25,7 +25,7 @@ const List = ({ block, editable, updatedElement, updateParentContentBlock }) => 
       );
     case 'numbered':
       return(
-        <div className="block list numbered">
+        <div className="blocks list numbered">
           {
             block.content_blocks_attributes.map((block) =>
               <EditContentBlock

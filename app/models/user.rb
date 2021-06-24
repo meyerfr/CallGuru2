@@ -12,5 +12,5 @@ class User < ApplicationRecord
   has_many :calls
   validates :first_name, :last_name, presence: true
   validates :role, inclusion: { in: USER_ROLES, message: "must be one of the following #{USER_ROLES.join(", ")}" }, if: proc { |user| user.role.present? }
-  devise :invitable, :database_authenticatable, :confirmable, :recoverable, :rememberable, :validatable, invite_for: 2.weeks
+  devise :invitable, :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, invite_for: 2.weeks
 end

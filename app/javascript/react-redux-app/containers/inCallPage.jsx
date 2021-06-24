@@ -16,7 +16,8 @@ import EditContentBlock from '../create-process/editContentBlock'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
-import Sidebar from '../components/sidebar'
+import Sidebar2 from '../components/sidebar2'
+import { CallSidebarTop, CallSidebarBottom } from '../components/sidebarHelpers'
 
 class InCallPage extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class InCallPage extends Component {
     prevSelectedSection.content_blocks_attributes.forEach((block) => {
       copiedContentBlocks.push(block)
     })
+
     this.props.updateCallState(copiedContentBlocks, this.props.call.id)
   }
 
@@ -135,9 +137,15 @@ class InCallPage extends Component {
       }
     })
 
+
     if (sections) {
       return[
-        <Sidebar currentUser={this.props.currentUser} key="Sidebar" links={links} lightStyle={true} endCall={this.endCall} />,
+        <Sidebar2
+          key="Sidebar"
+          top={<CallSidebarTop call_id={this.props.match.params.call_id} playbook_id={this.props.match.params.playbook_id} sections={sections} />}
+          bottom={<CallSidebarBottom endCall={this.endCall} />}
+          lightStyle={true}
+        />,
         <div className="app-wrapper in-call" key="inCall">
           <PageHeader key="PageHeader" page={playbook?.name}>
             {
@@ -155,12 +163,9 @@ class InCallPage extends Component {
               // <input className="medium" value={this.state.callName} placeholder="Customer Name" onChange={(e) => this.setState({callName: e.target.value})} onBlur={(e) => this.props.call.name !== this.state.callName && this.props.updateCallName(this.props.call.id, this.state.callName)}></input>
             }
           </PageHeader>
-          <div className="page-content-wrapper row-2 a-fr">
+          <div className="page-content-wrapper">
             <div className="page-content-container">
-              <div className="outline-item section-wrapper">
-                <h5 className="bold outline-title">{selectedSection?.title}</h5>
-              </div>
-              <div className="script-wrapper">
+              <div className="blocks wrapper">
                 {
                   selectedSection &&
                   selectedSection.content_blocks_attributes.map((block, index) =>

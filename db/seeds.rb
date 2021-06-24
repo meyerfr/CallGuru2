@@ -113,6 +113,7 @@ demo_playbook = Playbook.create!(
       description: "Am 'Gatekeeper' vorbei kommen",
       status: 'live',
       order_no: 1,
+      icon: 'door-open',
       content_blocks_attributes: [
         {
           text: 'Welcome',
@@ -200,6 +201,7 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt den Aufbau von CallGuru',
       status: 'live',
       order_no: 2,
+      icon: 'project-diagram'
       content_blocks_attributes: [
         {
           text: 'Team',
@@ -234,6 +236,7 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt die Navigation in der CallGuru App',
       status: 'live',
       order_no: 3,
+      icon: 'route'
       content_blocks_attributes: [
         {
           text: 'Team',
@@ -274,6 +277,7 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt die Knowledge Hub der CallGuru App',
       status: 'live',
       order_no: 4,
+      icon: 'brain',
       content_blocks_attributes: [
         {
           text: 'Find an appointment',
@@ -317,7 +321,7 @@ demo_playbook = Playbook.create!(
           content_blocks_attributes: [
             {
               text: 'I would suggest a video call, do you use Google Meet? Alternatively Zoom, Teams etc.',
-              content_type_id: simpleselect.id,
+              content_type_id: multiselect.id,
               content_blocks_attributes: [
                 {
                   text: 'Zoom',

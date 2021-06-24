@@ -16,7 +16,8 @@ import InCallPage from './inCallPage';
 import Summary from './summary';
 
 import EditSection from '../create-process/editSection'
-import Sidebar from '../components/sidebar'
+import Sidebar2 from '../components/sidebar2'
+import { AppSidebarTop, AppSidebarBottom } from '../components/sidebarHelpers'
 
 
 
@@ -38,6 +39,12 @@ class App extends Component {
     })
   }
 
+  logout = (callback) => {
+    this.props.logoutUser()
+    .then(() => window.location.href = "/")
+  }
+
+
   render() {
     return(
       <div className="app">
@@ -47,7 +54,11 @@ class App extends Component {
               exact
               path='/'
               render={props => [
-                <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
+                <Sidebar2
+                  key="Sidebar"
+                  top={<AppSidebarTop currentUser={this.props.currentUser} />}
+                  bottom={<AppSidebarBottom logout={this.logout} />}
+                />,
                 <PlaybooksIndex {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               ]}
             />
@@ -69,7 +80,7 @@ class App extends Component {
                 <Summary {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               )}
             />
-            <Route
+            {/*<Route
               path="/knowledge"
               render={props => [
                 <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
@@ -89,18 +100,26 @@ class App extends Component {
                 <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
                 <Insights {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               ]}
-            />
+            />*/}
             <Route
               path="/settings"
               render={props => [
-                <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
+                <Sidebar2
+                  key="Sidebar"
+                  top={<AppSidebarTop currentUser={this.props.currentUser} />}
+                  bottom={<AppSidebarBottom logout={this.logout} />}
+                />,
                 <Settings {...props} key="component" loggedInStatus={this.state.isLoggedIn} currentUser={this.props.currentUser} />
               ]}
             />
             <Route
               path="/backoffice"
               render={props => [
-                <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
+                <Sidebar2
+                  key="Sidebar"
+                  top={<AppSidebarTop currentUser={this.props.currentUser} />}
+                  bottom={<AppSidebarBottom logout={this.logout} />}
+                />,
                 <Backlog {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               ]}
             />
@@ -111,13 +130,13 @@ class App extends Component {
                 <CompanyShow {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               ]}
             />*/}
-            <Route
+            {/*<Route
               path="/users/invitation/accept"
               render={props => [
                 <Sidebar currentUser={this.props.currentUser} key="Sidebar" />,
                 <LogIn {...props} key="component" loggedInStatus={this.state.isLoggedIn} acceptInvite={this.acceptInvite} />
               ]}
-            />
+            />*/}
           </Switch>
         </BrowserRouter>
       </div>

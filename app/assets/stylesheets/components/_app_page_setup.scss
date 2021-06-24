@@ -5,15 +5,13 @@
   height: 100vh;
   padding-bottom: $space * 4px;
   position: relative;
+  .page-content-wrapper{
+    padding: 0 0 0 ($space * 5px);
+  }
   .app-container{
     display: grid;
     grid-template-columns: auto 1px 30%;
     grid-gap: $space * 4px;
-    .page-content-wrapper{
-      & > * {
-        padding: 0 0 0 ($space * 5px);
-      }
-    }
   }
   .page-header{
     display: flex;
@@ -52,6 +50,11 @@
       .tab.active{
         border-color: $secondary;
       }
+    }
+    .actions{
+      display: grid;
+      grid-auto-flow: column;
+      grid-gap: $space + px;
     }
   }
   .app-wrapper{
@@ -94,9 +97,9 @@
     &.row-3{
       grid-auto-rows: auto 1fr auto;
     }
-    &:not(.columns-2._70_30) > *:not(.card) {
-      padding: 0 ($space * 5px);
-    }
+    // &:not(.columns-2._70_30) > *:not(.card) {
+    //   padding: 0 ($space * 5px);
+    // }
     &.medium{
       width: 75%;
     }

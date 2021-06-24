@@ -42,18 +42,18 @@ input.block-input{
   }
 }
 
-.app-wrapper .page-content-wrapper .page-content-container .list.numbered{
-  counter-reset: thislist;
-  & > *{
-    display: flex;
-    &::before{
-      counter-increment: thislist;
-      content: counter(thislist) ".";
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 1em;
-      margin-left: -1em
-    }
-  }
-}
+// .app-wrapper .page-content-wrapper .page-content-container .list.numbered{
+//   counter-reset: thislist;
+//   & > *{
+//     display: flex;
+//     &::before{
+//       counter-increment: thislist;
+//       content: counter(thislist) ".";
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       width: 1em;
+//       margin-left: -1em
+//     }
+//   }
+// }

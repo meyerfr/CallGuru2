@@ -1,6 +1,6 @@
 require 'securerandom'
 class SectionSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :status, :order_no, :_destroy, :react_id
+  attributes :id, :title, :description, :status, :icon, :order_no, :_destroy, :react_id
   has_many :content_blocks_attributes
   # belongs_to :playbook, serializer: PlaybookSerializer
 

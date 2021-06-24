@@ -1,7 +1,20 @@
 .app-wrapper.in-call{
-  .page-content-wrapper > *{
-    padding: 0 ($space * 3px);
+  grid-gap: unset;
+  padding-bottom: unset;
+  .page-content-wrapper{
+    grid-template-columns: auto 26%;
+    grid-gap: 50px;
+    padding: unset;
+    &:after{
+      display: block;
+      content: '';
+      height: 100%;
+      background: white;
+    }
   }
+  // .page-content-wrapper > *{
+  //   padding: 0 ($space * 3px);
+  // }
   .page-header{
     background: white;
   }
@@ -9,11 +22,17 @@
     display: grid;
     grid-template-rows: auto 1fr;
     grid-gap: $space * 3px;
-    &:after{
+    padding: 0 0 32px 40px;
+    margin-top: 32px;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
       display: none;
     }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
     &:after{
-      height: 80px;
+      height: 30px;
     }
     .script-wrapper{
       display: grid;
