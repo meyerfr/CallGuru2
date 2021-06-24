@@ -13,7 +13,8 @@ import EditContentBlock from '../create-process/editContentBlock'
 import PageHeader from '../components/pageHeader'
 import ContentBlocks from './contentBlocks'
 
-
+import Sidebar2 from '../components/sidebar2'
+import { CallSummaryTop, CallSummaryBottom } from '../components/sidebarHelpers'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
@@ -68,6 +69,12 @@ class Summary extends Component {
   render() {
     const content_blocks = this.state.content_blocks
     return[
+      <Sidebar2
+          key="Sidebar"
+          top={<CallSummaryTop />}
+          bottom={<CallSummaryBottom repeatCall={() => startCall(this.props.call?.playbook.id, this.props.createCall, this.props.history)} backToPlaybooks={this.endCall} />}
+          lightStyle={true}
+        />,
       <div className="app-wrapper in-call" key="inCall">
         <PageHeader key="PageHeader" page="Call Summary">
           {
@@ -82,15 +89,15 @@ class Summary extends Component {
             //     <span className="normal bold">Tab 3</span>
             //   </NavLink>
             // </div>
+            // <div className="actions">
+            //   <button className="secondary outline" onClick={() => startCall(this.props.call.playbook.id, this.props.createCall, this.props.history)}>Restart</button>
+            //   <button className="secondary" onClick={this.endCall}>Save & Exit</button>
+            // </div>
           }
-            <div className="actions">
-              <button className="secondary outline" onClick={() => startCall(this.props.call.playbook.id, this.props.createCall, this.props.history)}>Restart</button>
-              <button className="secondary" onClick={this.endCall}>Save & Exit</button>
-            </div>
         </PageHeader>
-        <div className="page-content-wrapper row-2 a-fr">
+        <div className="page-content-wrapper">
           <div className="page-content-container">
-            <div className="blocks wrapper">
+            <div className="blocks wrapper card no-hover">
               {
                 content_blocks &&
                 content_blocks.map((block, index) =>

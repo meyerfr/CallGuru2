@@ -35,6 +35,16 @@ button.primary, input[type=submit].primary, .button-style.primary{
     // background: transparent;
     box-shadow: inset 0px 0px 0px 2px $primary;
     color: $primary;
+    transition: color .3s, width .3s, border .3s, background .3s;
+    &:hover{
+      box-shadow: inset 0px 0px 0px 2px $primary-dark1;
+    }
+    &:focus{
+      box-shadow: inset 0px 0px 0px 2px $primary-light1;
+    }
+    &:disabled{
+      opacity: 0.4;
+    }
   }
 }
 
@@ -60,6 +70,18 @@ button.secondary, input[type=submit].secondary, .button-style.secondary{
     // background: transparent;
     box-shadow: inset 0px 0px 0px 2px $secondary;
     color: $secondary;
+    transition: color .3s, width .3s, border .3s, background .3s;
+    background: white;
+    &:hover{
+      box-shadow: inset 0px 0px 0px 2px $secondary-dark1;
+      color: $secondary-dark1;
+    }
+    &:focus{
+      box-shadow: inset 0px 0px 0px 2px $secondary-light1;
+    }
+    &:disabled{
+      opacity: 0.4;
+    }
   }
 }
 

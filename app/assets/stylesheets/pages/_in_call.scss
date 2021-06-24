@@ -42,9 +42,9 @@
 
 .blocks.wrapper{
   grid-gap: 32px;
-  &:after{
-    content: '';
-  }
+  // &:after{
+  //   content: '';
+  // }
   .outline{
     grid-gap: 16px;
     &:not(:last-child):after{
@@ -76,6 +76,7 @@
     justify-self: end;
     background: white;
     box-shadow: $shadow-soft-primary;
+    min-width: 46px;
     &.range{
       grid-gap: unset;
       .range-info{

@@ -263,8 +263,8 @@ export function updateCallState(contentBlocks, callId) {
 
   if (summaryItems.length === 0) {
     return{
-      type: UPDATE_CALL_STATE,
-      payload: contentBlocks
+      type: "NOTHING_CHANGED",
+      payload: null
     }
   }
 
