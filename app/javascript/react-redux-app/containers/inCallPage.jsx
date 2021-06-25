@@ -142,6 +142,8 @@ class InCallPage extends Component {
       return[
         <Sidebar2
           key="Sidebar"
+          inCall={true}
+          endCall={this.endCall}
           top={<CallSidebarTop call_id={this.props.match.params.call_id} playbook_id={this.props.match.params.playbook_id} sections={sections} />}
           bottom={<CallSidebarBottom endCall={this.endCall} />}
           lightStyle={true}

@@ -2,7 +2,6 @@ import React from 'react';
 import OverlayNavLink from './navLink';
 import { NavLink } from 'react-router-dom';
 
-
 export const CallSidebarTop = ({call_id, playbook_id, sections}) => {
   return[
     sections.map((section) => {

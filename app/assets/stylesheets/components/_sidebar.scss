@@ -44,6 +44,8 @@
     }
     .navbar-actions button.end-call{
       width: calc(100% - 40px);
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
   .logo{
@@ -61,9 +63,15 @@
     width: inherit;
     button.end-call{
       width: 100%;
+      max-height: 48px;
       justify-self: center;
 
       transition: width .3s;
+    }
+    .fa-phone-slash{
+      font-size: 35px;
+      color: black;
+      text-align: center;
     }
   }
   .list{

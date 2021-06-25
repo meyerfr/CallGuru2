@@ -6,7 +6,7 @@
   padding-bottom: $space * 4px;
   position: relative;
   .page-content-wrapper{
-    padding: 0 0 0 ($space * 5px);
+    padding: 0 $space * 5px;
   }
   .app-container{
     display: grid;

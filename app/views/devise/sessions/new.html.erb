@@ -18,7 +18,15 @@
         <span class="normal">Please enter your email and your password to start CallGuru.</span>
       </div>
       <div class="seperater"></div>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), remote: true, html: {class: 'login-form' , :"data-type" => 'json', :multipart => true}) do |f| %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'login-form'}) do |f| %>
+        <% if flash[:alert].present? %>
+          <div class="error">
+            <div class="d-inline">
+              <i class="fas fa-exclamation"></i>
+              <span class="small"><%= flash[:alert] %></span>
+            </div>
+          </div>
+        <% end %>
         <div class="move-placeholder-wrapper">
           <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: ' ', class: 'move-placeholder-input' %>
           <%= f.label :email, class: 'move-placeholder-placeholder' %>

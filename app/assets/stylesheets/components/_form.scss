@@ -1,3 +1,22 @@
+.error{
+  border: 1px solid $secondary-light2;
+  padding: 0.75rem 8px;
+  background: rgba(255, 179, 196, 0.3);
+  border-radius: 4px;
+  display: grid;
+  grid-gap: 3px;
+  .d-inline{
+    width: 100%;
+    text-align: center;
+    & > *{
+      color: red
+    }
+    span{
+      margin-left: 5px;
+    }
+  }
+}
+
 .move-placeholder-wrapper{
   position: relative;
   height: 49px;

@@ -46,7 +46,7 @@ class Sidebar2 extends Component {
 
 
   render() {
-    const {top, bottom} = this.props
+    const {top, bottom, inCall, endCall} = this.props
     const { expanded, changeImage, activeLogo, lightStyle } = this.state
     return (
       <div className={`sidebar${expanded ? ' expanded' : ''}${lightStyle ? ' light' : ''}`}>
@@ -65,7 +65,17 @@ class Sidebar2 extends Component {
         <div className="navbar-actions">
           <div className="list">{top}</div>
           <div onClick={this.toggleExpansion} className="pointer"></div>
-          <div className="list gap">{bottom}</div>
+          <div className="list gap">
+          {
+            inCall ?
+              expanded ?
+                <button className={`secondary end-call ${changeImage ? ' switch' : ''}`} id="phone" onClick={endCall}>End Call</button>
+              :
+                <i className="fas fa-phone-slash"></i>
+            :
+              bottom
+          }
+          </div>
         </div>
       </div>
     )
