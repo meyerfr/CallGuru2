@@ -7,7 +7,8 @@ class PagesController < ApplicationController
       company: current_user.company.as_json.merge({
         logo: current_user.company.logo.attached? ? rails_blob_url(current_user.company.logo) : nil
       }),
-      avatar: current_user.avatar.attached? ? rails_blob_url(current_user.avatar) : nil
+      avatar: current_user.avatar.attached? ? rails_blob_url(current_user.avatar) : nil,
+      current_sign_in_at: current_user.current_sign_in_at
     })
   end
 end

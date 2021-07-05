@@ -29,6 +29,10 @@ label.duration{
   background: rgba(15, 71, 123, 0.1);
   color: $primary;
 }
+label.secondary-light2{
+  background: $secondary-light2;
+  color: $secondary;
+}
 .card-actions{
   display: flex;
   overflow: scroll;

@@ -90,9 +90,10 @@ export const AppSidebarTop = ({currentUser}) => {
 }
 
 export const AppSidebarBottom = ({logout}) => {
+  console.log(logout)
   return(
     <OverlayNavLink key="logout" position="right" tooltip_text="Logout">
-      <a className="sidebar-item pointer" key="Logout" onClick={logout}>
+      <a className="sidebar-item pointer" key="Logout" onClick={() => logout()}>
         <i className={`icon fas fa-sign-out-alt`} />
         <span className="small">Logout</span>
       </a>

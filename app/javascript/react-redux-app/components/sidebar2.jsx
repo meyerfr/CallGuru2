@@ -71,7 +71,7 @@ class Sidebar2 extends Component {
               expanded ?
                 <button className={`secondary end-call ${changeImage ? ' switch' : ''}`} id="phone" onClick={endCall}>End Call</button>
               :
-                <i className="fas fa-phone-slash"></i>
+                <i className="fas fa-phone-slash" onClick={endCall}></i>
             :
               bottom
           }

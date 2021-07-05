@@ -7,6 +7,15 @@
     flex-wrap: wrap;
     align-items: center;
   }
+  .img{
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    object-position: left;
+  }
+  .link{
+    color: blue;
+  }
   .list{
     counter-reset: thislist;
     &.numbered{
@@ -68,15 +77,19 @@
     width: 75px;
     text-align: center;
   }
-  input[type="number"], input[type="text"]{
+  input[type="number"], input[type="text"], [contenteditable]{
     border-bottom: 1px solid $primary;
+    height: fit-content;
+    align-self: center;
   }
   .form-field{
     padding: 4px 16px;
     justify-self: end;
     background: white;
     box-shadow: $shadow-soft-primary;
-    min-width: 46px;
+    min-height: 46px;
+    max-width: 70%;
+    border-radius: 4px;
     &.range{
       grid-gap: unset;
       .range-info{
@@ -88,7 +101,28 @@
       }
     }
     &.text{
-      width: 50%;
+      min-width: 50%;
+      span.text[contenteditable]:empty::before {
+        content: 'Answer';
+        color: rgb(117, 117, 117);
+        display: inline-block;
+      }
+      span.text{
+        min-width: 50%;
+      }
+    }
+    &.number{
+      position: relative;
+      min-width: 100px;
+      .width-machine{
+        visibility: hidden;
+      }
+      input[type="number"]{
+        position: absolute;
+        width: calc(100% - 32px);
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
   }
 }
@@ -141,6 +175,11 @@ input[type="checkbox"]{
 input[type="date" i]::-webkit-calendar-picker-indicator{
   margin-left: 0
 }
+
+p.block{
+  line-height: 19px;
+}
+
 .block{
   input[type="radio"], input[type="checkbox"]{
     &:checked{
@@ -186,145 +225,3 @@ input[type="date" i]::-webkit-calendar-picker-indicator{
 }
 
 
-
-.blocks{
-  // input[type=range] {
-  //   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  //   width: 180px; /* Specific width is required for Firefox. */
-  //   height: 3px;
-  //   background: $secondary-light1; /* Otherwise white in Chrome */
-  // }
-
-  // input[type=range]::-webkit-slider-thumb {
-  //   -webkit-appearance: none;
-  // }
-
-  // input[type=range]:focus {
-  //   outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-  // }
-
-  // input[type=range]::-ms-track {
-  //   width: 100%;
-  //   cursor: pointer;
-
-  //   /* Hides the slider so custom styles can be added */
-  //   background: transparent;
-  //   border-color: transparent;
-  //   color: transparent;
-  // }
-
-  // /* Special styling for WebKit/Blink */
-  // input[type=range]::-webkit-slider-thumb {
-  //   -webkit-appearance: none;
-  //   height: 22px;
-  //   width: 22px;
-  //   border-radius: 50%;
-  //   box-shadow: inset 0px 0px 0px 4px $secondary-light1;
-  //   background: white;
-  //   cursor: pointer;
-  //   // margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-  //   // box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
-  // }
-
-//   /* All the same stuff for Firefox */
-//   input[type=range]::-moz-range-thumb {
-//     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-//     border: 1px solid #000000;
-//     height: 36px;
-//     width: 16px;
-//     border-radius: 3px;
-//     background: #ffffff;
-//     cursor: pointer;
-//   }
-
-//   /* All the same stuff for IE */
-//   input[type=range]::-ms-thumb {
-//     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-//     border: 1px solid #000000;
-//     height: 36px;
-//     width: 16px;
-//     border-radius: 3px;
-//     background: #ffffff;
-//     cursor: pointer;
-//   }
-
-  // input[type=range]::-webkit-slider-runnable-track {
-  //   width: 100%;
-  //   height: 8.4px;
-  //   cursor: pointer;
-  //   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  //   background: #3071a9;
-  //   border-radius: 1.3px;
-  //   border: 0.2px solid #010101;
-  // }
-
-  // input[type=range]:focus::-webkit-slider-runnable-track {
-  //   background: #367ebd;
-  // }
-
-  // input[type=range]::-moz-range-track {
-  //   width: 100%;
-  //   height: 8.4px;
-  //   cursor: pointer;
-  //   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  //   background: #3071a9;
-  //   border-radius: 1.3px;
-  //   border: 0.2px solid #010101;
-  // }
-
-  // input[type=range]::-ms-track {
-  //   width: 100%;
-  //   height: 8.4px;
-  //   cursor: pointer;
-  //   background: transparent;
-  //   border-color: transparent;
-  //   border-width: 16px 0;
-  //   color: transparent;
-  // }
-  // input[type=range]::-ms-fill-lower {
-  //   background: #2a6495;
-  //   border: 0.2px solid #010101;
-  //   border-radius: 2.6px;
-  //   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  // }
-  // input[type=range]:focus::-ms-fill-lower {
-  //   background: #3071a9;
-  // }
-  // input[type=range]::-ms-fill-upper {
-  //   background: #3071a9;
-  //   border: 0.2px solid #010101;
-  //   border-radius: 2.6px;
-  //   box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  // }
-  // input[type=range]:focus::-ms-fill-upper {
-  //   background: #367ebd;
-  // }
-}
-
-// input[type="radio"] {
-//   border-radius: 50%;
-//   transition: box-shadow .3s, background .3s;
-//   background: white;
-//   &:checked{
-//     box-shadow: inset 0px 0px 0px 4px $secondary-light1;
-//     border-radius: 50%;
-//     &:hover{
-//       box-shadow: inset 0px 0px 0px 4px $secondary;
-//     }
-//     &:focus{
-//       box-shadow: inset 0px 0px 0px 7px $secondary-light1;
-//     }
-//   }
-//   &:not(:checked){
-//     background: $gray5;
-//     // &:hover{
-//     //   background: $gray-light2;
-//     // }
-//     &:focus{
-//       box-shadow: inset 0px 0px 0px 4px $gray-light1;
-//     }
-//   }
-//   &:disabled{
-//     opacity: 0.4;
-//   }
-// }

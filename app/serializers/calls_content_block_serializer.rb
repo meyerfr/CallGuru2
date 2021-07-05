@@ -7,7 +7,7 @@ class CallsContentBlockSerializer < ActiveModel::Serializer
   belongs_to :content_type, serializer: ContentTypeSerializer
 
   def content_blocks_attributes
-    ActiveModel::Serializer::CollectionSerializer.new(object.content_blocks, serializer: CallsContentBlockSerializer, call_id: instance_options[:call_id])
+    ActiveModel::Serializer::CollectionSerializer.new(object.content_blocks.order(:created_at), serializer: CallsContentBlockSerializer, call_id: instance_options[:call_id])
   end
 
   def _destroy

@@ -95,7 +95,7 @@ class PlaybooksIndex extends Component {
             <div className="wrapped-list">
               {
                 playbooks &&
-                playbooks.map((playbook, index) => <PlaybookCard key={index} playbook={playbook} onClick={() => this.toggleModal(playbook)} />)
+                playbooks.map((playbook, index) => <PlaybookCard key={index} currentUser={this.props.currentUser} playbook={playbook} onClick={() => this.toggleModal(playbook)} />)
               }
             </div>
             <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} createCall={this.props.createCall} playbook={this.state.modalPlaybook} />

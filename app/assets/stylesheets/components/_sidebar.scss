@@ -31,21 +31,24 @@
       text-decoration: none;
     }
   }
-  &.expanded{
-    width: 250px;
-    .list .sidebar-item{
-      .icon{
-        font-size: 22px;
-        width: 28px;
+  @media (min-width: 1024px) {
+    &.expanded{
+      width: 250px;
+      .list .sidebar-item{
+        .icon{
+          font-size: 22px;
+          width: 28px;
+        }
+        span{
+          opacity: 1;
+          padding: 15px 0;
+        }
       }
-      span{
-        opacity: 1;
+      .navbar-actions button.end-call{
+        width: calc(100% - 40px);
+        white-space: nowrap;
+        overflow: hidden;
       }
-    }
-    .navbar-actions button.end-call{
-      width: calc(100% - 40px);
-      white-space: nowrap;
-      overflow: hidden;
     }
   }
   .logo{
@@ -70,7 +73,7 @@
     }
     .fa-phone-slash{
       font-size: 35px;
-      color: black;
+      color: $primary;
       text-align: center;
     }
   }
@@ -81,7 +84,7 @@
       grid-gap: 12px;
     }
     .sidebar-item{
-      height: 50px; width: inherit;
+      min-height: 50px; width: inherit;
       padding: 0 25px;
       position: relative;
       align-items: center;

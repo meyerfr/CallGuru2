@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import { uuid, setCaretToEnd } from './helperFunctions'
+import { Link } from 'react-router-dom'
 
 import EditContentOption from './editContentOption'
 
@@ -341,25 +342,38 @@ class EditContentBlock extends Component{
           return(
             <div className="blocks outline" key={block.id}>
               <p className="large bold">{block.text}</p>
-              <div className="blocks">
-                {
-                  block.content_blocks_attributes.map((block) => {
-                    return <EditContentBlock
-                      updatedObject={this.state.updatedElement}
-                      editable={editable}
-                      key={block.id}
-                      value={block.text}
-                      block={block}
-                      updateParentContentBlock={this.updateParentContentBlock}
-                    />
+              {
+                block.content_blocks_attributes.length > 0 &&
+                <div className="blocks">
+                  {
+                    block.content_blocks_attributes.map((block) => {
+                      return <EditContentBlock
+                        updatedObject={this.state.updatedElement}
+                        editable={editable}
+                        key={block.id}
+                        value={block.text}
+                        block={block}
+                        updateParentContentBlock={this.updateParentContentBlock}
+                      />
+                    }
+                    )
                   }
-                  )
-                }
-              </div>
+                </div>
+              }
             </div>
           )
         case 'list':
           return <List block={block} editable={this.props.editable} updatedElement={this.state.updatedElement} updateParentContentBlock={this.updateContentBlock} />
+        case 'link':
+          const linkText = block.content_blocks_attributes.length > 0 ? block.content_blocks_attributes[0].text : block.text
+          const website_url = block.text.includes('http') ? block.text : `//${block.text}`
+          return(
+            <a href={website_url} target="_blank" className="block link">{linkText}</a>
+          )
+        case 'img':
+          return(
+            <img className="block img" src={block.text} alt="img" />
+          )
         default:
           return <Paragraph classPrefix={this.props.classPrefix} block={block} editable={this.props.editable} updatedElement={this.state.updatedElement} onClick={this.props.onClick} selected={this.props.selected} myRef={this.myRef.current} />
       }

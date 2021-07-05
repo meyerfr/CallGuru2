@@ -7,27 +7,39 @@ import { faPencilAlt, faClock } from '@fortawesome/free-solid-svg-icons'
 import Illustration from '../../../assets/images/illustration.svg'
 
 const PlaybookCard = (props) => {
+  const {playbook, currentUser, onClick} = props
   return (
-    <div className="card playbook pointer" onClick={props.onClick}>
+    <div className="card playbook pointer" onClick={onClick}>
       <img
         src={Illustration}
         alt="Playbook Illustration"
       />
       <div className="content">
-        <p className="medium bold">{props.playbook.name}</p>
+        <p className="medium bold">{playbook.name}</p>
         <span className="description extra-small">
-          {props.playbook.description}
+          {playbook.description}
         </span>
         <div className="card-actions">
           {
-            props.playbook.duration &&
+            currentUser.current_sign_in_at < playbook.created_at ?
+              <label className="extra-small secondary-light2">
+                New
+              </label>
+            :
+              currentUser.current_sign_in_at < playbook.updated_at &&
+                <label className="extra-small secondary-light2">
+                  Update
+                </label>
+          }
+          {
+            playbook.duration &&
             <label className="extra-small duration">
               <i className="far fa-clock"></i>
-              {props.playbook.duration} minutes
+              {playbook.duration} minutes
             </label>
           }
           {
-            props.playbook.tags.slice(0, 5).map((tag) => {
+            playbook.tags.slice(0, 5).map((tag) => {
               return(
                 <label key={tag.name} className="primary-light2 extra-small">
                   {tag.name}

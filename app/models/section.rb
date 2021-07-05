@@ -1,6 +1,8 @@
 class Section < ApplicationRecord
   belongs_to :playbook
-  has_many :content_blocks, as: :contentable
+  has_many :content_blocks, as: :contentable, dependent: :destroy
+  self.implicit_order_column = "created_at"
+
 
   STATUSES = ["draft", "archive", "live"]
   validates :status, inclusion: { in: STATUSES, message: "must be one of the following #{STATUSES.join(", ")}" }, if: proc { |section| section.status.present? }

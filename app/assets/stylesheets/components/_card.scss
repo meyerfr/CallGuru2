@@ -19,7 +19,7 @@
   }
   &.list{
     &.col3 tr{
-      grid-template-columns: 74px 30% 35% 100%;
+      grid-template-columns: 74px 30% 35% auto;
     }
     thead{
       position: sticky;
@@ -29,7 +29,7 @@
     }
     tr{
       display: grid;
-      grid-template-columns: 17% 20% 23% 33% 100%;
+      grid-template-columns: 17% 20% 23% 33% auto;
       th, td{
         padding: 15px;
         border-right: 1px solid $light3;

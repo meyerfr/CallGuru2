@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   logout = (callback) => {
+    debugger
     this.props.logoutUser()
     .then(() => window.location.href = "/")
   }

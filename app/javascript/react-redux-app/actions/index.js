@@ -23,7 +23,7 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const UPLOAD_AVATAR = 'UPLOAD_AVATAR'
 
 export function logoutUser(callback) {
-  const url = `users/sign_out`;
+  const url = `/users/sign_out`;
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   const promise = fetch(url, {
     method: 'DELETE',
@@ -31,7 +31,7 @@ export function logoutUser(callback) {
       'Content-Type': 'application/json',
       'X-CSRF-Token': csrfToken
     }
-  })
+  }).then(r => r.json())
     // .then(r => typeof callback === 'function' ? callback(r) : r);
 
   return {
@@ -41,7 +41,7 @@ export function logoutUser(callback) {
 }
 
 export function acceptInvite(user, callback) {
-  const url = `users/invitation`;
+  const url = `/users/invitation`;
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   const promise = fetch(url, {
     method: 'PUT',
