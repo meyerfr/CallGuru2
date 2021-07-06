@@ -12,7 +12,7 @@ class Api::V1::PlaybooksController < ApplicationController
   def create
     playbook = @company.playbooks.create
 
-    render json: playbook, with_playbook_children: true
+    render json: playbook, with_playbook_children: true, create: true
   end
 
   def show

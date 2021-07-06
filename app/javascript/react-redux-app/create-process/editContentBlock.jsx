@@ -85,17 +85,35 @@ class EditContentBlock extends Component{
     this.setState({ previousKey: e.key });
   }
 
+  placeCaretAtEnd = (el) => {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+    }
+  }
+
   nextElement = (element) => {
     const ref = element
-    if (ref.nextElementSibling) {
-      let nextElement = ref.nextElementSibling
+    let nextElement = ref.nextElementSibling
+    if (nextElement) {
       if (nextElement.firstElementChild) {
         do {
           nextElement = nextElement.firstElementChild
         }
         while(nextElement.firstElementChild);
       }
-      nextElement.focus()
+      this.placeCaretAtEnd(nextElement)
     } else if(ref.parentElement){
       this.nextElement(ref.parentElement)
     }
@@ -106,20 +124,20 @@ class EditContentBlock extends Component{
 
   prevElement = (element) => {
     const ref = element
-    let parentElement = element.parentElement
-    if (parentElement.previousElementSibling) {
-      let prevElement = parentElement.previousElementSibling
+    let prevElement = element.previousElementSibling
+    if (prevElement) {
       if (prevElement.lastElementChild) {
         do{
           prevElement = prevElement.lastElementChild
         }
         while(prevElement.lastElementChild)
       }
-      prevElement.focus()
-    } else if(parentElement){
-      this.prevElement(parentElement)
+      this.placeCaretAtEnd(prevElement)
+    } else if(element.parentElement && !element.parentElement.classList.contains('wrapper')){
+      this.prevElement(element.parentElement)
     }
   }
+
 
   updateParentContentBlock = (contentBlock, updatedObject={}) => {
     let copiedBlocks = this.state.block.content_blocks_attributes
@@ -276,53 +294,129 @@ class EditContentBlock extends Component{
     const block = this.state.block
     const editable = this.state.editable
     if (editable) {
+      // switch(block.content_type.group){
+      //   case 'list':
+      //     return(
+      //       <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
+      //         {
+      //           block.content_blocks_attributes.map((block) =>
+      //             <EditContentBlock
+      //               updatedObject={this.state.updatedElement}
+      //               editable={this.state.editable}
+      //               key={block.id}
+      //               value={block.text}
+      //               block={block}
+      //               updateParentContentBlock={this.updateParentContentBlock}
+      //               updatedObject={this.state.updatedElement}
+      //               parent='content_block'
+      //               addBlock={this.addBlock}
+      //               deleteBlock={this.deleteBlock}
+      //               contentTypes={this.props.contentTypes}
+      //             />
+      //           )
+      //         }
+      //       </div>
+      //     )
+      //   default:
+      //     return(
+      //       <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
+      //         <input ref={this.myRef} className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.onKeyDownHandler} onChange={this.onNameUpdate} value={block.text} placeholder={block.content_type.style} />
+      //         {
+      //           block.content_blocks_attributes &&
+      //           block.content_blocks_attributes.map((block) =>
+      //             <EditContentBlock
+      //               updatedObject={this.state.updatedElement}
+      //               editable={this.state.editable}
+      //               key={block.id}
+      //               value={block.text}
+      //               block={block}
+      //               updateParentContentBlock={this.updateParentContentBlock}
+      //               updatedObject={this.state.updatedElement}
+      //               parent='content_block'
+      //               addBlock={this.addBlock}
+      //               deleteBlock={this.deleteBlock}
+      //               contentTypes={this.props.contentTypes}
+      //             />
+      //           )
+      //         }
+      //       </div>
+      //     )
+      // }
       switch(block.content_type.group){
+        case 'select':
+        case 'multiselect':
+        case 'input':
+          return <Input
+            block={block}
+            editable={this.state.editable}
+            onChange={this.onInputChange}
+            myRef={this.myRef}
+            onKeyDown={this.onKeyDownHandler}
+          />
+          break;
+        case 'outline':
+          return(
+            <div className="blocks outline" key={block.id}>
+              <Input
+                block={block}
+                editable={this.state.editable}
+                onChange={this.onInputChange}
+                myRef={this.myRef}
+                onKeyDown={this.onKeyDownHandler}
+              />
+              {
+                block.content_blocks_attributes.length > 0 &&
+                block.content_blocks_attributes.map((block) => {
+                  return <EditContentBlock
+                    updatedObject={this.state.updatedElement}
+                    editable={editable}
+                    key={block.id}
+                    value={block.text}
+                    block={block}
+                    updateParentContentBlock={this.updateParentContentBlock}
+                  />
+                }
+                )
+              }
+            </div>
+          )
         case 'list':
           return(
-            <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
+            <div className={`blocks list ${block.content_type.style}`} key={block.id}>
               {
-                block.content_blocks_attributes.map((block) =>
-                  <EditContentBlock
+                block.content_blocks_attributes.length > 0 &&
+                block.content_blocks_attributes.map((block) => {
+                  return <EditContentBlock
                     updatedObject={this.state.updatedElement}
-                    editable={this.state.editable}
+                    editable={editable}
                     key={block.id}
                     value={block.text}
                     block={block}
                     updateParentContentBlock={this.updateParentContentBlock}
-                    updatedObject={this.state.updatedElement}
-                    parent='content_block'
-                    addBlock={this.addBlock}
-                    deleteBlock={this.deleteBlock}
-                    contentTypes={this.props.contentTypes}
                   />
+                }
                 )
               }
             </div>
+          )
+        case 'link':
+          const linkText = block.content_blocks_attributes.length > 0 ? block.content_blocks_attributes[0].text : block.text
+          const website_url = block.text.includes('http') ? block.text : `//${block.text}`
+          return(
+            <a href={website_url} target="_blank" className="block link">{linkText}</a>
+          )
+        case 'img':
+          return(
+            <img className="block img" src={block.text} alt="img" />
           )
         default:
-          return(
-            <div key="contentBlock" className={`block-wrapper ${block.content_type.style}`}>
-              <input ref={this.myRef} className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.onKeyDownHandler} onChange={this.onNameUpdate} value={block.text} placeholder={block.content_type.style} />
-              {
-                block.content_blocks_attributes &&
-                block.content_blocks_attributes.map((block) =>
-                  <EditContentBlock
-                    updatedObject={this.state.updatedElement}
-                    editable={this.state.editable}
-                    key={block.id}
-                    value={block.text}
-                    block={block}
-                    updateParentContentBlock={this.updateParentContentBlock}
-                    updatedObject={this.state.updatedElement}
-                    parent='content_block'
-                    addBlock={this.addBlock}
-                    deleteBlock={this.deleteBlock}
-                    contentTypes={this.props.contentTypes}
-                  />
-                )
-              }
-            </div>
-          )
+          return <Input
+            block={block}
+            editable={this.state.editable}
+            onChange={this.onInputChange}
+            myRef={this.myRef}
+            onKeyDown={this.onKeyDownHandler}
+          />
       }
     }else{
       switch(block.content_type.group){
