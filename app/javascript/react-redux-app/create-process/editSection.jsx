@@ -8,6 +8,9 @@ import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { fetchPlaybook, fetchContentTypes } from '../actions'
 import { uuid } from './helperFunctions'
 
+import Sidebar2 from '../components/sidebar2'
+import { EditPlaybookSidebarTop, EditPlaybookSidebarBottom } from '../components/sidebarHelpers'
+
 import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 import EditOutlineItem from './editOutlineItem'
@@ -173,56 +176,70 @@ class EditSection extends Component {
 
   render() {
     const playbook = this.props.playbook
+    const sections = playbook?.sections_attributes
     const section = this.state.section
-    return [
-      <div className="app-wrapper" key='editSection'>
-        <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
-          {
-            // <div className="tabs">
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
-            //     <span className="normal bold">Tab 1</span>
-            //   </NavLink>
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab2`}>
-            //     <span className="normal bold">Tab 2</span>
-            //   </NavLink>
-            //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab3`}>
-            //     <span className="normal bold">Tab 3</span>
-            //   </NavLink>
-            // </div>
-            <div className="actions">
-              <button className="secondary" onClick={this.updatePlaybook}>Save</button>
-            </div>
-          }
-        </PageHeader>
-        <div className="page-content-wrapper row-2 a-fr">
-          <div className="page-content-container">
+    if (sections) {
+      return [
+        <Sidebar2
+          key="Sidebar"
+          inCall={false}
+          endCall={this.endCall}
+          top={<EditPlaybookSidebarTop playbook_id={this.props.match.params.playbook_id} sections={sections} addSection={() => console.log('addSection')} />}
+          bottom={<EditPlaybookSidebarBottom save={() => console.log('save')} />}
+          lightStyle={true}
+        />,
+        <div className="app-wrapper" key='editSection'>
+          <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
             {
-              section &&
-                <div className="section-wrapper">
-                  <input className="title block-input" onChange={this.onNameUpdate} value={section.title} />
-                  {
-                    section.content_blocks_attributes.map((block) =>
-                      <EditContentBlock
-                        key={block.react_id}
-                        editable={true}
-                        value={block.text}
-                        addBlock={this.addBlockHandler}
-                        updateParentContentBlock={this.updateContentBlock}
-                        block={block}
-                        updatedObject={this.state.updatedElement}
-                        parent='master'
-                        addBlock={this.addBlock}
-                        deleteBlock={this.deleteBlock}
-                        contentTypes={this.props.contentTypes}
-                      />
-                    )
-                  }
-                </div>
+              // <div className="tabs">
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks`}>
+              //     <span className="normal bold">Tab 1</span>
+              //   </NavLink>
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab2`}>
+              //     <span className="normal bold">Tab 2</span>
+              //   </NavLink>
+              //   <NavLink activeClassName="active" className="tab" to={`/playbooks?tab3`}>
+              //     <span className="normal bold">Tab 3</span>
+              //   </NavLink>
+              // </div>
+              <div className="actions">
+                <button className="secondary" onClick={this.updatePlaybook}>Save</button>
+              </div>
             }
+          </PageHeader>
+          <div className="page-content-wrapper row-2 a-fr">
+            <div className="page-content-container">
+              {
+                section &&
+                  <div className="blocks wrapper">
+                    {
+                      section.content_blocks_attributes.map((block) =>
+                        <EditContentBlock
+                          key={block.react_id}
+                          editable={true}
+                          value={block.text}
+                          addBlock={this.addBlockHandler}
+                          updateParentContentBlock={this.updateContentBlock}
+                          block={block}
+                          updatedObject={this.state.updatedElement}
+                          parent='master'
+                          addBlock={this.addBlock}
+                          deleteBlock={this.deleteBlock}
+                          contentTypes={this.props.contentTypes}
+                        />
+                      )
+                    }
+                  </div>
+              }
+            </div>
           </div>
         </div>
-      </div>
-    ];
+      ];
+    }else{
+      return(
+        "loading"
+      )
+    }
   }
 };
 

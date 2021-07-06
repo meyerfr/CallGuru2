@@ -34,8 +34,8 @@ export const CallSummaryTop = () => {
 
 export const CallSummaryBottom = ({repeatCall, backToPlaybooks}) => {
   return[
-    <button key="repeat" className={`secondary outline end-call`} onClick={backToPlaybooks}>Jump to overview</button>,
-    <button key="playbookOverview" className={`secondary end-call`} onClick={repeatCall}>Restart playbook</button>
+    <button key="playbookOverview" className={`secondary outline end-call`} onClick={backToPlaybooks}>Jump to overview</button>,
+    <button key="repeatCall" className={`secondary end-call`} onClick={repeatCall}>Restart playbook</button>
   ]
 }
 
@@ -99,4 +99,32 @@ export const AppSidebarBottom = ({logout}) => {
       </a>
     </OverlayNavLink>
   )
+}
+
+export const EditPlaybookSidebarTop = ({ playbook_id, sections, addSection }) => {
+  return[
+    sections.map((section) => {
+      return (
+        <OverlayNavLink key={section.id} position="right" tooltip_text={section.title}>
+          <NavLink activeClassName="active" className="sidebar-item pointer" to={`/playbooks/${playbook_id}/sections/${section.id}`}>
+            <i className={`icon fas fa-${section.icon}`} />
+            <span className="small">{section.title}</span>
+          </NavLink>
+        </OverlayNavLink>
+      )
+    }),
+    <OverlayNavLink key="addSection" position="right" tooltip_text="Add Section">
+      <a href="#" className="sidebar-item pointer">
+        <i className="icon fas fa-plus-square" />
+        <span className="small">Add Section</span>
+      </a>
+    </OverlayNavLink>
+  ]
+}
+
+export const EditPlaybookSidebarBottom = ({ cancel, save }) => {
+  return[
+    <button key="cancel" className={`secondary outline end-call`} onClick={cancel}>Cancel</button>,
+    <button key="save" className={`secondary end-call`} onClick={save}>Save</button>
+  ]
 }

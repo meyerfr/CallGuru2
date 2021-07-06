@@ -13,6 +13,10 @@ class PlaybookSerializer < ActiveModel::Serializer
   end
 
   def sections_attributes
+    sections = object.sections
+    if instance_options[:create]
+      sections << object.sections.new
+    end
     ActiveModel::Serializer::CollectionSerializer.new(object.sections, each_serializer: SectionSerializer)
   end
 

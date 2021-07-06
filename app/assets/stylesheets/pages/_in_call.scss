@@ -79,7 +79,7 @@
     width: 75px;
     text-align: center;
   }
-  input[type="number"], input[type="text"], [contenteditable]{
+  input[type="number"], input[type="text"], span.input[contenteditable]{
     border-bottom: 1px solid $primary;
     height: fit-content;
     align-self: center;
