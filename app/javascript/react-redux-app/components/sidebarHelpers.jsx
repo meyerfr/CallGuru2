@@ -8,7 +8,12 @@ export const CallSidebarTop = ({call_id, playbook_id, sections}) => {
       return (
         <OverlayNavLink key={section.id} position="right" tooltip_text={section.title}>
           <NavLink activeClassName="active" className="sidebar-item pointer" to={`/calls/${call_id}/playbooks/${playbook_id}/sections/${section.id}`}>
-            <i className={`icon fas fa-${section.icon}`} />
+            {
+              section.icon?.includes('http') ?
+                <img src={section.icon} alt="icon" className="icon" />
+              :
+                <i className={`icon fas fa-${section.icon}`} />
+            }
             <span className="small">{section.title}</span>
           </NavLink>
         </OverlayNavLink>
