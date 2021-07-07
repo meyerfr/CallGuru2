@@ -6,7 +6,11 @@ class Api::V1::PlaybooksController < ApplicationController
   before_action :set_playbook, only: [ :show, :update ]
 
   def index
-    render json: @company.playbooks, with_playbook_children: false
+    if current_user.role == 'CallGuru Admin'
+      render json: Playbook.all, with_playbook_children: false
+    else
+      render json: @company.playbooks, with_playbook_children: false
+    end
   end
 
   def create

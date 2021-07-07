@@ -43,7 +43,7 @@ export const AppSidebarTop = ({currentUser}) => {
   const defaultLinks = [
     {
       title: 'Playbooks',
-      path: '/',
+      path: '/playbooks',
       icon: "comments"
     },
     // {
@@ -90,7 +90,6 @@ export const AppSidebarTop = ({currentUser}) => {
 }
 
 export const AppSidebarBottom = ({logout}) => {
-  console.log(logout)
   return(
     <OverlayNavLink key="logout" position="right" tooltip_text="Logout">
       <a className="sidebar-item pointer" key="Logout" onClick={() => logout()}>

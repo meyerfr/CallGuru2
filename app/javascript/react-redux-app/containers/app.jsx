@@ -40,7 +40,6 @@ class App extends Component {
   }
 
   logout = (callback) => {
-    debugger
     this.props.logoutUser()
     .then(() => window.location.href = "/")
   }
@@ -53,7 +52,7 @@ class App extends Component {
           <Switch>
             <Route
               exact
-              path='/'
+              path='/playbooks'
               render={props => [
                 <Sidebar2
                   key="Sidebar"
