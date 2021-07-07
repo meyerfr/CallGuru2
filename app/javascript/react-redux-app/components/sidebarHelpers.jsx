@@ -48,7 +48,7 @@ export const AppSidebarTop = ({currentUser}) => {
   const defaultLinks = [
     {
       title: 'Playbooks',
-      path: '/playbooks',
+      path: '/',
       icon: "comments"
     },
     // {

@@ -52,7 +52,7 @@ class App extends Component {
           <Switch>
             <Route
               exact
-              path='/playbooks'
+              path='/'
               render={props => [
                 <Sidebar2
                   key="Sidebar"

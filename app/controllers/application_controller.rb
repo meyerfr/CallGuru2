@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
     playbooks_path
   end
 
+  def after_update_path_for(resource)
+    playbooks_path
+  end
+
   protected
 
   def configure_permitted_parameters

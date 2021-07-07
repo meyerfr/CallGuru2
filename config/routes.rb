@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   get '/backoffice', to: 'pages#home'
   get '/backoffice/companies', to: 'pages#home'
   get '/backoffice/companies/:id', to: 'pages#home'
-  get '/playbooks', to: 'pages#home', as: 'playbooks'
   get '/playbooks/:playbook_id', to: 'pages#home'
   get '/playbooks/:playbook_id/sections/:id', to: 'pages#home'
   get '/calls/:call_id/playbooks/:playbook_id/sections/:id', to: 'pages#home'
