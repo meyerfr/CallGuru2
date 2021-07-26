@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faFilter } from '@fortawesome/free-solid-svg-icons'
 
-import { fetchPlaybook, fetchContentTypes } from '../actions'
+import { fetchPlaybook, updatePlaybook, fetchContentTypes } from '../actions'
 import { uuid } from './helperFunctions'
 
 import Sidebar2 from '../components/sidebar2'
@@ -15,14 +15,22 @@ import PageHeader from '../components/pageHeader'
 import PlaybookCard from '../components/playbookCard'
 import EditOutlineItem from './editOutlineItem'
 import EditContentBlock from './editContentBlock'
+import EditContentBlock2 from './editContentBlock2'
+import ContentBlockContainer from './contentBlockContainer'
 
 // import playbooks from '../db/playbooks'
 
 class EditSection extends Component {
   constructor(props){
     super(props)
+    this.myRef = React.createRef()
     this.state = {
-      updatedElement: null
+      updatedElement: null,
+      toolbar: {
+        left: 0,
+        top: 0
+      },
+      elRefs: []
     }
   }
 
@@ -40,9 +48,25 @@ class EditSection extends Component {
   // }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.playbook && prevProps.section.id !== this.props.section.id && this.state.updatedElement !== null) {
+      this.setState({
+        updatedElement: null
+      })
+      this.updatePlaybook()
+    }
     if (!prevProps.playbook || prevProps.section.id !== this.props.section.id) {
       this.setSectionToState(this.props.section)
     }
+  }
+
+
+
+  updatePlaybook = () => {
+    const playbook = {
+      sections_attributes: this.state.section
+    }
+
+    this.props.updatePlaybook(this.props.match.params.playbook_id, playbook)
   }
 
   shouldComponentUpdate(nextProps, nextState){
@@ -51,8 +75,26 @@ class EditSection extends Component {
   }
 
   setSectionToState = (section) => {
+    const arrLength = section.content_blocks_attributes.length
+    let elRefs = []
+
+    let ref;
+    let childrenRef = []
+
+    section.content_blocks_attributes.forEach((block, index) => {
+      childrenRef = []
+      if (block.content_blocks_attributes.length > 0) {
+        childrenRef.push(React.createRef())
+      }
+      ref = {
+        myRef: React.createRef(),
+        childrenRef: childrenRef
+      }
+      elRefs.push(ref)
+    })
     this.setState({
-      section: section
+      section: section,
+      elRefs: elRefs
     })
   }
 
@@ -81,7 +123,7 @@ class EditSection extends Component {
   //   return true
   // }
 
-  addBlock = (currentBlock, updatedObject) => {
+  addBlock = (currentBlock, updatedObject, callback) => {
     const outlineContentType = this.props.contentTypes.find((type) => type.group === 'outline' && type.style === 'outline')
     const paragraphContentType = this.props.contentTypes.find((type) => type.group === 'text' && type.style === 'paragraph')
     const copiedSection = this.state.section
@@ -120,17 +162,22 @@ class EditSection extends Component {
       ...currentBlock
     }
 
+    const elRefs = this.state.elRefs
+    elRefs.push(React.createRef())
     this.setState({
       ...this.state,
       section: {
         ...this.state.section,
         content_blocks_attributes: updatedSectionBlocks
       },
+      elRefs: elRefs,
       updatedElement: updatedObject
+    }, () => {
+      elRefs[elRefs.length - 1].current.focus()
     })
   }
 
-  deleteBlock = (currentBlock, updatedObject) => {
+  deleteBlock = (currentBlock, updatedObject, callback) => {
     const blocks = this.state.section.content_blocks_attributes
     const updatedBlocks = blocks.filter((block) => block.react_id !== currentBlock.react_id)
     if (updatedBlocks.length > 0) {
@@ -140,7 +187,7 @@ class EditSection extends Component {
           content_blocks_attributes: updatedBlocks
         },
         updatedElement: updatedObject
-      })
+      }, callback())
     }
   }
 
@@ -152,7 +199,11 @@ class EditSection extends Component {
     let copiedOutlineContentBlocks = this.state.section.content_blocks_attributes
     let contentBlockReactId = contentBlock.react_id
     let toBeUpdatedContentBlockIndex = copiedOutlineContentBlocks.findIndex((block) => block.react_id === contentBlockReactId)
-    copiedOutlineContentBlocks[toBeUpdatedContentBlockIndex] = contentBlock
+    const newContentBlock = contentBlock
+    delete newContentBlock.ref
+    copiedOutlineContentBlocks[toBeUpdatedContentBlockIndex] = newContentBlock
+
+
     this.setState({
       ...this.state,
       section: {
@@ -174,10 +225,26 @@ class EditSection extends Component {
     // this.props.updateSectionOutline({...this.props.outline, title: e.target.value}, {outline_id: this.props.outline.id})
   }
 
+  changeToolbarPosition = (e) => {
+    const myElement = e.target
+    this.setState({
+      ...this.state,
+      toolbar: {
+        ...this.state.toolbar,
+        top: myElement.offsetTop - myElement.offsetHeight
+      }
+    })
+  }
+
+  lastRef = (index) => {
+
+  }
+
   render() {
     const playbook = this.props.playbook
     const sections = playbook?.sections_attributes
     const section = this.state.section
+
     if (sections) {
       return [
         <Sidebar2
@@ -211,24 +278,35 @@ class EditSection extends Component {
             <div className="page-content-container">
               {
                 section &&
-                  <div className="blocks wrapper">
-                    {
-                      section.content_blocks_attributes.map((block) =>
-                        <EditContentBlock
-                          key={block.react_id}
-                          editable={true}
-                          value={block.text}
-                          addBlock={this.addBlockHandler}
-                          updateParentContentBlock={this.updateContentBlock}
-                          block={block}
+                  <div className="blocks wrapper" style={{position: 'relative'}}>
+                    <ContentBlockContainer blocks={section.content_blocks_attributes} parent={section} />
+                    {/*  section.content_blocks_attributes.map((block, i) =>
+                        <EditContentBlock2
                           updatedObject={this.state.updatedElement}
-                          parent='master'
                           addBlock={this.addBlock}
                           deleteBlock={this.deleteBlock}
+                          key={block.react_id}
+                          value={block.text}
+                          block={block}
+                          index={i}
+                          prevRef={this.lastRef}
                           contentTypes={this.props.contentTypes}
+                          myRef={this.state.elRefs[i]}
                         />
-                      )
-                    }
+                      <EditContentBlock
+                        key={block.react_id}
+                        editable={true}
+                        value={block.text}
+                        // addBlock={this.addBlockHandler}
+                        updateParentContentBlock={this.updateContentBlock}
+                        block={block}
+                        updatedObject={this.state.updatedElement}
+                        parent='master'
+                        addBlock={this.addBlock}
+                        deleteBlock={this.deleteBlock}
+                        contentTypes={this.props.contentTypes}
+                        changeToolbarPosition={this.changeToolbarPosition}
+                      />*/}
                   </div>
               }
             </div>
@@ -261,7 +339,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPlaybook, fetchContentTypes }, dispatch);
+  return bindActionCreators({ fetchPlaybook, updatePlaybook, fetchContentTypes }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditSection);

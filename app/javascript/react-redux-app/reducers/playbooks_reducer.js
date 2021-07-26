@@ -1,4 +1,4 @@
-import { FETCH_PLAYBOOKS, FETCH_PLAYBOOK, UPLOAD_AVATAR } from '../actions'
+import { FETCH_PLAYBOOKS, FETCH_PLAYBOOK, UPDATE_PLAYBOOK, UPLOAD_AVATAR } from '../actions'
 
 export default function playbooksReducer(state = null, action) {
   let copiedPlaybooks = []

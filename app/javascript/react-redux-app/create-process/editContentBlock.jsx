@@ -29,9 +29,8 @@ class EditContentBlock extends Component{
         updatedElement: this.props.updatedElement
       })
     }
-
     if (prevState.updatedElement !== this.state.updatedElement) {
-      this.props.updateParentContentBlock({...this.state.block, ref: this.myRef.current}, this.state.updatedElement)
+      this.props.updateParentContentBlock(this.state.block, this.state.updatedElement)
     }
   }
 
@@ -55,14 +54,14 @@ class EditContentBlock extends Component{
     if (e.key === "Enter" && !this.state.selectMenuIsOpen) {
       if (this.state.previousKey !== "Shift") {
         e.preventDefault();
-        this.props.addBlock({...this.state.block, ref: this.myRef.current}, this.state.updatedElement);
+        this.props.addBlock(this.state.block, this.state.updatedElement);
       }
     }
     if (e.key === "Backspace" && this.state.block.text === '') {
       e.preventDefault();
     //  if (this.state.type === Types.PARAGRAPH) {
     //  delete Block
-        this.props.deleteBlock({...this.state.block, ref: this.myRef.current}, this.state.updatedElement);
+        this.props.deleteBlock(this.state.block, this.state.updatedElement);
      // } else{
      //   change Type to Paragraph
      //   this.setState({ type: Types.PARAGRAPH, value: '' })
@@ -213,6 +212,25 @@ class EditContentBlock extends Component{
     })
   }
 
+  onBlockChange = (block, event) => {
+    console.log(this.state.block)
+    if (event.target) {event.preventDefault()}
+    const newValue = event.target ? event.target.value : event
+    let copiedContentBlock = this.state.block
+    copiedContentBlock.text = newValue
+    if (copiedContentBlock.text === '') {
+      copiedContentBlock._destroy = '1'
+    }else{
+      copiedContentBlock._destroy = '0'
+    }
+    this.setState({
+      block: copiedContentBlock,
+      updatedElement: {
+        elementId: this.state.block.react_id
+      }
+    })
+  }
+
   onNameUpdate = (e) => {
     let block = {
       ...this.state.block,
@@ -293,6 +311,7 @@ class EditContentBlock extends Component{
   render(){
     const block = this.state.block
     const editable = this.state.editable
+    console.log(this.props)
     if (editable) {
       // switch(block.content_type.group){
       //   case 'list':
@@ -349,9 +368,10 @@ class EditContentBlock extends Component{
           return <Input
             block={block}
             editable={this.state.editable}
-            onChange={this.onInputChange}
+            onChange={this.onBlockChange}
             myRef={this.myRef}
             onKeyDown={this.onKeyDownHandler}
+            changeToolbarPosition={this.props.changeToolbarPosition}
           />
           break;
         case 'outline':
@@ -360,9 +380,10 @@ class EditContentBlock extends Component{
               <Input
                 block={block}
                 editable={this.state.editable}
-                onChange={this.onInputChange}
+                onChange={this.onBlockChange}
                 myRef={this.myRef}
                 onKeyDown={this.onKeyDownHandler}
+                changeToolbarPosition={this.props.changeToolbarPosition}
               />
               {
                 block.content_blocks_attributes.length > 0 &&
@@ -374,6 +395,7 @@ class EditContentBlock extends Component{
                     value={block.text}
                     block={block}
                     updateParentContentBlock={this.updateParentContentBlock}
+                    changeToolbarPosition={this.props.changeToolbarPosition}
                   />
                 }
                 )
@@ -393,6 +415,7 @@ class EditContentBlock extends Component{
                     value={block.text}
                     block={block}
                     updateParentContentBlock={this.updateParentContentBlock}
+                    changeToolbarPosition={this.props.changeToolbarPosition}
                   />
                 }
                 )
@@ -413,9 +436,10 @@ class EditContentBlock extends Component{
           return <Input
             block={block}
             editable={this.state.editable}
-            onChange={this.onInputChange}
+            onChange={this.onBlockChange}
             myRef={this.myRef}
             onKeyDown={this.onKeyDownHandler}
+            changeToolbarPosition={this.props.changeToolbarPosition}
           />
       }
     }else{

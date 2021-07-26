@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css'
 
+import CustomDraftJSEditor from '../customDraftJSEditor'
+
 class Input extends Component {
   expandNumberInput = (event) => {
     const target = event.target
@@ -14,7 +16,18 @@ class Input extends Component {
     // min-height + lines x line-height + padding + border
     let newHeight = 38 + numberOfLineBreaks * 18;
 
-    event.target.style.hight = newHeight + 'px';
+    event.target.style.height = newHeight + 'px';
+  }
+
+  getCoordinates = (event) => {
+    var myElement = event.target;
+    var startPosition = myElement.selectionStart;
+    var endPosition = myElement.selectionEnd;
+    if (startPosition !== endPosition) {
+      console.log(this.props)
+      this.props.changeToolbarPosition(event)
+      console.log('range', `${startPosition} - ${endPosition}`)
+    }
   }
 
 
@@ -33,9 +46,10 @@ class Input extends Component {
     }
 
     if (editable) {
-      return(
-        <span key="editableSpan" ref={this.props.myRef} contentEditable className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.props.onKeyDown} onChange={this.props.onChange} suppressContentEditableWarning={true}>{block.text}</span>
-      )
+      return <CustomDraftJSEditor classNames={`${block.content_type.style} block-input`} myRef={this.props.myRef} />
+      // return(
+        // <input key="editableSpan" ref={this.props.myRef} className={`block-input ${block.content_type.style}`} key="outlineTitle" onKeyDown={this.props.onKeyDown} onInput={(e) => this.props.onChange(block, e)} value={block.text} onClick={(e) => this.getCoordinates(e)} />
+      // )
     } else{
       switch (contentType.style) {
         case 'number':
