@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :invitations, class_name: self.to_s, as: :invited_by
   has_many :calls
-  validates :first_name, :last_name, presence: true
+  validates :first_name, presence: true
   validates :role, inclusion: { in: USER_ROLES, message: "must be one of the following #{USER_ROLES.join(", ")}" }, if: proc { |user| user.role.present? }
   devise :invitable, :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, invite_for: 2.weeks
 end
