@@ -12,8 +12,10 @@ environment.plugins.prepend('Provide',
   })
 );
 
-environment.loaders.append('style-loader')
-environment.loaders.append('css')
+environment.loader.append('style-loader', {
+  test: /plugin\.css$/,
+  loaders: ['style-loader', 'css'],
+})
 
 module.exports = environment
 
