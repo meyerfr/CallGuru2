@@ -207,7 +207,7 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt den Aufbau von CallGuru',
       status: 'live',
       order_no: 2,
-      icon: 'project-diagram'
+      icon: 'project-diagram',
       content_blocks_attributes: [
         {
           text: 'Team',
@@ -242,7 +242,7 @@ demo_playbook = Playbook.create!(
       description: 'Erklärt die Navigation in der CallGuru App',
       status: 'live',
       order_no: 3,
-      icon: 'route'
+      icon: 'route',
       content_blocks_attributes: [
         {
           text: 'Team',
