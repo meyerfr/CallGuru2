@@ -13,7 +13,7 @@ import {
   CodeBlockButton } from '@draft-js-plugins/buttons';
 
 
-import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
+// import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
 
 import {EditorState, ContentState, RichUtils, getDefaultKeyBinding, getLastChangeType, KeyBindingUtil, convertToRaw, convertFromRaw} from 'draft-js';
 
@@ -350,11 +350,11 @@ class Block extends Component {
           {
             // may be use React.Fragment instead of div to improve perfomance after React 16
             (externalProps) => (
-              <div>
-                <BoldButton {...externalProps} />
-                <ItalicButton {...externalProps} />
-                <UnderlineButton {...externalProps} />
-                <LinkButton {...externalProps} />
+              <div className="innerToolbar">
+                <BoldButton className="button" {...externalProps} />
+                <ItalicButton className="button" {...externalProps} />
+                <UnderlineButton className="button" {...externalProps} />
+                <LinkButton className="button" {...externalProps} />
               </div>
             )
           }

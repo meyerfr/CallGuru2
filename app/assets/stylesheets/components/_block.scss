@@ -1,4 +1,29 @@
 .block{
+  .tukdd6b{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%) scale(0);
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0px 1px 3px 0px rgba(220, 220, 220, 1);
+    z-index: 2;
+    box-sizing: border-box;
+    .innerToolbar{
+      display: grid;
+      grid-auto-flow: column;
+      .bpsgbes{
+        button{
+          box-shadow: inset 0px 0px 0px 2px $secondary-light2;
+          background-color: unset;
+          transition: background-color .3s;
+        }
+        &:hover button{
+          background-color: $secondary-light2;
+        }
+      }
+    }
+  }
   &.paragraph, &.numbered, &.bullet, &.toggle, &.text, &.number, &.date, &.range, &.select, &.multiselect{
     .public-DraftEditorPlaceholder-root, .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr{ //text + Placeholder
       font-size: 16px;
