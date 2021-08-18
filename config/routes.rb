@@ -41,8 +41,9 @@ Rails.application.routes.draw do
         resources :playbooks, only: [ :index, :create ]
       end
       resources :playbooks, only: [ :update, :show ] do
-        resources :sections, only: [ :index ]
+        resources :sections, only: [ :index, :create ]
       end
+      resources :sections, only: [ :update ]
       resources :calls, only: [ :show, :create, :update ]
       resources :content_types, only: [ :index ]
     end

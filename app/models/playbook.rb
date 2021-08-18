@@ -4,6 +4,7 @@ class Playbook < ApplicationRecord
   has_many :sections, dependent: :destroy
   has_many :tag_joins, as: :tagable
   has_many :tags, through: :tag_joins
+  has_many :calls
   self.implicit_order_column = "created_at"
 
   STATUSES = ["draft", "archive", "live"]

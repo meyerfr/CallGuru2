@@ -10,14 +10,14 @@ import { fetchPlaybook, fetchCall, updateCallName, updateCallState } from '../ac
 import { getPrevSectionId, getNextSectionId } from '../helper-methods/callMethods'
 
 import PageHeader from '../components/pageHeader'
-import ContentBlocks from './contentBlocks'
-
-import EditContentBlock from '../create-process/editContentBlock'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
 import Sidebar2 from '../components/sidebar2'
 import { CallSidebarTop, CallSidebarBottom } from '../components/sidebarHelpers'
+
+import BlockContainer from '../blocks/blockContainer'
+
 
 class InCallPage extends Component {
   constructor(props) {
@@ -168,16 +168,10 @@ class InCallPage extends Component {
           <div className="page-content-wrapper">
             <div className="page-content-container">
               <div className="blocks wrapper">
+
                 {
                   selectedSection &&
-                  selectedSection.content_blocks_attributes.map((block, index) =>
-                    <EditContentBlock
-                      key={block.id}
-                      block={block}
-                      updateParentContentBlock={this.updateContentBlock}
-                      updatedObject={this.state.updatedElement}
-                    />
-                  )
+                  <BlockContainer readOnly={true} block={selectedSection} parent="section" section_id={selectedSection.id} />
                 }
               </div>
             </div>

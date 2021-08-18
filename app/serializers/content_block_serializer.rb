@@ -1,7 +1,7 @@
 require 'securerandom'
 class ContentBlockSerializer < ActiveModel::Serializer
   Rails.logger.debug "ContentBlockSerializer #{self}"
-  attributes :id, :text, :order_no, :contentable_type, :contentable_id, :react_id, :_destroy, :react_show
+  attributes :id, :text, :order_no, :contentable_type, :contentable_id, :react_id, :_destroy, :react_show, :content_type_id
   # belongs_to :contenable, serializer: ContentableSerializer
   has_many :content_blocks_attributes
   belongs_to :content_type, serializer: ContentTypeSerializer

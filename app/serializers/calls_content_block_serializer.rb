@@ -1,6 +1,6 @@
 require 'securerandom'
 class CallsContentBlockSerializer < ActiveModel::Serializer
-  attributes :id, :text, :order_no, :contentable_type, :contentable_id, :react_id, :_destroy, :react_show
+  attributes :id, :text, :order_no, :contentable_type, :contentable_id, :react_id, :_destroy, :react_show, :content_type_id
   attribute :summary_item, if: :summary_item_condition?
   # belongs_to :contenable, serializer: ContentableSerializer
   has_many :content_blocks_attributes
