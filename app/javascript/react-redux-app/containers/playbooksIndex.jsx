@@ -100,7 +100,7 @@ class PlaybooksIndex extends Component {
             </div>
             <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} createCall={this.props.createCall} playbook={this.state.modalPlaybook} />
           </div>
-          {/*<button className="bottom-right-corner secondary center avatar"><i className="fas fa-plus"></i></button>*/}
+          <button className="bottom-right-corner secondary center avatar"><i className="fas fa-plus"></i></button>
         </div>
       </div>
     );

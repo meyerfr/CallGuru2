@@ -118,10 +118,10 @@ export const EditPlaybookSidebarTop = ({ playbook_id, sections, addSection }) =>
       )
     }),
     <OverlayNavLink key="addSection" position="right" tooltip_text="Add Section">
-      <a href="#" className="sidebar-item pointer">
+      <button className="sidebar-item pointer" onClick={addSection}>
         <i className="icon fas fa-plus-square" />
         <span className="small">Add Section</span>
-      </a>
+      </button>
     </OverlayNavLink>
   ]
 }

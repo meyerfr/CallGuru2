@@ -40,9 +40,10 @@ Rails.application.routes.draw do
         resources :users, only: [ :index, :create ]
         resources :playbooks, only: [ :index, :create ]
       end
-      resources :playbooks, only: [ :show ] do
-        resources :sections, only: [ :index ]
+      resources :playbooks, only: [ :update, :show ] do
+        resources :sections, only: [ :index, :create ]
       end
+      resources :sections, only: [ :update ]
       resources :calls, only: [ :show, :create, :update ]
       resources :content_types, only: [ :index ]
     end

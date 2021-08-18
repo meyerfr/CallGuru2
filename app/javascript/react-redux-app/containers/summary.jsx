@@ -9,20 +9,21 @@ import { createCall, fetchCall, updateCallState } from '../actions'
 
 import { startCall } from '../helper-methods/callMethods'
 
-import EditContentBlock from '../create-process/editContentBlock'
 import PageHeader from '../components/pageHeader'
-import ContentBlocks from './contentBlocks'
 
 import Sidebar2 from '../components/sidebar2'
 import { CallSummaryTop, CallSummaryBottom } from '../components/sidebarHelpers'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
+import BlockContainer from '../blocks/blockContainer'
+
 class Summary extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      updatedElement: null
+      updatedElement: null,
+      content_blocks: []
     }
   }
 
@@ -98,17 +99,7 @@ class Summary extends Component {
         <div className="page-content-wrapper">
           <div className="page-content-container">
             <div className="blocks wrapper card no-hover">
-              {
-                content_blocks &&
-                content_blocks.map((block, index) =>
-                  <EditContentBlock
-                    key={block.id}
-                    block={block}
-                    updateParentContentBlock={this.updateContentBlock}
-                    updatedObject={this.state.updatedElement}
-                  />
-                )
-              }
+              <BlockContainer readOnly={true} block={{content_blocks_attributes: content_blocks}} parent="section" />
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_135551) do
+ActiveRecord::Schema.define(version: 2021_07_28_091123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,10 +67,10 @@ ActiveRecord::Schema.define(version: 2021_06_24_135551) do
     t.string "contentable_type", null: false
     t.uuid "contentable_id", null: false
     t.uuid "content_type_id", null: false
-    t.string "text"
     t.integer "order_no"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.jsonb "text"
     t.index ["content_type_id"], name: "index_content_blocks_on_content_type_id"
     t.index ["contentable_type", "contentable_id"], name: "index_content_blocks_on_contentable"
   end

@@ -48,19 +48,54 @@ class Api::V1::PlaybooksController < ApplicationController
       sections_attributes: [
         :id,
         :title,
+        :description,
+        :icon,
         :status,
         :order_no,
         :_destroy,
-        content_blocks_attributes: [
+        content_blocks_attributes: [
           :id,
-          :text,
+          :contentable_type,
+          :contentable_id,
+          :content_type_id,
           :order_no,
           :_destroy,
+          text: {},
           content_blocks_attributes: [
             :id,
-            :text,
+            :contentable_type,
+            :contentable_id,
+            :content_type_id,
             :order_no,
-            :_destroy
+            :_destroy,
+            text: {},
+            content_blocks_attributes: [
+              :id,
+              :contentable_type,
+              :contentable_id,
+              :content_type_id,
+              :order_no,
+              :_destroy,
+              text: {},
+              content_blocks_attributes: [
+                :id,
+                :contentable_type,
+                :contentable_id,
+                :content_type_id,
+                :order_no,
+                :_destroy,
+                text: {},
+                content_blocks_attributes: [
+                  :id,
+                  :contentable_type,
+                  :contentable_id,
+                  :content_type_id,
+                  :order_no,
+                  :_destroy,
+                  text: {}
+                ]
+              ]
+            ]
           ]
         ]
       ]

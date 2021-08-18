@@ -15,10 +15,9 @@ import CompanyShow from './companyShow';
 import InCallPage from './inCallPage';
 import Summary from './summary';
 
-import EditSection from '../create-process/editSection'
+import EditSection2 from './editSection2'
 import Sidebar2 from '../components/sidebar2'
 import { AppSidebarTop, AppSidebarBottom } from '../components/sidebarHelpers'
-
 
 
 import { logoutUser } from '../actions'
@@ -65,7 +64,7 @@ class App extends Component {
             <Route
               path="/playbooks/:playbook_id/sections/:id"
               render={props => (
-                <EditSection {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+                <EditSection2 {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               )}
             />
             <Route

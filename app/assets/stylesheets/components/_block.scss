@@ -1,3 +1,70 @@
+.block{
+  &.paragraph, &.numbered, &.bullet, &.toggle, &.text, &.number, &.date, &.range, &.select, &.multiselect{
+    .public-DraftEditorPlaceholder-root, .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr{ //text + Placeholder
+      font-size: 16px;
+    }
+  }
+  &.subheader{
+    .public-DraftEditorPlaceholder-root, .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr{ //text + Placeholder
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  &.header{
+    .public-DraftEditorPlaceholder-root, .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr{ //text + Placeholder
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+
+
+}
+.blocks{
+  counter-reset: items;
+  &.bullet, &.numbered, &.multiselect{
+    .block{
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 8px;
+    }
+  }
+  &.bullet > .block{
+    &:before{
+      content:"• ";
+    }
+  }
+  &.numbered > .block{
+    &:before{
+      counter-increment: items;
+      content: counter(items)". ";
+    }
+  }
+  &.multiselect .block{
+    align-items: center;
+    &:before{
+      content: "";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 22px; height: 22px;
+      background: $gray5;
+      border-radius: 2px;
+    }
+    &.checked:before{
+      content: "✔";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 22px; height: 22px;
+      background: $secondary;
+      border-radius: 2px
+    }
+  }
+}
+
+
 span[contenteditable].block-input{
   border: none;
   font-size: 18px
@@ -23,7 +90,7 @@ span[contenteditable].block-input{
     }
   }
   &.numbered {
-    counter-reset: list;
+    // counter-reset: list;
     .block-wrapper.paragraph{
       display: flex;
       input.block-input{

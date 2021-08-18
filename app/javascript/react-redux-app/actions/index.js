@@ -12,7 +12,11 @@ export const ADD_EMPLOYEE = 'ADD_EMPLOYEE'
 
 export const FETCH_PLAYBOOKS = 'FETCH_PLAYBOOKS'
 export const FETCH_PLAYBOOK = 'FETCH_PLAYBOOK'
+export const UPDATE_PLAYBOOK = 'UPDATE_PLAYBOOK'
 export const FETCH_PLAYBOOK_SECTIONS = 'FETCH_PLAYBOOK_SECTIONS'
+export const CREATE_SECTION = 'CREATE_SECTION'
+export const UPDATE_SECTION = 'UPDATE_SECTION'
+
 export const FETCH_CALL = 'FETCH_CALL'
 export const CREATE_CALL = 'CREATE_CALL'
 export const UPDATE_CALL_NAME = 'UPDATE_CALL_NAME'
@@ -200,6 +204,68 @@ export function fetchPlaybook(playbook_id) {
   }
 }
 
+export function updatePlaybook(playbook_id, playbook){
+  const url = `${BASE_URL}/playbooks/${playbook_id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+  debugger
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(playbook)
+  }).then(r => r.json())
+  // .then(data => callback(data));
+
+  return {
+    type: UPDATE_PLAYBOOK,
+    payload: promise
+  };
+}
+
+export function createSection(playbook_id) {
+  const url = `${BASE_URL}/playbooks/${playbook_id}/sections`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const promise = fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify()
+  }).then(r => r.json())
+    // .then(r => typeof callback === 'function' && callback(r));
+
+  return {
+    type: CREATE_SECTION,
+    payload: promise
+  }
+}
+
+export function updateSection(section){
+  const url = `${BASE_URL}/sections/${section.id}`;
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').attributes.content.value;
+
+  const promise = fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(section)
+  }).then(r => r.json())
+  // .then(data => callback(data));
+
+  return {
+    type: UPDATE_SECTION,
+    payload: promise
+  };
+}
+
 export function fetchSections(playbook_id) {
   const url = `${BASE_URL}/playbooks/${playbook_id}/sections`;
   const promise = fetch(url, { credentials: "same-origin" }).then(r => r.json());
@@ -245,7 +311,6 @@ export function createCall(playbook_id) {
 }
 
 export function updateCallState(contentBlocks, callId) {
-
   let summaryItems = []
   contentBlocks.forEach((block) => {
     if (block.content_blocks_attributes.length > 0) {
