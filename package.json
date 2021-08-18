@@ -17,7 +17,6 @@
     "@rails/webpacker": "5.2.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.6.0",
-    "css-loader": "^6.2.0",
     "draft-js": "^0.11.7",
     "history": "^5.0.0",
     "jquery": "^3.5.1",
@@ -36,10 +35,11 @@
     "redux-form": "^8.3.6",
     "redux-logger": "^3.0.6",
     "redux-promise": "^0.6.0",
-    "scroll-data-hook": "^1.0.4",
-    "style-loader": "^3.2.1"
+    "scroll-data-hook": "^1.0.4"
   },
   "devDependencies": {
+    "css-loader": "^6.2.0",
+    "style-loader": "^3.2.1",
     "webpack-dev-server": "^3.11.0"
   }
 }
