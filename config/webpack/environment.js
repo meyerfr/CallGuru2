@@ -12,7 +12,7 @@ environment.plugins.prepend('Provide',
   })
 );
 
-environment.loader.append('style-loader', {
+environment.loaders.append('style-loader', {
   test: /plugin\.css$/,
   loaders: ['style-loader', 'css'],
 })
