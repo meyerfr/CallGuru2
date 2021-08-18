@@ -11,4 +11,9 @@ environment.plugins.prepend('Provide',
     Popper: ['popper.js', 'default']
   })
 );
+
+environment.loaders.append('style-loader')
+environment.loaders.append('css')
+
 module.exports = environment
+
