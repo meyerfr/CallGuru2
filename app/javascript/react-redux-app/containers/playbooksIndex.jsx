@@ -62,6 +62,18 @@ class PlaybooksIndex extends Component {
     })
   }
 
+  updatePlaybook = (playbookId) => {
+    const playbook = this.props.playbooks.find(playbook => playbook.id === playbookId)
+    this.props.history.push(`/playbooks/${playbookId}/sections/${playbook.first_section_id}`)
+  }
+
+  startCall = (playbookId) => {
+    this.props.createCall(playbookId)
+    .then((r) => {
+      this.props.history.push(`/calls/${r.payload.id}/playbooks/${playbookId}/sections/${r.payload.playbook.sections[0].id}`)
+    })
+  }
+
   render() {
     const playbooks = this.state.playbooks
     return (
@@ -98,7 +110,7 @@ class PlaybooksIndex extends Component {
                 playbooks.map((playbook, index) => <PlaybookCard key={index} currentUser={this.props.currentUser} playbook={playbook} onClick={() => this.toggleModal(playbook)} />)
               }
             </div>
-            <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} createCall={this.props.createCall} playbook={this.state.modalPlaybook} />
+            <PlaybookModal show={this.state.showModal} onClick={this.toggleModal} history={this.props.history} startCall={this.startCall} updatePlaybook={this.updatePlaybook} playbook={this.state.modalPlaybook} currentUser={this.props.currentUser} />
           </div>
           <button className="bottom-right-corner secondary center avatar"><i className="fas fa-plus"></i></button>
         </div>

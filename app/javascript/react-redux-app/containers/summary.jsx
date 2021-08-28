@@ -11,7 +11,7 @@ import { startCall } from '../helper-methods/callMethods'
 
 import PageHeader from '../components/pageHeader'
 
-import Sidebar2 from '../components/sidebar2'
+import Sidebar from '../components/sidebar'
 import { CallSummaryTop, CallSummaryBottom } from '../components/sidebarHelpers'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
@@ -70,7 +70,7 @@ class Summary extends Component {
   render() {
     const content_blocks = this.state.content_blocks
     return[
-      <Sidebar2
+      <Sidebar
           key="Sidebar"
           top={<CallSummaryTop />}
           bottom={<CallSummaryBottom repeatCall={() => startCall(this.props.call?.playbook.id, this.props.createCall, this.props.history)} backToPlaybooks={this.endCall} />}

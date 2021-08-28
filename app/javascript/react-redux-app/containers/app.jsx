@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import CallGuruApp from '../components/callGuruApp';
 import PlaybooksIndex from './playbooksIndex';
 import Settings from '../components/settings';
 import TeamsIndex from '../components/teamsIndex';
@@ -15,8 +14,8 @@ import CompanyShow from './companyShow';
 import InCallPage from './inCallPage';
 import Summary from './summary';
 
-import EditSection2 from './editSection2'
-import Sidebar2 from '../components/sidebar2'
+import EditSection from './editSection'
+import Sidebar from '../components/sidebar'
 import { AppSidebarTop, AppSidebarBottom } from '../components/sidebarHelpers'
 
 
@@ -53,7 +52,7 @@ class App extends Component {
               exact
               path='/'
               render={props => [
-                <Sidebar2
+                <Sidebar
                   key="Sidebar"
                   top={<AppSidebarTop currentUser={this.props.currentUser} />}
                   bottom={<AppSidebarBottom logout={this.logout} />}
@@ -64,7 +63,7 @@ class App extends Component {
             <Route
               path="/playbooks/:playbook_id/sections/:id"
               render={props => (
-                <EditSection2 {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
+                <EditSection {...props} key="component" loggedInStatus={this.state.isLoggedIn} />
               )}
             />
             <Route
@@ -103,7 +102,7 @@ class App extends Component {
             <Route
               path="/settings"
               render={props => [
-                <Sidebar2
+                <Sidebar
                   key="Sidebar"
                   top={<AppSidebarTop currentUser={this.props.currentUser} />}
                   bottom={<AppSidebarBottom logout={this.logout} />}
@@ -114,7 +113,7 @@ class App extends Component {
             <Route
               path="/backoffice"
               render={props => [
-                <Sidebar2
+                <Sidebar
                   key="Sidebar"
                   top={<AppSidebarTop currentUser={this.props.currentUser} />}
                   bottom={<AppSidebarBottom logout={this.logout} />}

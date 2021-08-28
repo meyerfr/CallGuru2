@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { fetchPlaybook, createSection, updateSection, fetchContentTypes } from '../actions'
 import { uuid } from '../helperFunctions'
 
-import Sidebar2 from '../components/sidebar2'
+import Sidebar from '../components/sidebar'
 import { EditPlaybookSidebarTop, EditPlaybookSidebarBottom } from '../components/sidebarHelpers'
 
 import PageHeader from '../components/pageHeader'
@@ -25,7 +25,7 @@ class EditSection extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.playbook) {
+    if (!this.props.playbook || !this.props.section) {
       this.props.fetchContentTypes()
       this.props.fetchPlaybook(this.props.match.params.playbook_id)
       // .then((r) => this.setSectionToState(r.payload))
@@ -33,13 +33,13 @@ class EditSection extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.playbook && prevProps.section.id !== this.props.section.id) {
+    if (prevProps.playbook && prevProps.section && prevProps.section.id !== this.props.section.id) {
       // this.setState({
       //   updatedElement: null
       // })
       this.updateSection()
     }
-    if (!prevProps.playbook || prevProps.section.id !== this.props.section.id) {
+    if (!prevProps.playbook || prevProps.section?.id !== this.props.section?.id) {
       this.setSectionToState(this.props.section)
     }
   }
@@ -100,7 +100,7 @@ class EditSection extends Component {
 
     if (sections) {
       return [
-        <Sidebar2
+        <Sidebar
           key="Sidebar"
           inCall={false}
           endCall={this.endCall}
@@ -143,7 +143,7 @@ function mapStateToProps(state, ownProps) {
   const playbookId = ownProps.match.params.playbook_id
   const sectionId = ownProps.match.params.id
   const playbook = state.playbooks.find((playbook) => playbook.id === playbookId)
-  const section = playbook.sections_attributes.find((section) => section.id === sectionId)
+  const section = playbook.sections_attributes?.find((section) => section.id === sectionId)
   return {
     playbook: playbook,
     section: section,

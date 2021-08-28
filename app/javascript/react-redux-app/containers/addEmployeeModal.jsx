@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal'
 
 import { addEmployee } from '../actions'
 
+import { copyTextToClipboard } from '../helper-methods/clipboard'
+
 class AddEmployeeModal extends Component {
   constructor(props){
     super(props)
@@ -24,6 +26,7 @@ class AddEmployeeModal extends Component {
 
   onSubmit = (values) => {
     this.props.addEmployee(this.props.company.id, values, this.state.sendAutomaticMail).then((r) => {
+
       this.copyAcceptInvitationLink(r.payload.accept_user_invitation_url)
       // this.props.resetForm()
       this.props.onHide()

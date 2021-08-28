@@ -9,7 +9,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import rootReducers from './reducers';
 
 import App from './containers/app'
-// import CallGuruApp from './components/callGuruApp';
 // import PlaybooksIndex from './components/playbooksIndex';
 // import Settings from './components/settings';
 // import TeamsIndex from './components/teamsIndex';

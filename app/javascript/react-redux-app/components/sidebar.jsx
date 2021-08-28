@@ -6,7 +6,7 @@ import CallGuruLogoFaviconBlue from '../../../assets/images/logo_solo_blue.svg'
 import CallGuruLogoBlue from '../../../assets/images/logo_banner_blue.svg'
 
 
-class Sidebar2 extends Component {
+class Sidebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -82,4 +82,4 @@ class Sidebar2 extends Component {
   }
 }
 
-export default Sidebar2;
+export default Sidebar;

@@ -13,7 +13,7 @@ import PageHeader from '../components/pageHeader'
 
 import CallGuruLogo from '../../../assets/images/callguru_favicon.svg'
 
-import Sidebar2 from '../components/sidebar2'
+import Sidebar from '../components/sidebar'
 import { CallSidebarTop, CallSidebarBottom } from '../components/sidebarHelpers'
 
 import BlockContainer from '../blocks/blockContainer'
@@ -140,7 +140,7 @@ class InCallPage extends Component {
 
     if (sections) {
       return[
-        <Sidebar2
+        <Sidebar
           key="Sidebar"
           inCall={true}
           endCall={this.endCall}

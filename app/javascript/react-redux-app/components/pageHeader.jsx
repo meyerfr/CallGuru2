@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom'
 
-const PageHeading = (props) => {
+const PageHeader = (props) => {
   return (
     <div className="page-header">
       <h5>{props.page}</h5>
@@ -10,4 +10,4 @@ const PageHeading = (props) => {
   );
 };
 
-export default PageHeading;
+export default PageHeader;

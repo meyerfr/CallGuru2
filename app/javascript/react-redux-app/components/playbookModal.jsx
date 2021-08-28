@@ -26,60 +26,61 @@ const PlaybookModal = (props) => {
         />
       </Modal.Header>
       <Modal.Body>
-        <div className="left-body">
-          <span className="large bold">{props.playbook?.name}</span>
-          <span className="description medium light5">
-            {props.playbook?.description}
+        <div className="PlaybookName">
+          <span className="large bold">
+            {props.playbook?.name}
           </span>
-          <button className="stretch secondary" onClick={() => startCall(props.playbook?.id, props.createCall, props.history)}>Start call</button>
         </div>
-        <div className="right-body">
-      {/*    <div className="actions">
-            <FontAwesomeIcon icon={faFilter} />
-          </div>*/}
-          <div className="list">
-            <div className="list-item">
-              <span className="small bold">Duration</span>
-              <span className="small light5">{props.playbook?.duration} minutes</span>
-            </div>
-            <div className="list-item">
-              <span className="small bold">Created by</span>
-              {
-                props.playbook?.owner.avatar ?
-                  <div className="inline-grid">
-                    <img src={props.playbook?.owner.avatar} className="avatar small" alt="Avatar" />
-                    <span className="small light5">{props.playbook?.owner.first_name}</span>
-                  </div>
-                :
+        <div className="Actions">
+          <i className="fas fa-cog" onClick={() => props.updatePlaybook(props.playbook?.id)}></i>
+          <i className="far fa-star"></i>
+        </div>
+        <div className="Information">
+          <div>
+            <span className="small bold">Duration</span>
+            <span className="small light5">{props.playbook?.duration} minutes</span>
+          </div>
+          <div>
+            <span className="small bold">Created by</span>
+            {
+              props.playbook?.owner.avatar ?
+                <div className="inline-grid">
+                  <img src={props.playbook?.owner.avatar} className="avatar small" alt="Avatar" />
                   <span className="small light5">{props.playbook?.owner.first_name}</span>
+                </div>
+              :
+                <span className="small light5">{props.playbook?.owner.first_name}</span>
+            }
+          </div>
+          <div>
+            <span className="small bold">Last change</span>
+            <span className="small light5">{moment(props.playbook?.updated_at).format('Do MMMM')}</span>
+          </div>
+          <div>
+            <span className="small bold">Tags</span>
+            <div className="d-flex f-wrap card-actions">
+              {
+                props.playbook?.duration &&
+                <label className="extra-small duration">
+                  <i className="far fa-clock"></i>
+                  {props.playbook?.duration} minutes
+                </label>
+              }
+              {
+                props.playbook?.tags.map((tag) => {
+                  return(
+                    <label key={tag.name} className="primary-light2 extra-small">
+                      {tag.name}
+                    </label>
+                  )
+                })
               }
             </div>
-            <div className="list-item">
-              <span className="small bold">Last change</span>
-              <span className="small light5">{moment(props.playbook?.updated_at).format('Do MMMM')}</span>
-            </div>
-            <div className="list-item">
-              <span className="small bold">Tags</span>
-              <div className="d-flex f-wrap card-actions">
-                {
-                  props.playbook?.duration &&
-                  <label className="extra-small duration">
-                    <i className="far fa-clock"></i>
-                    {props.playbook?.duration} minutes
-                  </label>
-                }
-                {
-                  props.playbook?.tags.map((tag) => {
-                    return(
-                      <label key={tag.name} className="primary-light2 extra-small">
-                        {tag.name}
-                      </label>
-                    )
-                  })
-                }
-              </div>
-            </div>
           </div>
+        </div>
+        <div className="Description">
+          <span className="medium light5">{props.playbook?.description}</span>
+          <button className="Button stretch secondary" onClick={() => props.startCall(props.playbook?.id)}>Start call</button>
         </div>
       </Modal.Body>
     </Modal>
