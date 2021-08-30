@@ -301,8 +301,7 @@ class BlockContainer extends Component {
   render() {
     const {blocks, myRefs} = this.state
     return(
-      <div className={`blocks${this.props.block.content_type ? ` ${this.props.block.content_type.style}` : ''}`}>
-        <div className="d-none" id={`${this.props.block.react_id}-wrapper`} ref={this.props.myRef} onClick={this.handleWrapperFocus} onFocus={this.handleWrapperFocus}></div>
+      <div className={`blocks${this.props.block.content_type ? ` ${this.props.block.content_type.style}` : ' blocks-wrapper'}`}>
         {
           blocks.map((block, index) => {
             if (block._destroy !== '1') {
@@ -338,6 +337,7 @@ class BlockContainer extends Component {
             }
           })
         }
+        <div className="d-none" id={`${this.props.block.react_id}-wrapper`} ref={this.props.myRef} onClick={this.handleWrapperFocus} onFocus={this.handleWrapperFocus}></div>
       </div>
     )
   }

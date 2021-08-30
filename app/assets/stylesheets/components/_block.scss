@@ -36,18 +36,27 @@
     }
   }
 
-  &.header{
+  &.block-header{
     .public-DraftEditorPlaceholder-root, .public-DraftStyleDefault-block.public-DraftStyleDefault-ltr{ //text + Placeholder
       font-size: 20px;
       font-weight: bold;
     }
   }
-
-
-
 }
+
+.block-header{
+  &:not(:first-child):before{
+    display: block;
+    content: "";
+    height: 2px;
+    background: #CEDFEE;
+    margin: 20px 0;
+  }
+}
+
 .blocks{
   counter-reset: items;
+  counter-reset: header;
   &.bullet, &.numbered, &.multiselect{
     .block{
       display: grid;

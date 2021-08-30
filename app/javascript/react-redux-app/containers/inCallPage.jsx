@@ -167,13 +167,10 @@ class InCallPage extends Component {
           </PageHeader>
           <div className="page-content-wrapper">
             <div className="page-content-container">
-              <div className="blocks wrapper">
-
-                {
-                  selectedSection &&
-                  <BlockContainer readOnly={true} block={selectedSection} parent="section" section_id={selectedSection.id} />
-                }
-              </div>
+              {
+                selectedSection &&
+                <BlockContainer readOnly={true} block={selectedSection} parent="section" section_id={selectedSection.id} />
+              }
             </div>
           </div>
         </div>

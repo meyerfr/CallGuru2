@@ -332,7 +332,7 @@ class Block extends Component {
   render() {
     const {InlineToolbar, LinkButton} = this.components
     return (
-      <div key={this.props.index} className={`block ${this.props.block.content_type.style}`} id={`${this.props.block.id}-container`}>
+      <div key={this.props.index} className={`block ${this.props.block.content_type.style === 'header' ? 'block-header' : this.props.block.content_type.style}`} id={`${this.props.block.id}-container`}>
         <Editor
           readOnly={this.props.readOnly}
           editorKey={'editor'}
