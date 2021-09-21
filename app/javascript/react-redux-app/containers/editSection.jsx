@@ -45,10 +45,6 @@ class EditSection extends Component {
   }
 
   updateSection = () => {
-    const playbook = {
-      sections_attributes: this.state.section
-    }
-
     this.props.updateSection(this.state.section)
   }
 
@@ -92,6 +88,18 @@ class EditSection extends Component {
     this.props.createSection(this.props.match.params.playbook_id).then((r) => this.props.history.push(`/playbooks/${playbook_id}/sections/${section.id}`))
   }
 
+  updateSectionTitle = (event) => {
+    this.setState({
+      section: {...this.state.section, title: event.target.value}
+    })
+  }
+
+  changeSectionOrderNo = (event) => {
+    this.setState({
+      section: {...this.state.section, order_no: event.target.value}
+    })
+  }
+
   render() {
     const playbook = this.props.playbook
     const sections = playbook?.sections_attributes
@@ -105,14 +113,18 @@ class EditSection extends Component {
           inCall={false}
           endCall={this.endCall}
           top={<EditPlaybookSidebarTop playbook_id={this.props.match.params.playbook_id} sections={sections} addSection={this.addSection} />}
-          bottom={<EditPlaybookSidebarBottom save={() => console.log('save')} />}
+          bottom={<EditPlaybookSidebarBottom save={this.updateSection} />}
           lightStyle={true}
         />,
         <div className="app-wrapper" key='editSection'>
-          <PageHeader key="PageHeader" page={`Edit ${playbook?.name}`}>
-            <div className="actions">
-              <button className="secondary" onClick={this.updatePlaybook}>Save</button>
-            </div>
+          <PageHeader key="PageHeader" page={section?.title} onChange={this.updateSectionTitle}>
+            {
+              section &&
+              <div className='d-flex'>
+                <span style={{marginRight: 10}}>Order No:</span>
+                <input type="number" value={section?.order_no || ''} onChange={this.changeSectionOrderNo} />
+              </div>
+            }
           </PageHeader>
           <div className="page-content-wrapper row-2 a-fr">
             <div className="page-content-container">

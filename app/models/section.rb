@@ -1,7 +1,7 @@
 class Section < ApplicationRecord
   belongs_to :playbook
   has_many :content_blocks, as: :contentable, dependent: :destroy
-  self.implicit_order_column = "created_at"
+  self.implicit_order_column = "order_no"
 
 
   STATUSES = ["draft", "archive", "live"]

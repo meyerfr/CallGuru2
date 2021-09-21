@@ -15,6 +15,8 @@ import {
 
 // import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
 
+import { defaultSuggestionsFilter } from '@draft-js-plugins/mention';
+
 import {EditorState, ContentState, RichUtils, getDefaultKeyBinding, getLastChangeType, KeyBindingUtil, convertToRaw, convertFromRaw} from 'draft-js';
 
 import ContentTypePopup from './contentTypePopup'
